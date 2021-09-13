@@ -1,6 +1,7 @@
 <template>
   <!--标题头部-->
   <el-header class="main" height="30px">
+
     <div class="left">
       <el-link href="#" class="link"><i class="el-icon-user">登录</i></el-link>
       <el-divider direction="vertical"></el-divider>
@@ -15,6 +16,7 @@
       <el-divider direction="vertical"></el-divider>
       <el-link href="#"><i class="el-icon-shopping-cart-1"></i>购物车</el-link>
     </div>
+
   </el-header>
 </template>
 
@@ -32,6 +34,7 @@ export default {
   top: 0;
   background-color: #f5f5f5;
   z-index: 99;
+
 }
 
 .link {
