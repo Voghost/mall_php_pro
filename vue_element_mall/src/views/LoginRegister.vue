@@ -12,7 +12,7 @@
             </el-input>
             <span class="errTips" v-if="userError">* 用户填写错误 *</span>
             <el-input placeholder="请输入密码" v-model="form.userpwd" show-password></el-input>
-            <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
+            <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
           <button class="bbutton" @click="login">登录</button>
         </div>
@@ -176,7 +176,7 @@ export default{
   color: rgb(57,167,176);
 }
 .bform{
-  width: 100%;
+  width: 90%;
   height: 40%;
   padding: 2em 0;
   display: flex;
