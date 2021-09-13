@@ -34,6 +34,15 @@ export default {
     test(){
       //alert("test");
     },
+  },
+  mounted(){
+    this.$api.goods.pageSearch(1, 10)
+        .then(res => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
   }
 }
 </script>

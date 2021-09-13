@@ -33,7 +33,8 @@ export default {
     MallHeader,
     SearchHeader,
     NavColumns,
-  }
+  },
+
 }
 </script>
 
