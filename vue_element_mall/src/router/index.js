@@ -5,6 +5,7 @@ import IndexPage from "@/views/IndexPage"
 import AboutMe from "@/views/AboutMe";
 import GoodsDetail from "@/views/GoodsDetail";
 import AllGoods from "@/views/AllGoods";
+import LoginRegister from "@/views/LoginRegister";
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,10 @@ const routes = [
     {
         path: '/aboutMe',
         component: AboutMe
+    },
+    {
+        path: '/login_register',
+        component: LoginRegister
     },
 ]
 
