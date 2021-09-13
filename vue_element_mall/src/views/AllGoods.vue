@@ -8,13 +8,17 @@
     <div class="background-img">
       <img  src="https://tse1-mm.cn.bing.net/th/id/R-C.b6ee4965e0de2d3f2d4dea6dd2f990ce?rik=YLTrTngbJbRPQg&riu=http%3a%2f%2fhzyly.com%2fupload%2f201908%2f26%2f201908261930008705.jpg&ehk=lAzMBzQFHc8trdBO2lILa1LYDOAHagoX0HiBZTXbYQM%3d&risl=&pid=ImgRaw&r=0">
     </div>
-    <div class="main_content" >
-      <div class="content_search">
+    <div class="main_content">
 
-      </div>
-      <GoodsCard></GoodsCard>
+      <el-row v-for="i of row_index"
+      :key="i" style="min-width: 1800px" >
+        <el-col v-for="j of col_index"
+        :key="j" span="4" style="min-width: 240px">
+          <GoodsCard :goods="goods[0]"></GoodsCard>
+        </el-col>
+      </el-row>
     </div>
-      <MallFooter></MallFooter>
+
   </el-container>
 </div>
 </template>
@@ -24,17 +28,44 @@ import MallHeader from "@/components/MallHeader";
 import SearchHeader from "@/components/SearchHeader";
 import NavColumns from "../components/NavColumns";
 import GoodsCard from "../components/GoodsCard";
-import MallFooter from "../components/MallFooter";
+
 export default {
   name: "AllGoods",
   components:{
-    MallFooter,
+
     GoodsCard,
     MallHeader,
     SearchHeader,
     NavColumns,
   },
-
+  data(){
+    return{
+      goods:[],
+      pages_num:1,
+      size:10,
+      row_index:0,
+      col_index:5,
+    }
+  },
+  methods:{
+    getGoodsInfo(pages_num){
+      this.$api.goods.pageSearch(pages_num,this.size)
+          .then(res => {
+            this.goods=res.data.message.content;
+            console.log(this.goods.length);
+            this.row_index=parseInt(this.goods.length/this.col_index)
+            if(this.goods.length%this.col_index){
+              this.row_index++;
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    }
+  },
+  mounted(){
+    this.getGoodsInfo()
+  }
 }
 </script>
 
@@ -46,7 +77,8 @@ export default {
 }
 .main_content{
   height: 600px;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   border: 1px red solid;
 }
 .content_search{

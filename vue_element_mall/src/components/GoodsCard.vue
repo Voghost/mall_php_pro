@@ -1,25 +1,25 @@
 <template>
-  <div class="main">
-      <el-card :body-style="{ padding: '0px' }" @click.native="test()" :title="goods_name">
-        <div class="goods_img">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-        </div>
-        <div  class="goods_info" >
-          <div  class="goods_title">
-            <span>好吃的汉堡</span>
+      <div class="main">
+        <el-card :body-style="{ padding: '0px' }" @click.native="test()" :title="goods.goods_name">
+          <div class="goods_img">
+            <img :src="goods.goods_big_logo" class="image">
           </div>
-          <div class="goods_price">
-            <span>￥299.00</span>
-          </div>
-          <div class="cart_icon">
-            <div>
-              <i class="el-icon-shopping-cart-1"></i>
+          <div  class="goods_info" >
+            <div  class="goods_title">
+              <span>{{goods.goods_name}}</span>
             </div>
+            <div class="goods_price">
+              <span>{{ goods.goods_price }}</span>
+            </div>
+            <div class="cart_icon">
+              <div>
+                <i class="el-icon-shopping-cart-1"></i>
+              </div>
 
+            </div>
           </div>
-        </div>
-      </el-card>
-  </div>
+        </el-card>
+      </div>
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
   name: "GoodsCard",
   data(){
     return{
-        goods_name:'好吃的汉堡',
+
     }
   },
   methods:{
@@ -35,15 +35,9 @@ export default {
       //alert("test");
     },
   },
-  mounted(){
-    this.$api.goods.pageSearch(1, 10)
-        .then(res => {
-          console.log(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-  }
+  props:[
+      'goods',
+  ],
 }
 </script>
 
@@ -52,6 +46,8 @@ export default {
   margin-left:20px;
   width:240px;
   height: 320px;
+  float: left;
+  border: 1px red solid;
 }
 
 .image {
