@@ -3,6 +3,7 @@
 namespace app\common\service;
 
 use app\common\model\Goods as GoodsModel;
+use app\common\utils\ResultUtil;
 use think\Db;
 
 class GoodsService
@@ -98,6 +99,24 @@ class GoodsService
             $where[] = ['goods_cat_three_id', "=", $cid];
         }
         return $goods = GoodsModel::where($where)->select();
+    }
+
+    public function pageSearch($page = null, $limit = null, $query)
+    {
+        $where = array();
+        $where[] = ["goods_state", "<>", 0];
+
+        if (array_key_exists("goodsName", $query)) {
+            $where[] = ["goods_name", "like", "%" . $query["goodsName"] . "%"];
+        }
+        if (array_key_exists("goodsIntroduce", $query)) {
+            $where[] = ["goods_introduce", "like", "%" . $query["goodsIntroduce"] . "%"];
+        }
+
+        $res = GoodsModel::page($page, $limit)->where($where)->select();
+        $count = GoodsModel::where($where)->count();
+
+        return ["page" => $page, "total" => $count, "content" => $res];
     }
 
 }

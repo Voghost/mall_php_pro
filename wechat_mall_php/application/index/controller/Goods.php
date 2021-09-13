@@ -27,10 +27,16 @@ class Goods extends Controller
         $search = $this->goodsService->search($query, $cat_id);
         $res = [];
         for ($i = 0; $i < count($search); $i++) {
-            array_push($res,["value"=> $search[$i]["goods_name"],"id"=>$search[$i]["goods_id"]]);
+            array_push($res, ["value" => $search[$i]["goods_name"], "id" => $search[$i]["goods_id"]]);
         }
         return ResultUtil::OK($res);
+    }
 
+    public function pageSearch($page = null, $limit = null)
+    {
+        $query = $this->request->post();
+        $pageSearch = $this->goodsService->pageSearch($page, $limit, $query);
+        return ResultUtil::OK($pageSearch);
     }
 
 }

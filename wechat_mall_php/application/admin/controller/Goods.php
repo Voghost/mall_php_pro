@@ -2,7 +2,9 @@
 
 namespace app\admin\controller;
 
+use app\common\service\GoodsService;
 use app\public_common\model\Category;
+use think\App;
 use think\Controller;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\Category as CategoryModel;
@@ -10,6 +12,15 @@ use think\response\Json;
 
 class Goods extends Controller
 {
+
+    private $goodsService;
+
+    public function __construct(App $app = null)
+    {
+        parent::__construct($app);
+        $this->goodsService = \think\facade\App::model("goods", "service", true);
+    }
+
     /**
      * 获取所有商品
      * @return Json
@@ -27,27 +38,11 @@ class Goods extends Controller
     public function page($page = null, $limit = null)
     {
         $query = $this->request->post();
-        $where = array();
-        $where[] = ["goods_state", "<>", 0];
-
-        if (array_key_exists("goodsName", $query)) {
-            $where[] = ["goods_name", "like", "%" . $query["goodsName"] . "%"];
-        }
-        if (array_key_exists("goodsIntroduce", $query)) {
-            $where[] = ["goods_introduce", "like", "%" . $query["goodsIntroduce"] . "%"];
-        }
-
-        $res = GoodsModel::page($page, $limit)->where($where)->select();
-        $count = GoodsModel::where($where)->count();
-
+        $pageSearch = $this->goodsService->pageSearch($page, $limit, $query);
         return json(
             ["message" => "ok",
                 "code" => 200,
-                "data" => [
-                    "page" => $page,
-                    "total" => $count,
-                    "content" => $res
-                ]
+                "data" => $pageSearch
             ]
         );
     }
