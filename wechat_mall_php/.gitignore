@@ -1,0 +1,6 @@
+/.idea
+/.vscode
+/config/mySecret.txt
+/temp/temp.jpg
+/public/dist/
+/public/test.php
