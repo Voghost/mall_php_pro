@@ -12,7 +12,7 @@ use OSS\Core\OssException;
  * @author edgar Liu
  *
  * Class Upload
- * @package app\public_common\controller
+ * @package app\common\controller
  */
 class Upload extends Controller
 {

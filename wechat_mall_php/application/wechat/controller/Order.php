@@ -3,13 +3,9 @@
 namespace app\wechat\controller;
 
 use app\common\model\Users as UsersModel;
-use app\public_common\model\Goods as GoodsModel;
-use app\public_common\model\Order as OrderModel;
-use app\public_common\model\OrderGoods as OrderGoodsModel;
 use app\common\model\Orders as OrdersModel;
 use app\common\utils\JwtUtil;
 use think\Controller;
-use think\Db;
 use think\Exception;
 use think\facade\App;
 

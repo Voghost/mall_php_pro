@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 
-use app\public_common\utils\JwtUtil;
+use app\common\utils\JwtUtil;
 
 class Index
 {
