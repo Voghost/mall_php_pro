@@ -6,19 +6,32 @@
       <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
     <NavColumns></NavColumns>
     <div class="background-img">
-      <img  src="https://tse1-mm.cn.bing.net/th/id/R-C.b6ee4965e0de2d3f2d4dea6dd2f990ce?rik=YLTrTngbJbRPQg&riu=http%3a%2f%2fhzyly.com%2fupload%2f201908%2f26%2f201908261930008705.jpg&ehk=lAzMBzQFHc8trdBO2lILa1LYDOAHagoX0HiBZTXbYQM%3d&risl=&pid=ImgRaw&r=0">
+      <img  src="">
     </div>
     <div class="main_content">
-
       <el-row v-for="i of row_index"
-      :key="i" style="min-width: 1800px" >
+      :key="i" style="min-width: 1000px" >
         <el-col v-for="j of col_index"
-        :key="j" span="4" style="min-width: 240px">
-          <GoodsCard :goods="goods[0]"></GoodsCard>
+        :key="j" :span="6" style="min-width: 240px">
+          <GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
         </el-col>
       </el-row>
+      <div class="pagination">
+        <el-row>
+          <el-col :span="24">
+            <el-pagination
+                background
+                @current-change="changePage"
+                :page-size="size"
+                layout="prev, pager, next"
+                :total="totalNum"
+            style="padding-left: 80px">
+            </el-pagination>
+          </el-col>
+        </el-row>
+      </div>
     </div>
-
+    <MallFooter></MallFooter>
   </el-container>
 </div>
 </template>
@@ -28,39 +41,47 @@ import MallHeader from "@/components/MallHeader";
 import SearchHeader from "@/components/SearchHeader";
 import NavColumns from "../components/NavColumns";
 import GoodsCard from "../components/GoodsCard";
-
+import MallFooter from "../components/MallFooter";
 export default {
   name: "AllGoods",
   components:{
-
     GoodsCard,
     MallHeader,
     SearchHeader,
     NavColumns,
+    MallFooter,
   },
   data(){
     return{
       goods:[],
-      pages_num:1,
-      size:10,
+      current:1,
+      size:24,
       row_index:0,
-      col_index:5,
+      col_index:4,
+      totalNum:0
+
     }
   },
   methods:{
-    getGoodsInfo(pages_num){
-      this.$api.goods.pageSearch(pages_num,this.size)
+    getGoodsInfo(page=1){
+      this.current=page
+      this.$api.goods.pageSearch(this.current,this.size)
           .then(res => {
             this.goods=res.data.message.content;
-            console.log(this.goods.length);
+            this.totalNum=res.data.message.total;
             this.row_index=parseInt(this.goods.length/this.col_index)
             if(this.goods.length%this.col_index){
               this.row_index++;
             }
+
           })
           .catch(err => {
             console.log(err)
           })
+    },
+    changePage(page){
+      this.getGoodsInfo(page)
+      document.documentElement.scrollTop=680;
     }
   },
   mounted(){
@@ -76,14 +97,16 @@ export default {
   
 }
 .main_content{
-  height: 600px;
+  height: 2100px;
   width: 80%;
   margin: 0 auto;
-  border: 1px red solid;
+
 }
-.content_search{
-  height: 80px;
-  width: 100%;
-  border: 1px blue solid;
+.pagination{
+  height: 50px;
+  width: 50%;
+  margin: 50px auto;
+
+
 }
 </style>
