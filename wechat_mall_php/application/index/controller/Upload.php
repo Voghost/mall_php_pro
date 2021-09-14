@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\controller;
+namespace app\index\controller;
 
 use app\common\service\UploadService;
 use think\Controller;
@@ -42,7 +42,7 @@ class Upload extends Controller
         if ($res == "false") {
             return json(["message" => "上传失败", "code" => 201, "data" => null]);
         } else {
-            return json(["message" => "ok", "code" => 200, "data" => ["url" => $res]]);
+            return json(["message" => "ok", "code" => 200, "data" => ["url" => $res, "name" => $file->getInfo()["name"]]]);
         }
     }
 

@@ -7,15 +7,18 @@
           <ThingTittle style="box-shadow: rgba(0,0,0,0.3) 0 0 3px"></ThingTittle>
         </el-header>
       </el-container>
-      <el-container style="width: 1000px;height: auto;margin:0 auto">
+      <el-container style="width: 1200px;height: auto;margin:0 auto">
         <el-main class="main_box">
           <el-tabs :tab-position="tabPosition" style="height: auto;width: auto;margin: 10px">
             <el-tab-pane label="账号资料">
-              <userData></userData>
+              <UserData></UserData>
             </el-tab-pane>
-            <el-tab-pane label="购物车">购物车</el-tab-pane>
-            <el-tab-pane label="物品物流">物品物流</el-tab-pane>
-            <el-tab-pane label="已购买的商品">已购买的商品</el-tab-pane>
+            <el-tab-pane label="购物车">
+
+            </el-tab-pane>
+            <el-tab-pane label="全部订单">
+              <ItemOrder></ItemOrder>
+            </el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
@@ -31,7 +34,8 @@
 import MallFooter from "../components/MallFooter";
 import LoginHeader from "../components/LoginHeader";
 import ThingTittle from "../components/ThingTittle";
-import UserData from "@/components/userData";
+import UserData from "@/components/UserData";
+import ItemOrder from "../components/ItemOrder";
 
 export default {
   name: "AboutMe",
@@ -41,8 +45,8 @@ export default {
     };
   },
   components: {
+    ItemOrder,
     UserData,
-
     ThingTittle,
     LoginHeader,
     MallFooter,
@@ -64,21 +68,7 @@ export default {
 
 
 }
-.main_box .img{
-  padding: 10px;
-  width:80px;
-  height: 80px;
-}
-.main_box .text{
-  margin: 40px;
-  width: 40px;
-}
-.main_box .linetittle{
-  background: #7c7c7c;
-  height: auto;
-  width: 500px;
-  display:block;
-}
+
 
 
 

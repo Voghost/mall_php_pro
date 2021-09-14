@@ -2,6 +2,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
@@ -42,6 +43,13 @@ class Goods extends Controller
     public function goodsDetail($id = null)
     {
         $goodsDetail = $this->goodsService->goodsDetail($id);
+        $imageUrlModel = new ImageUrlModel();
+        $imageUrls = $imageUrlModel->where(["from" => 1, "f_id" => $goodsDetail["goods_id"]])->select();
+        $pics = [];
+        foreach ($imageUrls as $image) {
+            array_push($pics, $image["url"]);
+        }
+        $goodsDetail["pic"] = $pics;
         return ResultUtil::OK($goodsDetail);
     }
 

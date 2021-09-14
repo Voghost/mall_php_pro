@@ -3,6 +3,7 @@
 namespace app\common\service;
 
 use app\common\model\Goods as GoodsModel;
+use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\utils\ResultUtil;
 use think\Db;
 
@@ -64,29 +65,10 @@ class GoodsService
     public function goodsDetail($goods_id)
     {
         $goods = GoodsModel::where('goods_id', $goods_id)->find();
-
         if (is_null($goods)) {
             json(["message" => $goods, "meta" => ["msg" => "找不到商品ID", "status" => 400]])->send();
             exit();
         }
-
-        $url[] = [
-            "pics_sma" => $goods["goods_pic_one"],
-            "pics_mid" => $goods["goods_pic_one"],
-            "pics_big" => $goods["goods_pic_one"],
-        ];
-        $url[] = [
-            "pics_sma" => $goods["goods_pic_two"],
-            "pics_mid" => $goods["goods_pic_two"],
-            "pics_big" => $goods["goods_pic_two"],
-        ];
-        $url[] = [
-            "pics_sma" => $goods["goods_pic_three"],
-            "pics_mid" => $goods["goods_pic_three"],
-            "pics_big" => $goods["goods_pic_three"],
-        ];
-        $goods["pics"] = $url;
-
         return $goods;
     }
 
@@ -116,6 +98,16 @@ class GoodsService
 
         $res = GoodsModel::page($page, $limit)->where($where)->select();
         $count = GoodsModel::where($where)->count();
+
+        foreach ($res as $goods) {
+            $imageUrlModel = new ImageUrlModel();
+            $imageUrls = $imageUrlModel->where(["from" => 1, "f_id" => $goods["goods_id"]])->select();
+            $pics = [];
+            foreach ($imageUrls as $image) {
+                array_push($pics, ["url" => $image["url"], "id" => $image["id"], "name" => $image["name"]]);
+            }
+            $goods["pics"] = $pics;
+        }
 
         return ["page" => $page, "total" => $count, "content" => $res];
     }
