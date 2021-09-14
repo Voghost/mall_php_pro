@@ -98,14 +98,18 @@ export default {
 .background-img img{
   height:700px;
   width: 100%;
-  
+
 }
 .main_content{
-  height: 2100px;
+  height: auto;
   width: 80%;
   margin: 0 auto;
+}
 
-
+.main_content:before{
+  content: '';
+  clear: both;
+  display: block;
 }
 .main_goods{
 
