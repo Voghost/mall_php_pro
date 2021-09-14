@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="12" class="" style="margin-left: 40px;">
               <el-carousel height="500px" style="min-width: 600px; width: 800px" indicator-position="outside">
-                <el-carousel-item v-for="item in pics" :key="item">
+                <el-carousel-item v-for="item in pics" :key="item.goods_id">
                   <a href="#">
                     <el-image :src="item.image_src" style="width: 100%; height: 100%" :fit="'cover'">
                     </el-image>
@@ -31,8 +31,8 @@
       </el-main>
 
       <el-main class="">
-        <FloorItem v-for=" item, index in floors"
-                   :key="index"
+        <FloorItem v-for="(item, index) in floors"
+                   :key="item.floor_title.name"
                    :src="item.floor_title.image_src"
                    :num="index+1"
                    :title="item.floor_title.name"
@@ -63,11 +63,11 @@ export default {
     }
   },
   components: {
-    FloorItem,
+    // FloorItem,
     MallHeader,
     SearchHeader,
     Category,
-    // FloorItem,
+    FloorItem,
     MallFooter
   },
   methods: {
@@ -91,6 +91,13 @@ export default {
   mounted() {
     this.getAllFloor();
     this.getSwiperPics();
+    this.$api.goods.pageSearch(1, 10, {"goods_name": "飞机"})
+        .then(res => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
   }
 }
 </script>

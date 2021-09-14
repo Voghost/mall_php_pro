@@ -1,5 +1,6 @@
 <template>
   <div class="login-register">
+    <!--   腾讯防水墙 -->
     <div class="contain">
       <div class="big-box" :class="{active:isLogin}">
         <div class="big-contain" v-if="isLogin">
@@ -14,7 +15,7 @@
             <el-input placeholder="请输入密码" v-model="form.userpwd" show-password></el-input>
             <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
-          <button class="bbutton" @click="login">登录</button>
+          <button class="bbutton" @click="login" id="TencentCaptcha" data-appid="appId" data-cbfn="callback">登录</button>
         </div>
         <div class="big-contain" v-else>
           <div class="btitle">创建账户</div>
@@ -48,22 +49,23 @@
 </template>
 
 <script>
-export default{
-  name:'login_register',
-  data(){
+
+export default {
+  name: 'login_register',
+  data() {
     return {
-      isLogin:false,
+      isLogin: true,
       userError: false,
       passwordError: false,
       existed: false,
-      form:{
-        username:'',
-        userrepwd:'',
-        userpwd:''
+      form: {
+        username: '',
+        userrepwd: '',
+        userpwd: ''
       }
     }
   },
-  methods:{
+  methods: {
     changeType() {
       this.isLogin = !this.isLogin
       this.form.username = ''
@@ -74,15 +76,15 @@ export default{
       const self = this;
       if (self.form.username != "" && self.form.userpwd != "") {
         self.$axios({
-          method:'post',
+          method: 'post',
           url: 'http://127.0.0.1:10520/api/user/login',
           data: {
             username: self.form.username,
             password: self.form.userpwd
           }
         })
-            .then( res => {
-              switch(res.data){
+            .then(res => {
+              switch (res.data) {
                 case 0:
                   alert("登陆成功！");
                   break;
@@ -94,26 +96,26 @@ export default{
                   break;
               }
             })
-            .catch( err => {
+            .catch(err => {
               console.log(err);
             })
-      } else{
+      } else {
         alert("填写不能为空！");
       }
     },
-    register(){
+    register() {
       const self = this;
-      if(self.form.username != "" && self.form.userpwd == self.form.userrepwd){
+      if (self.form.username != "" && self.form.userpwd == self.form.userrepwd) {
         self.$axios({
-          method:'post',
+          method: 'post',
           url: 'http://127.0.0.1:10520/api/user/add',
           data: {
             username: self.form.username,
             password: self.form.userpwd
           }
         })
-            .then( res => {
-              switch(res.data){
+            .then(res => {
+              switch (res.data) {
                 case 0:
                   alert("注册成功！");
                   this.login();
@@ -123,12 +125,12 @@ export default{
                   break;
               }
             })
-            .catch( err => {
+            .catch(err => {
               console.log(err);
             })
-      } else if(self.form.username != "" && self.form.userpwd != self.form.userrepwd){
+      } else if (self.form.username != "" && self.form.userpwd != self.form.userrepwd) {
         alert("两次密码输入不相同！");
-      }else {
+      } else {
         alert("填写不能为空");
       }
     }
@@ -137,23 +139,25 @@ export default{
 </script>
 
 <style scoped="scoped">
-.login-register{
+.login-register {
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
 }
-.contain{
+
+.contain {
   width: 60%;
   height: 60%;
   position: relative;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
-.big-box{
+
+.big-box {
   width: 70%;
   height: 100%;
   position: absolute;
@@ -162,7 +166,8 @@ export default{
   transform: translateX(0%);
   transition: all 1s;
 }
-.big-contain{
+
+.big-contain {
   width: 100%;
   height: 100%;
   display: flex;
@@ -170,12 +175,14 @@ export default{
   justify-content: center;
   align-items: center;
 }
-.btitle{
+
+.btitle {
   font-size: 1.5em;
   font-weight: bold;
-  color: rgb(57,167,176);
+  color: rgb(57, 167, 176);
 }
-.bform{
+
+.bform {
   width: 90%;
   height: 40%;
   padding: 2em 0;
@@ -186,7 +193,8 @@ export default{
   max-width: 400px;
   margin: 0 auto;
 }
-.bform .errTips{
+
+.bform .errTips {
   display: block;
   width: 50%;
   text-align: left;
@@ -194,7 +202,8 @@ export default{
   font-size: 0.7em;
   margin-left: 1em;
 }
-.bform input{
+
+.bform input {
   width: 50%;
   height: 30px;
   border: none;
@@ -203,21 +212,23 @@ export default{
   padding-left: 2em;
   background-color: #f0f0f0;
 }
-.bbutton{
+
+.bbutton {
   width: 20%;
   height: 40px;
   border-radius: 24px;
   border: none;
   outline: none;
-  background-color: rgb(57,167,176);
+  background-color: rgb(57, 167, 176);
   color: #fff;
   font-size: 0.9em;
   cursor: pointer;
 }
-.small-box{
+
+.small-box {
   width: 30%;
   height: 100%;
-  background: linear-gradient(135deg,rgb(57,167,176),rgb(56,183,145));
+  background: linear-gradient(135deg, rgb(57, 167, 176), rgb(56, 183, 145));
   position: absolute;
   top: 0;
   left: 0;
@@ -226,7 +237,8 @@ export default{
   border-top-left-radius: inherit;
   border-bottom-left-radius: inherit;
 }
-.small-contain{
+
+.small-contain {
   width: 100%;
   height: 100%;
   display: flex;
@@ -234,19 +246,22 @@ export default{
   justify-content: center;
   align-items: center;
 }
-.stitle{
+
+.stitle {
   font-size: 1.5em;
   font-weight: bold;
   color: #fff;
 }
-.scontent{
+
+.scontent {
   font-size: 0.8em;
   color: #fff;
   text-align: center;
   padding: 2em 4em;
   line-height: 1.7em;
 }
-.sbutton{
+
+.sbutton {
   width: 60%;
   height: 40px;
   border-radius: 24px;
@@ -258,11 +273,12 @@ export default{
   cursor: pointer;
 }
 
-.big-box.active{
+.big-box.active {
   left: 0;
   transition: all 0.5s;
 }
-.small-box.active{
+
+.small-box.active {
   left: 100%;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
