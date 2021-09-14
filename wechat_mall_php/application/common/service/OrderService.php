@@ -89,7 +89,7 @@ class OrderService
         if ($type != null) {
             $where["order_state"] = [$type];
         }
-        $ordersList = \app\public_common\model\Orders::where($where)->select();
+        $ordersList = \app\common\model\Orders::where($where)->select();
         if ($ordersList == null) {
             return json([
                 "message" => [

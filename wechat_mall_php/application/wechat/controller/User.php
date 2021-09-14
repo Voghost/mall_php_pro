@@ -3,9 +3,9 @@
 namespace app\wechat\controller;
 
 
-use app\public_common\utils\JwtUtil;
+use app\common\utils\JwtUtil;
 use think\Controller;
-use app\public_common\model\Users as UsersModel;
+use app\common\model\Users as UsersModel;
 use think\facade\App;
 
 class User extends Controller

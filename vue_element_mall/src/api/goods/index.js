@@ -14,6 +14,5 @@ export default {
     detail(id) {
         return axios.post(`${BASE_URL}/goods/goodsDetail?id=${id}`)
     }
-
 }
 
