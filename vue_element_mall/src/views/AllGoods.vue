@@ -6,9 +6,11 @@
       <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
     <NavColumns></NavColumns>
     <div class="background-img">
-      <img  src="">
+      <img src="https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0">
+<!--      <img src="https://tse1-mm.cn.bing.net/th/id/R-C.03405d08250294a0a593d5ebc0ba889c?rik=kaF7eFHkKO1rbw&riu=http%3a%2f%2fpic.netbian.com%2fuploads%2fallimg%2f180128%2f130352-1517115832dbca.jpg&ehk=h9sLnaVzf%2f%2bGWDqExyPQfockICPswcBKkeRCyMmHPXI%3d&risl=&pid=ImgRaw&r=0">-->
     </div>
     <div class="main_content">
+      <div class="main_goods">
       <el-row v-for="i of row_index"
       :key="i" style="min-width: 1000px" >
         <el-col v-for="j of col_index"
@@ -16,6 +18,7 @@
           <GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
         </el-col>
       </el-row>
+      </div>
       <div class="pagination">
         <el-row>
           <el-col :span="24">
@@ -25,12 +28,13 @@
                 :page-size="size"
                 layout="prev, pager, next"
                 :total="totalNum"
-            style="padding-left: 80px">
+            style="padding-left: 150px;">
             </el-pagination>
           </el-col>
         </el-row>
       </div>
     </div>
+<!-- footer   -->
     <MallFooter></MallFooter>
   </el-container>
 </div>
@@ -92,7 +96,7 @@ export default {
 
 <style scoped>
 .background-img img{
-  height: 504px;
+  height:700px;
   width: 100%;
   
 }
@@ -101,11 +105,17 @@ export default {
   width: 80%;
   margin: 0 auto;
 
+
+}
+.main_goods{
+
+  width: 70%;
+  margin: 0 auto;
 }
 .pagination{
   height: 50px;
-  width: 50%;
-  margin: 50px auto;
+  width:40%;
+  margin:50px auto;
 
 
 }

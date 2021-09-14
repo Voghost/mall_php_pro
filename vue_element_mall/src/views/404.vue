@@ -1,20 +1,17 @@
 <template>
   <el-container>
     <el-menu
-        :default-active="activeIndex2"
         class="el-menu-demo"
         mode="horizontal"
-        @select="handleSelect"
-        background-color="#545c64"
         text-color="#fff"
+        background-color="#000"
         active-text-color="#ffd04b">
-      <el-menu-item index="1">处理中心</el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">我的工作台</template>
+      <el-submenu index="1">
+        <template slot="title">商品分类</template>
         <Category/>
       </el-submenu>
-      <el-menu-item index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+      <el-menu-item index="2" id="1"><a href="#" target="_parent">商城首页</a></el-menu-item>
+      <el-menu-item index="3" id="1"><a href="http://localhost:8081/allgoods" target="_parent">全部商品</a></el-menu-item>
     </el-menu>
   </el-container>
 </template>
@@ -41,9 +38,34 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .border {
   border: 1px red solid;
+
+}
+.el-menu{
+  width: 100%;
+}
+.el-submenu__title:hover,.el-submenu__title:focus{
+  background-color: #00BFFF!important;
+}
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title{
+  color: white !important;
+  border-bottom-color: transparent !important;
+}
+
+
+.el-menu-item:hover{
+  background-color: #00BFFF!important;
+}
+/*.el-menu-item.is-active {*/
+/*  color: #ffff00 !important;*/
+/*  background: #000000 !important;*/
+/*  border-bottom-color: transparent !important;*/
+/*}*/
+a{
+  text-decoration: none;
+  color: white;
 }
 
 </style>
