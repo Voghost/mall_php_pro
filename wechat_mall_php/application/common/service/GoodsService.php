@@ -66,7 +66,8 @@ class GoodsService
         $goods = GoodsModel::where('goods_id', $goods_id)->find();
 
         if (is_null($goods)) {
-            return json(["message" => $goods, "meta" => ["msg" => "找不到商品ID", "status" => 400]]);
+            json(["message" => $goods, "meta" => ["msg" => "找不到商品ID", "status" => 400]])->send();
+            exit();
         }
 
         $url[] = [
