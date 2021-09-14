@@ -13,8 +13,16 @@
         <!--   分类和主页大图   -->
         <el-container style="margin-top: 10px;" class="">
           <el-row type="flex" justify="center" style="width: 100%">
-            <el-col :span="3" :offset="1">
+            <el-col :span="4" :offset="-2">
+              <el-menu
+                  default-active="1-4-1"
+                  class="el-menu-vertical-demo"
+                  :collapse="true"
+                  style="width: 250px; box-shadow: rgba(0,0,0,0.3) 0 0 5px; margin-right: 50px;"
+                  background-color="#f0f0f0"
+              >
               <Category style="float: right; min-width: 200px;"></Category>
+              </el-menu>
             </el-col>
             <el-col :span="12" class="" style="margin-left: 40px;">
               <el-carousel height="500px" style="min-width: 600px; width: 800px" indicator-position="outside">

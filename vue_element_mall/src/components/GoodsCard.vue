@@ -1,6 +1,6 @@
 <template>
-      <div class="main">
-        <el-card :body-style="{ padding: '0px' }" @click.native="test()" :title="goods.goods_name">
+      <div class="main" v-if="goods!==undefined">
+        <el-card :body-style="{ padding: '0px' }" @click.native="test()" :title="goods.goods_name" shadow="hover">
           <div class="goods_img">
             <img :src="goods.goods_big_logo" class="image">
           </div>
@@ -47,7 +47,7 @@ export default {
   width:240px;
   height: 320px;
   float: left;
-  border: 1px red solid;
+
 }
 
 .image {

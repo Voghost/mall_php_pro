@@ -39,4 +39,10 @@ class Goods extends Controller
         return ResultUtil::OK($pageSearch);
     }
 
+    public function goodsDetail($id = null)
+    {
+        $goodsDetail = $this->goodsService->goodsDetail($id);
+        return ResultUtil::OK($goodsDetail);
+    }
+
 }

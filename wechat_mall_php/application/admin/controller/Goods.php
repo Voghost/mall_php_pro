@@ -3,7 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\service\GoodsService;
-use app\public_common\model\Category;
+use app\common\model\Category;
 use think\App;
 use think\Controller;
 use app\common\model\Goods as GoodsModel;
