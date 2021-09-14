@@ -89,9 +89,11 @@
         <h2>商品主图</h2>
         <img v-bind:src="currentGoods.goods_big_logo" alt="" style="width: 150px; height: auto">
         <h2>商品图片</h2>
-        <img v-bind:src="currentGoods.goods_pic_one" alt="" style="margin-left: 20px; width: 150px; height: auto">
-        <img v-bind:src="currentGoods.goods_pic_two" alt="" style="margin-left: 20px; width: 150px; height: auto">
-        <img v-bind:src="currentGoods.goods_pic_three" alt="" style="margin-left: 20px; width: 150px; height: auto">
+        <el-carousel style="width: 70%" height="400">
+          <el-carousel-item v-for="item in currentGoods.pics" :key="item.id">
+            <el-image style="width: 100%" :src="item.url" fit="cover"></el-image>
+          </el-carousel-item>
+        </el-carousel>
         <h2>商品介绍</h2>
         <div v-html="currentGoods.goods_introduce"/>
       </div>

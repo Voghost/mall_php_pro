@@ -13,19 +13,19 @@ return [
     // 数据库类型
     'type' => 'mysql',
     // 服务器地址
-    'hostname' => 'ghovos.com',
-//    'hostname'        => '127.0.0.1',
+//    'hostname' => 'ghovos.com',
+    'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'api_wechat_mall',
-//    'database'        => 'mall_php',
+//    'database'        => 'api_wechat_mall',
+    'database'        => 'mall_php',
 //    'database'        => 'wechat_mall_php',
     // 用户名
 //    'username' => 'wc_m_php', // 用不到
     'username'        => 'phpTest',
     // 密码
 //    'password' => 'eBewrirRHkrBcZzB',
-    'password'        => 'J91TDLPfXOy6hDTG',
-//    'password'        => 'phptest',
+//    'password'        => 'J91TDLPfXOy6hDTG',
+    'password'        => 'phptest',
     // 端口
     'hostport' => '',
     // 连接dsn

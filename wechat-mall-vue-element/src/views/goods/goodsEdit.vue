@@ -1,84 +1,88 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" :label-position="'top'" class="demo-form-inline">
-      <el-form-item label="商品分类">
-        <el-cascader :props="props" placeholder="请选择分类" v-model="catArr" style="width: 300px"></el-cascader>
-      </el-form-item>
-      <br/>
-      <el-form-item label="商品名字">
-        <el-input v-model="goods.goodsName" placeholder="请输入商品名字 *" required style="width: 600px"></el-input>
-      </el-form-item>
-      <br/>
-      <el-form-item label="商品价格">
-        <el-input-number v-model="goods.goodsPrice" :precision="2" :step="0.1" :max="999999" :min="0"></el-input-number>
-      </el-form-item>
-      <el-form-item label="商品库存">
-        <el-input-number v-model="goods.goodsNumber" :step="1" :min="0"></el-input-number>
-      </el-form-item>
-      <el-form-item label="商品重量(kg)">
-        <el-input-number
-          v-model="goods.goodsWeight"
-          :precision="2"
-          :step="0.1"
-          :max="999999"
-          :min="0"
-        ></el-input-number>
-      </el-form-item>
-      <br/>
-      <el-form-item label="商品主图">
-        <el-upload
-          class="avatar-uploader"
-          action="https://api-wechat-mall.ghovos.com/upload/file"
-          :show-file-list="false"
-          :on-success="handleMainSuccess"
-          :before-upload="beforeMainUpload"
-        >
-          <img v-if="goods.goodsBigLogo" :src="goods.goodsBigLogo" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </el-form-item>
-      <br/>
-      <el-form-item label="商品副图">
-        <el-upload
-          style="display: inline-block"
-          class="avatar-uploader"
-          action="https://api-wechat-mall.ghovos.com/upload/file"
-          :show-file-list="false"
-          :on-success="handleFirstSuccess"
-          :before-upload="beforeMainUpload"
-        >
-          <img v-if="goods.goodsPicOne" :src="goods.goodsPicOne" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-        <el-upload
-          style="display: inline-block; margin-left: 20px"
-          class="avatar-uploader"
-          action="https://api-wechat-mall.ghovos.com/upload/file"
-          :show-file-list="false"
-          :on-success="handleSecondSuccess"
-          :before-upload="beforeMainUpload"
-        >
-          <img v-if="goods.goodsPicTwo" :src="goods.goodsPicTwo" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-        <el-upload
-          style="display: inline-block; margin-left: 20px"
-          class="avatar-uploader"
-          action="https://api-wechat-mall.ghovos.com/upload/file"
-          :show-file-list="false"
-          :on-success="handleThirdSuccess"
-          :before-upload="beforeMainUpload"
-        >
-          <img v-if="goods.goodsPicThree" :src="goods.goodsPicThree" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </el-form-item>
-      <br/>
-      <Editor v-model="goods.goodsIntroduce"/>
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="商品分类">
+            <el-cascader :props="props" placeholder="请选择分类" v-model="catArr" style="width: 300px"></el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
+          <el-form-item label="商品名字">
+            <el-input v-model="goods.goodsName" placeholder="请输入商品名字 *" required style="width: 600px"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="商品价格">
+            <el-input-number
+              v-model="goods.goodsPrice"
+              :precision="2"
+              :step="0.1"
+              :max="999999"
+              :min="0"
+            ></el-input-number>
+          </el-form-item>
+          <br/>
+          <el-form-item label="商品库存">
+            <el-input-number v-model="goods.goodsNumber" :step="1" :min="0"></el-input-number>
+          </el-form-item>
+          <br/>
+          <el-form-item label="商品重量(kg)">
+            <el-input-number
+              v-model="goods.goodsWeight"
+              :precision="2"
+              :step="0.1"
+              :max="999999"
+              :min="0"
+            ></el-input-number>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="商品主图">
+            <el-upload
+              class="avatar-uploader"
+              :action="baseUpdateUrl"
+              :show-file-list="false"
+              :on-success="handleMainSuccess"
+              :before-upload="beforeMainUpload"
+              style="border: 1px black dotted; border-radius: 10px;"
+            >
+              <img v-if="goods.goodsBigLogo" :src="goods.goodsBigLogo" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商品副图">
+            <el-upload
+              class="upload-demo"
+              :action="baseUpdateUrl"
+              :file-list="fileList"
+              :on-preview="handlePreview"
+              :before-remove="handleRemove"
+              :on-success="handleSecondSuccess"
+              list-type="picture-card"
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <Editor v-model="goods.goodsIntroduce" style="width: 90%"/>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog
+      title="图片详情"
+      :visible.sync="dialogVisible"
+      width="40%"
+    >
+      <img width="100%" :src="dialogImageUrl"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -90,6 +94,9 @@ export default {
   components: { Editor },
   data() {
     return {
+      isEdit: false,
+      fileList: [],
+      baseUpdateUrl: 'http://mall.php.test/upload/file',
       catArr: [],
       imageUrl: '',
       goods: {
@@ -128,6 +135,7 @@ export default {
   created() {
     // 如果是跳转来的，则接受初始化参数
     if (this.$route.query.goods) {
+      this.isEdit = true
       console.log(this.$route.query)
       this.goods.goodsId = this.$route.query.goods.goods_id
       this.goods.goodsName = this.$route.query.goods.goods_name
@@ -137,13 +145,16 @@ export default {
       this.goods.goodsWeight = this.$route.query.goods.goods_weight
       this.goods.goodsCatThreeId = this.$route.query.goods.goods_cat_three_id
       this.goods.goodsBigLogo = this.$route.query.goods.goods_big_logo
-      this.goods.goodsPicOne = this.$route.query.goods.goods_pic_one
-      this.goods.goodsPicTwo = this.$route.query.goods.goods_pic_two
-      this.goods.goodsPicThree = this.$route.query.goods.goods_pic_three
+      this.goods.goodsPics = this.$route.query.goods.pics
       this.catArr = [
         this.$route.query.goods.goods_cat_one_id,
         this.$route.query.goods.goods_cat_two_id,
-        this.$route.query.goods.goods_cat_three_id]
+        this.$route.query.goods.goods_cat_three_id
+      ]
+      for (let i = 0; i < this.goods.goodsPics.length; i++) {
+        const item = this.goods.goodsPics[i]
+        this.fileList.push({ name: item.name, url: item.url, id: item.id })
+      }
     }
   },
   methods: {
@@ -165,15 +176,6 @@ export default {
       this.goods.goodsBigLogo = res.data.url
       console.log(this.imageUrl)
     },
-    handleFirstSuccess(res, file) {
-      this.goods.goodsPicOne = res.data.url
-    },
-    handleSecondSuccess(res, file) {
-      this.goods.goodsPicTwo = res.data.url
-    },
-    handleThirdSuccess(res, file) {
-      this.goods.goodsPicThree = res.data.url
-    },
     beforeMainUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 10
 
@@ -181,6 +183,55 @@ export default {
         this.$message.error('上传图片大小不能超过 10MB!')
       }
       return isLt2M
+    },
+    handleRemove(file, fileList) {
+      console.log(file)
+      // 如果是编辑
+      if (this.isEdit) {
+        return this.$confirm('此操作将删除商品置信息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsApi.deletePic(file.id)
+            .then(response => {
+              console.log(response)
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+          this.reject(new Error('取消')).catch(err => {
+            console.log(err)
+          })
+        })
+        // TODO 从服务器删除list
+      }
+      this.removeByValue(this.fileList, 'url', file.url)
+    },
+    handlePreview(file) {
+      this.dialogVisible = true
+      console.log(file)
+      this.dialogImageUrl = file.url
+    },
+    handleSecondSuccess(file) {
+      this.fileList.push({ 'name': file.data.name, 'url': file.data.url, id: -1 })
+    },
+    // 根据属性值删除函数
+    removeByValue(arr, attr, value) {
+      let index = 0
+      for (const i in arr) {
+        if (arr[i][attr] === value) {
+          index = i
+          break
+        }
+      }
+      arr.splice(index, 1)
     }
   }
 }

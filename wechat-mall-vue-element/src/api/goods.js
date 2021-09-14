@@ -35,6 +35,11 @@ export default {
       method: 'post',
       data: data
     })
+  },
+  deletePic(picId) {
+    return request({
+      url: `/admin/goods/deletePic?id=${picId}`,
+    })
   }
 }
 
