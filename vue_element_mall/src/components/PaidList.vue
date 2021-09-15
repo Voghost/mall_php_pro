@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--支付-->
     <el-table
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
@@ -10,17 +11,17 @@
       <el-table-column
           prop="list_id"
           label="订单编号"
-          width="auto">
+          width="150">
       </el-table-column>
       <el-table-column
           prop="list_add_time"
           label="下单时间"
-          width="auto">
+          width="150">
       </el-table-column>
       <el-table-column
           prop="goods_image"
           label="商品图片"
-          width="auto">
+          width="150">
       </el-table-column>
       <el-table-column
           prop="goods_name"
@@ -28,16 +29,27 @@
       </el-table-column>
       <el-table-column
           prop="goods_number"
+          width="100"
           label="商品数量">
       </el-table-column>
       <el-table-column
           prop="goods_price"
-          label="商品价格">
+          label="商品价格"
+          width="100">
       </el-table-column>
       <el-table-column
           fixed="right"
           label="操作"
-          width="120">
+          width="200">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)">物流消息</el-button>
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">申请退货</el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -88,6 +100,14 @@ export default {
         goods_number:2,
         goods_price:123,
       }]
+    }
+  },
+  methods: {
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
     }
   },
 }

@@ -3,7 +3,7 @@
     <el-col :span="6" >
       <el-link href="#" class="link" style="font-size: 14px ;line-height: 30px">我的首页</el-link>
       <el-divider direction="vertical"></el-divider>
-      <el-link href="#" class="link" style="font-size: 14px">账号设置</el-link>
+      <el-link href="#" class="link" style="font-size: 14px">修改设置</el-link>
     </el-col>
     <el-col :span="10" style="height: 50px">
       <div class="box">
