@@ -4,7 +4,7 @@
     <ThingTittle style="box-shadow: rgba(0,0,0,0.3) 0 0 3px"></ThingTittle>
     <el-container style="width: 1200px;min-height:700px;margin:0 auto">
       <el-main class="main_box">
-        <el-tabs :tab-position="tabPosition" style="margin: 10px;">
+        <el-tabs :tab-position="tabPosition1" style="margin: 10px;">
           <el-tab-pane label="账号资料">
             <UserData></UserData>
           </el-tab-pane>
@@ -14,8 +14,15 @@
           <el-tab-pane label="全部订单">
             <ItemOrder></ItemOrder>
           </el-tab-pane>
-          <el-tab-pane label="账户设置">
-            <Usersetting></Usersetting>
+          <el-tab-pane label="账户信息修改">
+            <el-tabs :tab-position="tabPosition2">
+              <el-tab-pane label="基本信息修改">
+               <Usersetting></Usersetting>
+              </el-tab-pane>
+              <el-tab-pane label="快递地址修改">
+
+              </el-tab-pane>
+            </el-tabs>
           </el-tab-pane>
         </el-tabs>
       </el-main>
@@ -37,7 +44,8 @@ export default {
   name: "AboutMe",
   data() {
     return {
-      tabPosition: 'top'
+      tabPosition1: 'top',
+      tabPosition2: 'left'
     };
   },
   components: {
