@@ -22,7 +22,6 @@ class Goods extends Controller
         $allCategories = $this->goodsService->getAllCategories();
         return ResultUtil::OK($allCategories);
     }
-
     public function detail($goods_id)
     {
         $goodsDetail = $this->goodsService->goodsDetail($goods_id);
