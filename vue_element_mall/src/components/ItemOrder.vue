@@ -10,6 +10,18 @@
     <el-tab-pane label="待评价">
       <ReceivedList></ReceivedList>
     </el-tab-pane>
+    <el-tab-pane label="已完成">
+      <CompleteOrder></CompleteOrder>
+    </el-tab-pane>
+    <el-tab-pane label="退款中">
+      <RequestRefund></RequestRefund>
+    </el-tab-pane>
+    <el-tab-pane label="退款成功">
+      <RequestSuccess></RequestSuccess>
+    </el-tab-pane>
+    <el-tab-pane label="退款失败">
+      <RequestFailed></RequestFailed>
+    </el-tab-pane>
   </el-tabs>
 
 </template>
@@ -18,9 +30,17 @@
 import NopayList from "@/components/NopayList";
 import PaidList from "@/components/PaidList";
 import ReceivedList from "@/components/ReceivedList";
+import CompleteOrder from "@/components/CompleteOrder";
+import RequestRefund from "@/components/RequestRefund";
+import RequestFailed from "@/components/RequestFailed";
+import RequestSuccess from "@/components/RequestSuccess";
 export default {
   name: "ItemOrder",
   components: {
+    RequestSuccess,
+    RequestFailed,
+    RequestRefund,
+    CompleteOrder,
     ReceivedList,
     NopayList,
     PaidList,

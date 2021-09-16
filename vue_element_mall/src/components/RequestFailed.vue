@@ -44,23 +44,18 @@
               width="100"
               label="状态">
           </el-table-column>
+          <el-table-column
+              prop="feedback"
+              width="100"
+              label="原因">
+          </el-table-column>
           <el-table-column align="center" label="操作" width="200">
-            <template scope="scope">
-              <el-button size="small" type="success" @click="dialogVisible = true">物品物流
-              </el-button>
-              <el-button size="small" type="danger" @click="handleUpdate(scope.row)">申请退款
-              </el-button>
-            </template>
-
-            <el-dialog
-                title="提示"
-                :visible.sync="dialogVisible"
-                width="30%">
-            </el-dialog>
-            <!--            <template scope="scope">-->
-            <!--              <el-button size="small" type="success" @click="handleUpdate(scope.row)">查看物流-->
-            <!--              </el-button>-->
-            <!--            </template>-->
+            <el-table-column align="center" label="操作" width="120">
+              <template scope="scope">
+                <el-button size="small" type="success" @click="handleUpdate(scope.row)">与客服沟通
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table-column>
         </el-table>
       </template>
@@ -95,7 +90,8 @@ export default {
           goods_price: 123,
           goods_number: 2,
           goods_prices: 2 * 123,
-          goods_state: "配送中"
+          goods_state: "退款失败",
+          feedback:"申请过长",
         }]
       },
         {
@@ -108,7 +104,8 @@ export default {
             goods_price: 123,
             goods_number: 2,
             goods_prices: 2 * 123,
-            goods_state: "配送中"
+            goods_state: "退款失败",
+            feedback:"申请过长",
           }]
         }],
     }
