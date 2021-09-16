@@ -17,7 +17,7 @@ Route::get('hello/:name', 'index/hello');
 
 
 // 支持跨域请求
-\think\facade\Route::post('upload/file', "common/upload/file")
+\think\facade\Route::post('upload/file', "index/upload/file")
     ->allowCrossDomain();
 
 // admin 路由 且拥有 admin 和 user 权限
@@ -26,6 +26,7 @@ Route::get('hello/:name', 'index/hello');
     'goods/page' => 'admin/goods/page',
     'goods/saveOrUpdate' => 'admin/goods/saveOrUpdate',
     'goods/getCategory' => 'admin/goods/getCategory',
+    'goods/deletePic' => 'admin/goods/deletePic',
     'home/allSwiper' => 'admin/home/allSwiper',
     'home/allFloor' => 'admin/home/allFloor',
     'home/deleteSwiper' => 'admin/home/deleteSwiper',

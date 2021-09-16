@@ -73,7 +73,7 @@
             :on-success="handleSuccess"
             :before-upload="beforeMainUpload"
           >
-            <img v-if="currentCategory.cat_icon" :src="currentCategory.cat_icon" class="avatar">
+            <img width="80%"  v-if="currentCategory.cat_icon" :src="currentCategory.cat_icon" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>

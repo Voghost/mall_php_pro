@@ -2,8 +2,10 @@
 
 namespace app\admin\controller;
 
+use app\common\model\ImageUrl;
 use app\common\service\GoodsService;
-use app\public_common\model\Category;
+use app\common\model\Category;
+use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
 use app\common\model\Goods as GoodsModel;
@@ -129,5 +131,14 @@ class Goods extends Controller
         } else {
             return \json(['message' => '参数错误', "code" => 200, 'data' => null]);
         }
+    }
+
+    public function deletePic($id)
+    {
+        if ($id != null && $id != '') {
+            $imageUrl = new ImageUrl();
+            $imageUrl->where(["id" => $id])->delete();
+        }
+        return json(['message' => 'ok', "code" => 200, "data" => null]);
     }
 }

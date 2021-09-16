@@ -1,70 +1,67 @@
 <template>
-<div class="main_nav">
-  <div class="categories">商品分类
-  <div class="categories_dropdown"><Category></Category></div></div>
-  <div class="nav_ul">
-    <ul>
-      <li><a href="#/allgoods/#">商城首页</a></li>
-      <li><a href="#/allgoods/#">全部商品</a></li>
-  </ul>
-  </div>
-</div>
+    <el-menu
+        class="el-menu-demo"
+        mode="horizontal"
+        text-color="#fff"
+        background-color="#000"
+        active-text-color="#ffd04b">
+      <el-submenu index="1">
+        <template slot="title">商品分类</template>
+        <Category/>
+      </el-submenu>
+      <el-menu-item index="2" id="1"><a href="http://localhost:8081/" target="_parent">商城首页</a></el-menu-item>
+      <el-menu-item index="3" id="1"><a href="http://localhost:8081/allgoods" target="_parent">全部商品</a></el-menu-item>
+    </el-menu>
 </template>
-
 <script>
-import Category from "./Category";
+import Category from "@/components/Category";
 export default {
   name: "NavColumns",
-  components:{
-    Category,
+  components: {Category},
+  data() {
+    return {
+      category: {},
+    }
+  },
+  mounted() {
+    this.$api.main_page.allCategory()
+        .then(res => {
+          this.category = res.data.message
+        })
+        .catch(err => {
+          console.log(err)
+        })
   }
 }
 </script>
-<style scoped>
-.main_nav{
-  height: 50px;
+<style>
+.border {
+  border: 1px red solid;
+
+}
+.el-menu{
   width: 100%;
-  color: white;
-  background: black;
 }
-.categories{
-  height: 50px;
-  width: 250px;
-  background: deepskyblue;
-  color: white;
-  text-align: center;
-  line-height: 50px;
-  margin-left: 60px;
-  float: left;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
+.el-submenu__title:hover,.el-submenu__title:focus{
+  background-color: #00BFFF!important;
 }
-.categories_dropdown{
-  position: absolute;
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title{
+  color: white !important;
+  border-bottom-color: transparent !important;
 }
-.nav_ul{
-  height: 50px;
-  width: 500px;
-  float: left;
+
+
+.el-menu-item:hover{
+  background-color: #00BFFF!important;
 }
-.nav_ul ul{
-  list-style: none;
-  margin-left: 40px;
-}
-ul li{
-  height: 50px;
-  width: 100px;
-  text-align: center;
-  line-height: 50px;
-  float: left;
-  margin-left:2px;
-}
-li:hover{
-  background: deepskyblue;
-}
-li a{
+/*.el-menu-item.is-active {*/
+/*  color: #ffff00 !important;*/
+/*  background: #000000 !important;*/
+/*  border-bottom-color: transparent !important;*/
+/*}*/
+a{
   text-decoration: none;
   color: white;
 }
+
 </style>
