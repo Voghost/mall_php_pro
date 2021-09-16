@@ -48,4 +48,11 @@ class User extends Controller
 
     }
 
+    public function getUserById()
+    {
+        $query = $this->request->post();
+        $user = UsersModel::where("user_id", $query["user_id"])->findOrFail();
+        return $user;
+    }
+
 }
