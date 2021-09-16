@@ -14,10 +14,12 @@ return [
     'type' => 'mysql',
     // 服务器地址
     'hostname' => 'ghovos.com',
-//    'hostname'        => '127.0.0.1',
+//    'hostname'        => '10.62.160.58',
     // 数据库名
-    'database'        => 'api_wechat_mall',
+//    'database'        => 'api_wechat_mall',
 //    'database'        => 'wechat_mall_php',
+//    'database'        => 'mall_php',
+    'database'      => 'mall_php_pro',
     // 用户名
 //    'username' => 'wc_m_php', // 用不到
     'username'        => 'phpTest',
