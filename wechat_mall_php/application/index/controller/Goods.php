@@ -23,6 +23,12 @@ class Goods extends Controller
         return ResultUtil::OK($allCategories);
     }
 
+    public function detail($goods_id)
+    {
+        $goodsDetail = $this->goodsService->goodsDetail($goods_id);
+        return ResultUtil::OK($goodsDetail);
+    }
+
     public function search($query = '', $cat_id = '')
     {
         $search = $this->goodsService->search($query, $cat_id);

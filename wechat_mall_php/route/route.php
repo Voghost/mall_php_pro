@@ -44,6 +44,9 @@ Route::get('hello/:name', 'index/hello');
     'users/updateState' => 'admin/user/updateState',
     'user/all' => 'admin/my_user/all',
     'user/logout' => 'admin/my_user/logout',
+    'comment/page' => 'admin/comment/page',
+    'comment/getGoodsAndOrder' => 'admin/comment/getGoodsAndOrder',
+    'comment/updateCommentStatus' => 'admin/comment/updateCommentStatus'
 ])
     ->allowCrossDomain()
     ->middleware('VerifyMyUser')
