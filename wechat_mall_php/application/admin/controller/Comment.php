@@ -50,6 +50,19 @@ class Comment extends Controller
         );
     }
 
+    public function addComment()
+    {
+        $query = $this->request->put();
+        $comment = new CommentModel();
+        $comment->content = $query["comment"];
+        $comment->star = $query["star"];
+        $comment->goods_id = $query["goods_id"];
+        $comment->order_id = $query["order_id"];
+        $comment->status = 0;
+        $comment->user_id = $query["user_id"];
+        $comment->save();
+    }
+
     public function getGoodsAndOrder()
     {
         $where = $this->request->put();
