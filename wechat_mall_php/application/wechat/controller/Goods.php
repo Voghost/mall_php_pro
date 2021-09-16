@@ -2,6 +2,7 @@
 
 namespace app\wechat\controller;
 
+use app\common\model\ImageUrl as ImageUrlModel;
 use think\App;
 use think\Controller;
 use app\common\model\Goods as GoodsModel;
@@ -26,8 +27,19 @@ class Goods extends Controller
 
     public function detail($goods_id)
     {
-        $goodsDetail = $this->goodsService->goodsDetail($goods_id);
-        return json(["message" => $goodsDetail, "meta" => ["msg" => "获取成功", "status" => 200]]);
+        $goods = $this->goodsService->goodsDetail($goods_id);
+        $imageUrlModel = new ImageUrlModel();
+        $imageUrls = $imageUrlModel->where(["from" => 1, "f_id" => $goods["goods_id"]])->select();
+
+        for ($i = 0; $i < 3; $i++) {
+            $url[] = [
+                "pics_sma" => $imageUrls[$i]["url"],
+                "pics_mid" => $imageUrls[$i]["url"],
+                "pics_big" => $imageUrls[$i]["url"],
+            ];
+        }
+        $goods["pics"] = $url;
+        return json(["message" => $goods, "meta" => ["msg" => "获取成功", "status" => 200]]);
     }
 
 

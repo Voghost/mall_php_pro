@@ -98,7 +98,7 @@ export default {
 .background-img img{
   height:700px;
   width: 100%;
-  
+
 }
 .main_content{
 
@@ -106,7 +106,10 @@ export default {
   width: auto;
   margin: 0 auto;
 
-
+.main_content:before{
+  content: '';
+  clear: both;
+  display: block;
 }
 .main_goods{
   width: auto;
