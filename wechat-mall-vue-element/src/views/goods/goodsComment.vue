@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" class="demo-form-inline">
-      <el-form-item label="商品名字">
-        <el-input v-model="searchObj.content" placeholder="商品名字"/>
+      <el-form-item label="查询语句">
+        <el-input v-model="searchObj.goodsName" placeholder="商品名字或评价字段"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList()">查询</el-button>

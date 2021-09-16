@@ -40,12 +40,12 @@ class Comment extends Controller
     public function getAllComment()
     {
         $commentlist1 = $this->commentService->getAllComment();
-        $commentlist2 = $this->commentService->getAllCommentWithGoods($commentlist1);
+//        $commentlist2 = $this->commentService->getAllCommentWithGoods($commentlist1);
 //        $commentlist3 = $this->commentService->getAllCommentWithGoodsAndOrders($commentlist2,$commentlist1);
         return json(
             ["message" => "ok",
                 "code" => 200,
-                "data" => $commentlist2
+                "data" => $commentlist1
             ]
         );
     }
