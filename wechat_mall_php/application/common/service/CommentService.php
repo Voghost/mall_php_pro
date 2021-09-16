@@ -77,14 +77,25 @@ class CommentService
     public function pageSearch($page = null, $limit = null, $query)
     {
         $where = array();
+        $index = array();
         $where[] = ["status", "<>", 2];
+        $whereOr = null;
 
-        if (array_key_exists("content", $query)) {
-            $where[] = ["content", "like", "%" . $query["content"] . "%"];
+        if (array_key_exists("goodsName", $query)) {
+            $where[] = ["content", "like", "%" . $query["goodsName"] . "%"];
+            $index[] = ["goods_name", "like", "%" . $query["goodsName"] . "%"];
+            $temp = GoodsModel::where($index)->column('goods_id');
+            $whereOr[] = ["status", "<>", 2];
+            $whereOr[] = ["goods_id", "in", $temp];
         }
 
-        $res = CommentModel::page($page, $limit)->where($where)->select();
-        $count = CommentModel::where($where)->count();
+        if($whereOr != null){
+            $res = CommentModel::page($page, $limit)->where([$where])->whereOr([$whereOr])->select();
+            $count = CommentModel::where([$where])->whereOr([$whereOr])->count();
+        }else{
+            $res = CommentModel::page($page, $limit)->where($where)->select();
+            $count = CommentModel::where($where)->count();
+        }
 
         return ["page" => $page, "total" => $count, "content" => $res];
     }
