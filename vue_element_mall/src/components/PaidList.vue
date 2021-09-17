@@ -1,4 +1,5 @@
 <template>
+  <el-container>
   <el-table
       :data="list_info"
       :row-key="getRowKeys"
@@ -52,17 +53,14 @@
               </el-button>
             </template>
 
-            <el-dialog
-                title="提示"
-                :visible.sync="dialogVisible"
-                width="30%">
-            </el-dialog>
+
             <!--            <template scope="scope">-->
             <!--              <el-button size="small" type="success" @click="handleUpdate(scope.row)">查看物流-->
             <!--              </el-button>-->
             <!--            </template>-->
           </el-table-column>
         </el-table>
+
       </template>
     </el-table-column>
     <el-table-column align="center"
@@ -77,7 +75,14 @@
                      label="订单支付"
                      prop="all_prices">
     </el-table-column>
+
   </el-table>
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%">
+    </el-dialog>
+  </el-container>
 </template>
 
 <script>
@@ -109,7 +114,15 @@ export default {
             goods_number: 2,
             goods_prices: 2 * 123,
             goods_state: "配送中"
-          }]
+          },
+            {
+              goods_image: '冯炳超',
+              goods_name: '冯炳超飞机杯二号',
+              goods_price: 123,
+              goods_number: 2,
+              goods_prices: 2 * 123,
+              goods_state: "配送中"
+            }]
         }],
     }
   }
