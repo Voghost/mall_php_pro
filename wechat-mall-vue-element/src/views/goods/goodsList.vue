@@ -62,10 +62,10 @@
           >
             上架
           </el-button>
-          <el-button @click="edit(scope.row)">
+          <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row)" size="mini">
             编辑
           </el-button>
-          <el-button @click="test(scope.row)">
+          <el-button type="success" icon="el-icon-goods" @click="test(scope.row)" size="mini">
             查看评价
           </el-button>
         </template>
