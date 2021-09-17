@@ -14,20 +14,20 @@
         </el-row>
       </div>
       <el-row>
-        <el-col :span="24" v-for="(i,index) in items" :key="i.goods_id">
+        <el-col :span="24" v-for="(i,index) in items" :key="i.id">
           <el-card :body-style="{padding:'0px'}"  shadow="none">
             <div class="goods_check">
               <input type="checkbox"  :value="index" @click=checked() v-model="arr">
             </div>
             <div class="goods_img">
-<!--              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">-->
+
               <el-popover placement="right-start" title="" trigger="hover">
                 <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
                   <img slot="reference" :src="i.goods_big_logo" class="image">
               </el-popover>
             </div>
             <div class="goods_title">
-              <span><a href="#" style="text-decoration: none;color: black" target="_blank">{{i.name}}</a></span>
+              <span><a href="#" style="text-decoration: none;color: black" target="_blank">{{i.goods_name}}</a></span>
             </div>
             <div class="goods_introduce">
 
@@ -36,13 +36,13 @@
               <p>￥{{ i.price }}</p>
             </div>
             <div class="goods_num">
-              <el-input-number v-model="i.number" @change="handleChange(index)" :min="1" :max="999" label="描述文字"></el-input-number>
+              <el-input-number v-model="i.number" @change="handleChange(index,i.id,i.number)" :min="1" :max="999" label="描述文字"></el-input-number>
             </div>
             <div class="goods_total">
               <p>￥{{ i.total }}</p>
             </div>
             <div class="operation">
-              <p><a href="#" style="text-decoration: none;color: black; margin: 0 auto" @click="dialogVisible = true">删除</a></p>
+              <p><el-button type="text" @click="deleteItem(i.id)">删除</el-button></p>
             </div>
           </el-card>
         </el-col>
@@ -52,22 +52,13 @@
           <el-col :span="24">
             <span style="width: 120px;margin-left: 1000px;margin-top:10px;display: block;float:left">已选商品<span style="color: red">{{this.arr.length}}</span>件</span>
             <span style="width: 100px;margin-left: 20px;margin-top:10px;display: block;float: left">合计:<span style="color: red;">{{this.totalPrice}}</span></span>
-            <el-button type="danger" style="margin-right: 60px;float: right">结算</el-button>
+            <el-button type="danger" style="margin-right: 60px;float: right" @click="calculation()">结算</el-button>
 <!--            结算按钮-->
           </el-col>
         </el-row>
       </div>
     </div>
-    <el-dialog
-        title="删除宝贝"
-        :visible.sync="dialogVisible"
-        width="30%">
-      <span>哥哥，真的要删除宝贝吗</span>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="handleDel()">确 定</el-button>
-  </span>
-    </el-dialog>
+
   </el-container>
 </template>
 
@@ -88,7 +79,7 @@ export default {
       //   {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
       items:[],
       arr: [],
-      dialogVisible: false,
+      cart_id:[]
     };
   },
   methods: {
@@ -102,14 +93,29 @@ export default {
       })
     },
     //修改数量
-    handleChange(index) {
+    handleChange(index,id,number) {
+      this.$api.cart.changeNumber(id,number)
       this.ItemTotalMoney(index)
       this.TotalMoney()
     },
     //删除
-    handleDel() {
-      console.log("点击了删除");
-    this.dialogVisible=false;
+    deleteItem(id) {
+      this.$confirm('删除商品?', '删除商品', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api.cart.deleteCartItem(id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     //单选
     checked() {
@@ -154,6 +160,17 @@ export default {
       this.totalPrice = allprice
 
     },
+    //结算时，获取购买商品的cart_id
+    getCartId(){
+      for(let index=0;index<this.arr.length;index++){
+        this.cart_id.push(this.items[this.arr[index]]['id'])
+      }
+    },
+    calculation(){
+      this.getCartId()
+      console.log(this.cart_id)
+    }
+
   },
   created() {
     this.getCartInfo()
@@ -165,6 +182,7 @@ export default {
         if (newValue !== oldValue) {
           this.TotalMoney()
           this.checked()
+          //this.getCartId()
         }
       }
     }
@@ -209,7 +227,7 @@ export default {
 }
 .image {
   height: 120px;
-  width: 200px;
+  width: 180px;
   display: block;
 }
 .goods_title{
