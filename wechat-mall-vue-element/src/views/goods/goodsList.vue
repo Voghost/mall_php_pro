@@ -4,18 +4,24 @@
       <el-form-item label="商品名字">
         <el-input v-model="searchObj.goodsName" placeholder="商品名字"/>
       </el-form-item>
-      <el-date-picker
-        v-model="searchObj.Datevalue"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        format="yyyy年MM月dd日"
-        value-format="yyyy-MM-dd"
-        :picker-options="pickerOptions">
-      </el-date-picker>
+      <el-form-item label="商品分类">
+        <el-cascader :props="props" placeholder="请选择分类" v-model="catArr" style="width: 300px"></el-cascader>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="searchObj.Datevalue"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          format="yyyy年MM月dd日"
+          value-format="yyyy-MM-dd"
+          :picker-options="pickerOptions"
+        >
+        </el-date-picker>
+      </el-form-item>
       <el-form-item class="bttn">
         <el-button type="primary" @click="getList()">查询</el-button>
       </el-form-item>
@@ -147,8 +153,31 @@ import goodsApi from '@/api/goods'
 export default {
   data() {
     return {
+      props: {
+        lazy: true,
+        lazyLoad(node, resolve) {
+          const { level } = node
+          let value = node.value
+          if (level === 0) {
+            value = 0
+          }
+          goodsApi.getCategory(level + 1, value).then(res => {
+            // console.log(node)
+            let i = 0
+            const nodes = Array.from({ length: res.data.length })
+              .map(item => ({
+                value: res.data[i].cat_id,
+                label: res.data[i++].cat_name,
+                leaf: level >= 2
+              }))
+            // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+            resolve(nodes)
+          })
+        }
+      },
       searchObj: {},
       tableData: [],
+      catArr: [],
       current: 1,
       total: 0,
       limit: 10,
@@ -201,6 +230,9 @@ export default {
     // 分页查询
     getList(page = 1) {
       this.current = page
+      if (this.catArr !== undefined && this.catArr[2] !== undefined) {
+        this.searchObj.goodsCatThreeId = this.catArr[2]
+      }
       goodsApi.pageSearchForGoods(this.searchObj, this.current, this.limit)
         .then(response => {
           console.log(this.searchObj)
@@ -290,19 +322,23 @@ export default {
   margin-top: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
+
 .commentbox1 {
   margin-top: 10px;
   float: left;
 }
+
 .commentbox2 {
   margin-top: 10px;
   margin-left: 20px;
   float: left;
 }
+
 .commentbox3 {
   margin-top: 50px;
   clear: both;
 }
+
 .bttn {
   margin-left: 10px;
 }
