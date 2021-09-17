@@ -62,6 +62,8 @@
           >
             上架
           </el-button>
+          <br>
+          <br>
           <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row)" size="mini">
             编辑
           </el-button>
