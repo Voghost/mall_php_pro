@@ -28,13 +28,13 @@
       <el-table-column prop="goods_upd_time" label="商品修改日期" width="160"/>
       <el-table-column label="商品状态" width="120">
         <template slot-scope="scope">
-          <div v-if="scope.row.goods_state===2" @click="test(scope.row.goods_state)">
+          <div v-if="scope.row.goods_state===2">
             <i class="el-icon-upload2"/>上架
           </div>
-          <div v-if="scope.row.goods_state===1" @click="test(scope.row.goods_state)">
+          <div v-if="scope.row.goods_state===1">
             <i class="el-icon-download"/>下架
           </div>
-          <div v-if="scope.row.goods_state===0" @click="test(scope.row.goods_state)">
+          <div v-if="scope.row.goods_state===0">
             <i class="el-icon-s-flag"/>已删除
           </div>
         </template>
@@ -62,8 +62,13 @@
           >
             上架
           </el-button>
-          <el-button @click="edit(scope.row)">
+          <br>
+          <br>
+          <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row)" size="mini">
             编辑
+          </el-button>
+          <el-button type="success" icon="el-icon-goods" @click="test(scope.row)" size="mini">
+            查看评价
           </el-button>
         </template>
       </el-table-column>
@@ -98,6 +103,22 @@
         <div v-html="currentGoods.goods_introduce"/>
       </div>
     </el-dialog>
+    <!-- 展示商品具体评价  -->
+    <el-dialog title="评论详情" :visible.sync="showCommentWithOrder">
+      <div v-if="currentTemp.length === 0">
+        <h2>暂无评论</h2>
+      </div>
+      <div v-else>
+        <div v-for="(item,index) in currentTemp" :key="index" class="commentblock">
+          <p> {{ item.user_name }} 购买了此商品</p>
+          <p class="commentbox1">购买类型:{{ item.order.order_price }}</p>
+          <p class="commentbox2">
+            <el-rate disabled show-score v-model="item.star"></el-rate>
+          </p>
+          <h4 class="commentbox3">该用户评价:{{ item.content }}</h4>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -115,7 +136,11 @@ export default {
       showGoodsVisible: false,
       showGoodsUserVisible: false,
       dialogTableVisible: false,
+      showCommentWithOrder: false,
       currentGoods: {},
+      currentComment: {},
+      currentTemp: {},
+      currentTemp1: {},
       goods: {}
     }
   },
@@ -190,13 +215,40 @@ export default {
       }) // 带参跳转
     },
     test(num) {
-      alert('hello' + num)
+      // alert('hello' + num)
+      goodsApi.getCommentWithOrder(num)
+        .then(response => {
+          this.currentTemp = response.data
+          this.currentTemp1 = response.data.order
+          this.showCommentWithOrder = true
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
 </script>
 
 <style scoped>
-
+.commentblock {
+  padding: 25px;
+  border-radius: 4px;
+  margin-top: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+.commentbox1 {
+  margin-top: 10px;
+  float: left;
+}
+.commentbox2 {
+  margin-top: 10px;
+  margin-left: 20px;
+  float: left;
+}
+.commentbox3 {
+  margin-top: 50px;
+  clear: both;
+}
 </style>
 
