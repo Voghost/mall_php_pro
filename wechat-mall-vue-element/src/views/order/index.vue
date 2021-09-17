@@ -4,7 +4,19 @@
       <el-form-item label="订单编号">
         <el-input v-model="searchObj.order_number" placeholder="订单编号"/>
       </el-form-item>
-      <el-form-item>
+      <el-date-picker
+        v-model="searchObj.Datevalue"
+        type="daterange"
+        align="right"
+        unlink-panels
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        format="yyyy年MM月dd日"
+        value-format="yyyy-MM-dd"
+        :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-form-item class="bttn">
         <el-button type="primary" @click="getList()">查询</el-button>
       </el-form-item>
     </el-form>
@@ -96,7 +108,35 @@ export default {
       tableData: [],
       current: 1,
       total: 0,
-      limit: 10
+      limit: 10,
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      },
+      Datevalue: ''
     }
   },
   // 在渲染前运行
@@ -138,6 +178,8 @@ export default {
 </script>
 
 <style scoped>
-
+.bttn {
+  margin-left: 10px;
+}
 </style>
 
