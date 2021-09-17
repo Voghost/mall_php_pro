@@ -6,8 +6,8 @@
       <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
     <NavColumns></NavColumns>
     <div class="background-img">
-      <img src="https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0">
-<!--      <img src="https://tse1-mm.cn.bing.net/th/id/R-C.03405d08250294a0a593d5ebc0ba889c?rik=kaF7eFHkKO1rbw&riu=http%3a%2f%2fpic.netbian.com%2fuploads%2fallimg%2f180128%2f130352-1517115832dbca.jpg&ehk=h9sLnaVzf%2f%2bGWDqExyPQfockICPswcBKkeRCyMmHPXI%3d&risl=&pid=ImgRaw&r=0">-->
+<!--      <img src="https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0">-->
+      <img src="https://tse1-mm.cn.bing.net/th/id/R-C.03405d08250294a0a593d5ebc0ba889c?rik=kaF7eFHkKO1rbw&riu=http%3a%2f%2fpic.netbian.com%2fuploads%2fallimg%2f180128%2f130352-1517115832dbca.jpg&ehk=h9sLnaVzf%2f%2bGWDqExyPQfockICPswcBKkeRCyMmHPXI%3d&risl=&pid=ImgRaw&r=0">
     </div>
     <div class="main_content">
       <div class="main_goods">
@@ -28,7 +28,7 @@
                 :page-size="size"
                 layout="prev, pager, next"
                 :total="totalNum"
-            style="padding-left: 150px;">
+            style="padding-left: 100px;">
             </el-pagination>
           </el-col>
         </el-row>
@@ -100,9 +100,10 @@ export default {
   width: 100%;
 
 }
-.main_content{
-  height: auto;
-  width: 80%;
+.main_content {
+
+  height: 2100px;
+  width: auto;
   margin: 0 auto;
 }
 
@@ -112,8 +113,7 @@ export default {
   display: block;
 }
 .main_goods{
-
-  width: 70%;
+  width: auto;
   margin: 0 auto;
 }
 .pagination{

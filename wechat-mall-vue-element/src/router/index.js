@@ -73,6 +73,11 @@ export const asyncRoutes = [
         path: 'goodsEditor',
         component: () => import('@/views/goods/goodsEdit'),
         meta: { 'title': '商品编辑', icon: 'el-icon-edit-outline' }
+      },
+      {
+        path: 'goodsComment',
+        component: () => import('@/views/goods/goodsComment'),
+        meta: { 'title': '商品评价', icon: 'el-icon-edit' }
       }
     ]
   },

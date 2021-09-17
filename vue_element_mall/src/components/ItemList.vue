@@ -42,6 +42,7 @@
           fixed="right"
           label="操作"
           width="120">
+
       </el-table-column>
     </el-table>
   </div>
@@ -58,6 +59,7 @@ export default {
         goods_number:2,
         goods_state:2,
         goods_price:123,
+        opreate:1
       }, {
         list_id: 1345,
         list_add_time: '2017-05-02',

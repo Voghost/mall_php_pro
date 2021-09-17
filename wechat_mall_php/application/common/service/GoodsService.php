@@ -4,6 +4,9 @@ namespace app\common\service;
 
 use app\common\model\Goods as GoodsModel;
 use app\common\model\ImageUrl as ImageUrlModel;
+use app\common\model\OrdersGoods as OrderGoodsModel;
+use app\common\model\Comment as CommentModel;
+use app\common\model\Users as UserModel;
 use app\common\utils\ResultUtil;
 use think\Db;
 
@@ -93,7 +96,7 @@ class GoodsService
             $where[] = ["goods_name", "like", "%" . $query["goodsName"] . "%"];
         }
         if (array_key_exists("goodsIntroduce", $query)) {
-            $where[] = ["goods_introduce", "like", "%" . $query["goodsIntroduce"] . "%"];
+            $where[] = ["goods_introduce", "like", "%" . $query["goodsName"] . "%"];
         }
 
         if (array_key_exists("goodsCatThreeId", $query)) {
@@ -114,6 +117,22 @@ class GoodsService
         }
 
         return ["page" => $page, "total" => $count, "content" => $res];
+    }
+
+    public function getCommentWithOrder($data)
+    {
+        $index = $data;
+        $temp = OrderGoodsModel::where("order_goods_id",$index["goods_id"])->column("order_id");
+        $where[] = ["order_id","in",$temp];
+        $list = CommentModel::where($where)->select();
+        for($i = 0;$i < count($list);$i++)
+        {
+            $temp = OrderGoodsModel::where("order_id",$list[$i]["order_id"])->find();
+            $tmp = UserModel::where("user_id",$list[$i]["user_id"])->find();
+            $list[$i]["order"] = $temp;
+            $list[$i]["user_name"] = $tmp["user_name"];
+        }
+        return $list;
     }
 
 }

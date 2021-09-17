@@ -1,13 +1,13 @@
 <template>
 <div>
-  <el-container>
+  <el-container  direction="vertical">
 
     <MallHeader/>
 
     <!--功能区-->
-    <el-header class="" style="height: 180px; width: 100%">
+
       <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
-    </el-header>
+
 
     <el-main>
       <GoodsDetails/>

@@ -86,6 +86,14 @@ export default {
     return request({
       url: `/admin/spec/deleteSpecValue?id=${id}`,
       method: 'get'
+      url: `/admin/goods/deletePic?id=${picId}`
+    })
+  },
+  getCommentWithOrder(data) {
+    return request({
+      url: '/admin/goods/getCommentWithOrder',
+      method: 'post',
+      data: data
     })
   }
 }
