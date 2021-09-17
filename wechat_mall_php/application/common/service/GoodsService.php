@@ -2,6 +2,7 @@
 
 namespace app\common\service;
 
+use app\admin\controller\Goods;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\model\OrdersGoods as OrderGoodsModel;
@@ -104,6 +105,24 @@ class GoodsService
         }
 
         $res = GoodsModel::page($page, $limit)->where($where)->select();
+
+        $res = GoodsModel::where($where);
+
+        if (array_key_exists("Datevalue", $query)) {
+            $temp = $query["Datevalue"];
+//            $whereBet[] = ["goods_add_time",$temp[0],",",$temp[1]];
+            $res = $res->whereBetweenTime("goods_add_time",$temp[0],$temp[1]);
+        }
+
+        if (array_key_exists("sortColumn", $query) && array_key_exists("sortType", $query)) {
+            if ($query["sortType"] == 'ascending') {
+                $res = $res->order($query["sortColumn"], 'asc');
+            } else {
+                $res = $res->order($query["sortColumn"], 'desc');
+            }
+        }
+
+        $res = $res->page($page, $limit)->select();
         $count = GoodsModel::where($where)->count();
 
         foreach ($res as $goods) {
