@@ -2,11 +2,11 @@
   <div>
     <el-table
         :data="list_info"
-        :row-key="getRowKeys"
-        :expand-row-keys="expands"
         style="width: 100%"
         default-expand-all
         ref="multipleTable">
+<!--      :row-key="getRowKeys"-->
+<!--      :expand-row-keys="expands"-->
       <el-table-column
           type="selection"
           width="55">
@@ -52,7 +52,7 @@
             </el-table-column>
             <el-table-column align="center" label="操作" width="120">
               <template scope="scope">
-                <el-button size="small" type="danger" @click="handleUpdate(scope.row)">删除商品
+                <el-button size="small" type="danger" @click="Deletegoods(scope.row)">删除商品
                 </el-button>
               </template>
             </el-table-column>
@@ -73,7 +73,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="120">
         <template scope="scope">
-          <el-button size="small" type="success" @click="handleUpdate(scope.row)">支付
+          <el-button size="small" type="success" @click="Payment(scope.row)">支付
           </el-button>
         </template>
       </el-table-column>
@@ -96,6 +96,12 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+    Payment(row){
+      console.log(row)
+    },
+    Deletegoods(row){
+      console.log(row)
+    }
   },
   data() {
     return {

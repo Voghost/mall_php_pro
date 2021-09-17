@@ -2,10 +2,10 @@
   <div>
     <el-table
         :data="list_info.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-        :row-key="getRowKeys"
-        :expand-row-keys="expands"
         style="width: 100%"
         default-expand-all>
+<!--      :row-key="getRowKeys"-->
+<!--      :expand-row-keys="expands"-->
       <el-table-column type="expand"> //type="expand" 带下层数据的字段
         <template scope="scope">
           <el-table class="demo-table-expand"
@@ -47,9 +47,9 @@
             </el-table-column>
             <el-table-column align="center" label="操作" width="200">
               <template scope="scope">
-                <el-button size="small" type="danger" @click="handleUpdate(scope.row)">申请退款
+                <el-button size="small" type="danger" @click="RequestRefund(scope.row)">申请退款
                 </el-button>
-                <el-button size="small" type="danger" @click="handleUpdate(scope.row)">删除记录
+                <el-button size="small" type="danger" @click="DeleteRecord(scope.row)">删除记录
                 </el-button>
               </template>
               <!--            <template scope="scope">-->
@@ -87,9 +87,6 @@
 
 <script>
 export default {
-  created() {
-    this.handleUserList()
-  },
   methods: {
     handleSizeChange: function (size) {
       this.pagesize = size;
@@ -99,7 +96,12 @@ export default {
       this.currentPage = currentPage;
       console.log(this.currentPage)  //点击第几页
     },
-
+    RequestRefund(row){
+      console.log(row)
+    },
+    DeleteRecord(row){
+      console.log(row)
+    }
   },
   data() {
     return {

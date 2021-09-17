@@ -2,10 +2,10 @@
   <el-container>
   <el-table
       :data="list_info"
-      :row-key="getRowKeys"
-      :expand-row-keys="expands"
       style="width: 100%"
       default-expand-all>
+<!--    :row-key="getRowKeys"-->
+<!--    :expand-row-keys="expands"-->
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
       <template scope="scope">
         <el-table class="demo-table-expand"
@@ -47,17 +47,11 @@
           </el-table-column>
           <el-table-column align="center" label="操作" width="200">
             <template scope="scope">
-              <el-button size="small" type="success" @click="dialogVisible = true">物品物流
+              <el-button size="small" type="success" @click="logistics_info_dialog = true">物品物流
               </el-button>
-              <el-button size="small" type="danger" @click="handleUpdate(scope.row)">申请退款
+              <el-button size="small" type="danger" @click="Request_refund(scope.row)">申请退款
               </el-button>
             </template>
-
-
-            <!--            <template scope="scope">-->
-            <!--              <el-button size="small" type="success" @click="handleUpdate(scope.row)">查看物流-->
-            <!--              </el-button>-->
-            <!--            </template>-->
           </el-table-column>
         </el-table>
 
@@ -78,18 +72,26 @@
 
   </el-table>
     <el-dialog
-        title="提示"
-        :visible.sync="dialogVisible"
+        title="物流消息"
+        :visible.sync="logistics_info_dialog"
         width="30%">
+      <Logistics_info_card style="padding: 50px"></Logistics_info_card>
     </el-dialog>
   </el-container>
 </template>
 
 <script>
+import Logistics_info_card from "@/components/Logistics_info_card";
 export default {
+  components: {Logistics_info_card},
+  methods:{
+    Request_refund(row) {
+      console.log(row)
+    }
+  },
   data() {
     return {
-      dialogVisible: false,
+      logistics_info_dialog: false,
       list_info: [{
         names: 'S201841413227',
         date: '2016-05-03',

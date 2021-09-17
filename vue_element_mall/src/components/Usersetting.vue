@@ -24,8 +24,8 @@
         <el-input v-model="form.userPhone"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">修改完成</el-button>
-        <el-button @click="resetForm('form')">取消</el-button>
+        <el-button type="primary" @click="Onsubmit('form')">修改完成</el-button>
+        <el-button @click="Resetform('form')">取消</el-button>
       </el-form-item>
     </el-form>
     <div style="float: right;margin: 100px"><!--头像上传-->
@@ -47,7 +47,7 @@ export default {
   name: "Usersetting",
   components: {ImageUpload},
   data() {
-    var checkPhone = (rule, value, callback) => {
+      const  checkPhone = (rule, value, callback) => {
       const phoneReg = /^1[3-8][0-9]{9}$/
       if (!value) {
         return callback(new Error('电话号码不能为空'))
@@ -64,7 +64,7 @@ export default {
         }
       }, 100)
     }
-    var checkEmail = (rule, value, callback) => {
+    const checkEmail = (rule, value, callback) => {
       const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
       if (!value) {
         return callback(new Error('邮箱不能为空'))
@@ -96,7 +96,7 @@ export default {
         ],
       },
       methods: {
-        onSubmit(form) {
+        Onsubmit(form) {
           let vm = this;
           this.$refs[form].validate((valid) => {
             if (valid) {
@@ -104,7 +104,7 @@ export default {
             } else return false;
           });
         },
-        resetForm(form) {
+        Resetform(form) {
           this.$refs[form].resetFields();
           this.form.imageUrl = '';
         },

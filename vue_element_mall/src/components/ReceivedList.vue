@@ -1,10 +1,10 @@
 <template>
   <el-table
       :data="list_info"
-      :row-key="getRowKeys"
-      :expand-row-keys="expands"
       style="width: 100%"
       default-expand-all>
+<!--    :row-key="getRowKeys"-->
+<!--    :expand-row-keys="expands"-->
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
       <template scope="scope">
         <el-table class="demo-table-expand"
@@ -46,7 +46,7 @@
           </el-table-column>
           <el-table-column align="center" label="操作" width="120">
             <template scope="scope">
-              <el-button size="small" type="success" @click="handleUpdate(scope.row)">评价
+              <el-button size="small" type="success" @click="Appraise(scope.row)">评价
               </el-button>
             </template>
           </el-table-column>
@@ -98,6 +98,11 @@ export default {
             goods_state:"已完成"
           }]
         }],
+    }
+  },
+  methods:{
+    Appraise(row){
+      console.log(row);
     }
   }
 }
