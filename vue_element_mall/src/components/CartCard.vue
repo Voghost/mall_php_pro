@@ -14,7 +14,7 @@
         </el-row>
       </div>
       <el-row>
-        <el-col :span="24" v-for="(i,index) in items" :key="i.name">
+        <el-col :span="24" v-for="(i,index) in items" :key="i.goods_id">
           <el-card :body-style="{padding:'0px'}"  shadow="none">
             <div class="goods_check">
               <input type="checkbox"  :value="index" @click=checked() v-model="arr">
@@ -22,8 +22,8 @@
             <div class="goods_img">
 <!--              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">-->
               <el-popover placement="right-start" title="" trigger="hover">
-                <img  src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" style="width:300px;height: 300px">
-                  <img slot="reference" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+                <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
+                  <img slot="reference" :src="i.goods_big_logo" class="image">
               </el-popover>
             </div>
             <div class="goods_title">
@@ -81,16 +81,26 @@ export default {
       num:1,
       allCheck:false,
       totalPrice:0,
-      items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
+      // items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
+      items:[],
       arr: [],
       dialogVisible: false,
     };
   },
   methods: {
+    getCartInfo(){
+      this.$api.cart.allCartItem()
+      .then(res=>{
+        this.items=res.data.message;
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    },
     //修改数量
     handleChange(index) {
       this.ItemTotalMoney(index)
@@ -146,6 +156,7 @@ export default {
     },
   },
   created() {
+    this.getCartInfo()
     this.TotalMoney()
   },
   watch:{
