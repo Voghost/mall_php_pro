@@ -141,4 +141,15 @@ class Goods extends Controller
         }
         return json(['message' => 'ok', "code" => 200, "data" => null]);
     }
+
+    public function getCommentWithOrder()
+    {
+        $where = $this->request->put();
+        $temp = $this->goodsService->getCommentWithOrder($where);
+        return json([
+            "message" => "ok",
+            "code" => 200,
+            "data" => $temp
+        ]);
+    }
 }

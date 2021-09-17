@@ -38,7 +38,14 @@ export default {
   },
   deletePic(picId) {
     return request({
-      url: `/admin/goods/deletePic?id=${picId}`,
+      url: `/admin/goods/deletePic?id=${picId}`
+    })
+  },
+  getCommentWithOrder(data) {
+    return request({
+      url: '/admin/goods/getCommentWithOrder',
+      method: 'post',
+      data: data
     })
   }
 }
