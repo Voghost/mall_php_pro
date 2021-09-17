@@ -100,11 +100,12 @@ export default {
   width: 100%;
 
 }
-.main_content{
+.main_content {
 
   height: 2100px;
   width: auto;
   margin: 0 auto;
+}
 
 .main_content:before{
   content: '';

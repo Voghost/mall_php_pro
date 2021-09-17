@@ -32,7 +32,7 @@
               <p>￥{{ i.price }}</p>
             </div>
             <div class="goods_num">
-              <el-input-number v-model="i.number" @change="handleChange(index)" :min="1" :max="10" label="描述文字"></el-input-number>
+              <el-input-number v-model="i.number" @change="handleChange(index)" :min="1" :max="999" label="描述文字"></el-input-number>
             </div>
             <div class="goods_total">
               <p>￥{{ i.total }}</p>
@@ -46,9 +46,9 @@
       <div class="cart_footer" >
         <el-row>
           <el-col :span="24">
-            <span style="margin-left: 1000px;margin-top:40px;">已选商品<span style="color: red">{{this.arr.length}}</span>件</span>
-            <span style="margin-left: 20px">合计:<span style="color: red">{{this.totalPrice}}</span></span>
-            <el-button type="danger" style="margin-left: 60px">结算</el-button>
+            <span style="width: 120px;margin-left: 1000px;margin-top:10px;display: block;float:left">已选商品<span style="color: red">{{this.arr.length}}</span>件</span>
+            <span style="width: 100px;margin-left: 20px;margin-top:10px;display: block;float: left">合计:<span style="color: red;">{{this.totalPrice}}</span></span>
+            <el-button type="danger" style="margin-right: 60px;float: right">结算</el-button>
 <!--            结算按钮-->
           </el-col>
         </el-row>
@@ -68,9 +68,11 @@ export default {
       num:1,
       allCheck:false,
       totalPrice:0,
-      items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1,"number":1,"total":1,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2,"number":1,"total":2,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3,"number":1,"total":3,}],
+      items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
+        {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
+        {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
+        {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
+        {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
       arr: [],
     };
   },
@@ -151,7 +153,7 @@ export default {
 }
 .el-card{
   height: 160px;
-  width: 1360px;
+  width: 1380px;
   margin: 15px auto;
 }
 .goods_check {
@@ -216,7 +218,8 @@ export default {
 }
 .goods_num{
   height: 120px;
-  width: 120px;
+  width: 125px;
+
 
   float: left;
   margin-top: 20px;
@@ -225,6 +228,7 @@ export default {
 .el-input-number{
   width: 120px;
   size: auto;
+
 }
 .goods_total{
   height: 120px;
@@ -252,6 +256,7 @@ export default {
 }
 .cart_footer{
   height: 50px;
+
 
 }
 

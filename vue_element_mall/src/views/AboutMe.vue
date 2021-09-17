@@ -2,14 +2,14 @@
   <div>
     <LoginHeader></LoginHeader>
     <ThingTittle style="box-shadow: rgba(0,0,0,0.3) 0 0 3px"></ThingTittle>
-    <el-container style="width: 1200px;min-height:700px;margin:0 auto">
+    <el-container style="width: 1380px;min-height:700px;margin:0 auto">
       <el-main class="main_box">
         <el-tabs :tab-position="tabPosition1" style="margin: 10px;">
           <el-tab-pane label="账号资料">
             <UserData></UserData>
           </el-tab-pane>
           <el-tab-pane label="购物车">
-
+            <CartCard></CartCard>
           </el-tab-pane>
           <el-tab-pane label="全部订单">
             <ItemOrder></ItemOrder>
@@ -39,6 +39,7 @@ import ThingTittle from "../components/ThingTittle";
 import UserData from "@/components/UserData";
 import ItemOrder from "../components/ItemOrder";
 import Usersetting from "@/components/Usersetting";
+import CartCard from "../components/CartCard";
 
 export default {
   name: "AboutMe",
@@ -55,6 +56,7 @@ export default {
     LoginHeader,
     MallFooter,
     Usersetting,
+    CartCard,
   }
 
 
