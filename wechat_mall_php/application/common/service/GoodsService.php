@@ -103,10 +103,9 @@ class GoodsService
 
         $res = GoodsModel::where($where);
 
+        $temp = null;
         if (array_key_exists("Datevalue", $query)) {
             $temp = $query["Datevalue"];
-//            $whereBet[] = ["goods_add_time",$temp[0],",",$temp[1]];
-            $res = $res->whereBetweenTime("goods_add_time",$temp[0],$temp[1]);
         }
 
         if (array_key_exists("sortColumn", $query) && array_key_exists("sortType", $query)) {
@@ -117,8 +116,13 @@ class GoodsService
             }
         }
 
-        $res = $res->page($page, $limit)->select();
-        $count = GoodsModel::where($where)->count();
+        if($temp != null){
+            $count = $res->whereBetweenTime("goods_add_time",$temp[0],$temp[1])->count();
+            $res = $res->page($page, $limit)->whereBetweenTime("goods_add_time",$temp[0],$temp[1])->select();
+        } else {
+            $res = $res->page($page, $limit)->select();
+            $count = GoodsModel::where($where)->count();
+        }
 
         foreach ($res as $goods) {
             $imageUrlModel = new ImageUrlModel();
