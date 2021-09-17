@@ -7,6 +7,18 @@ use app\common\utils\JwtUtil;
 
 class UserService
 {
+
+    public function login($username, $password)
+    {
+        $passwordMd5 = md5($password);
+        $usersModel = new UsersModel();
+        $collection = $usersModel->where(["user_name" => $username, "user_password" => md5($passwordMd5)])->select();
+        if (count($collection) < 1) {
+            return false;
+        }
+    }
+
+
     /**
      * @param $code
      * @return \think\response\Json
