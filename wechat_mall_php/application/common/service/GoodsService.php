@@ -100,6 +100,11 @@ class GoodsService
             $where[] = ["goods_introduce", "like", "%" . $query["goodsName"] . "%"];
         }
 
+        if (array_key_exists("goodsCatThreeId", $query)) {
+            $where[] = ["goods_cat_three_id", "=", $query["goodsCatThreeId"]];
+        }
+
+        $res = GoodsModel::page($page, $limit)->where($where)->select();
 
         $res = GoodsModel::where($where);
 

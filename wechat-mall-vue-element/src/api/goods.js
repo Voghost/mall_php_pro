@@ -41,6 +41,53 @@ export default {
       url: `/admin/goods/deletePic?id=${picId}`
     })
   },
+  getAllSpecKey() {
+    return request({
+      url: `/admin/spec/allKey`
+    })
+  },
+  getSpecKeyByIds(ids) {
+    return request({
+      url: `/admin/spec/getSpecKeyByIds`,
+      method: 'post',
+      data: { 'ids': ids }
+    })
+  },
+  getSpecTree() {
+    return request({
+      url: `/admin/spec/specTree`,
+      method: 'get'
+    })
+  },
+  addSpecKey(specName) {
+    return request({
+      url: `/admin/spec/addSpecKey`,
+      method: 'post',
+      data: { 'spec_name': specName }
+    })
+  },
+  addSpecValue(specVal, specKid) {
+    return request({
+      url: `/admin/spec/addSpecValue`,
+      method: 'post',
+      data: {
+        'specValName': specVal,
+        'specKid': specKid
+      }
+    })
+  },
+  removeSpecKey(id) {
+    return request({
+      url: `/admin/spec/deleteSpecKey?id=${id}`,
+      method: 'get'
+    })
+  },
+  removeSpecValue(id) {
+    return request({
+      url: `/admin/spec/deleteSpecValue?id=${id}`,
+      method: 'get'
+    })
+  },
   getCommentWithOrder(data) {
     return request({
       url: '/admin/goods/getCommentWithOrder',

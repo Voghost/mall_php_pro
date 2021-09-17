@@ -14,13 +14,17 @@
         </el-row>
       </div>
       <el-row>
-        <el-col :span="24" v-for="(i,index) in items" :key="i.name">
+        <el-col :span="24" v-for="(i,index) in items" :key="i.goods_id">
           <el-card :body-style="{padding:'0px'}"  shadow="none">
             <div class="goods_check">
               <input type="checkbox"  :value="index" @click=checked() v-model="arr">
             </div>
             <div class="goods_img">
-              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+<!--              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">-->
+              <el-popover placement="right-start" title="" trigger="hover">
+                <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
+                  <img slot="reference" :src="i.goods_big_logo" class="image">
+              </el-popover>
             </div>
             <div class="goods_title">
               <span><a href="#" style="text-decoration: none;color: black" target="_blank">{{i.name}}</a></span>
@@ -38,7 +42,7 @@
               <p>￥{{ i.total }}</p>
             </div>
             <div class="operation">
-              <p><a href="#" style="text-decoration: none;color: black; margin: 0 auto" >删除</a></p>
+              <p><a href="#" style="text-decoration: none;color: black; margin: 0 auto" @click="dialogVisible = true">删除</a></p>
             </div>
           </el-card>
         </el-col>
@@ -54,7 +58,16 @@
         </el-row>
       </div>
     </div>
-
+    <el-dialog
+        title="删除宝贝"
+        :visible.sync="dialogVisible"
+        width="30%">
+      <span>哥哥，真的要删除宝贝吗</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="handleDel()">确 定</el-button>
+  </span>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -68,19 +81,37 @@ export default {
       num:1,
       allCheck:false,
       totalPrice:0,
-      items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
-        {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
+      // items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
+      //   {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
+      items:[],
       arr: [],
+      dialogVisible: false,
     };
   },
   methods: {
+    getCartInfo(){
+      this.$api.cart.allCartItem()
+      .then(res=>{
+        this.items=res.data.message;
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    },
+    //修改数量
     handleChange(index) {
       this.ItemTotalMoney(index)
       this.TotalMoney()
     },
+    //删除
+    handleDel() {
+      console.log("点击了删除");
+    this.dialogVisible=false;
+    },
+    //单选
     checked() {
       if(this.items.length>this.arr.length)
       {
@@ -92,6 +123,7 @@ export default {
       }
       this.TotalMoney()
     },
+    //全选
     allChecked() {
       //不为空
       if (event.target.checked) {
@@ -106,11 +138,13 @@ export default {
       }
       this.TotalMoney()
     },
+    //单个商品总价
     ItemTotalMoney(index){
       let price=0;
       price=this.items[index].price*this.items[index].number
       this.items[index].total=price
     },
+    //全部商品总价
     TotalMoney() {
       let allprice = 0
       for (let index = 0; index < this.arr.length; index++) {
@@ -122,6 +156,7 @@ export default {
     },
   },
   created() {
+    this.getCartInfo()
     this.TotalMoney()
   },
   watch:{
@@ -165,16 +200,16 @@ export default {
 .goods_check input{
   margin-left: 10px;
 }
-.goods_img img{
+.goods_img{
   height: 120px;
   width: 200px;
-
   margin-left: 50px;
   margin-top: 20px;
   float: left;
 }
 .image {
-  width: 100%;
+  height: 120px;
+  width: 200px;
   display: block;
 }
 .goods_title{
@@ -219,8 +254,6 @@ export default {
 .goods_num{
   height: 120px;
   width: 125px;
-
-
   float: left;
   margin-top: 20px;
   margin-left: 30px;

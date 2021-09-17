@@ -47,7 +47,14 @@ Route::get('hello/:name', 'index/hello');
     'user/logout' => 'admin/my_user/logout',
     'comment/page' => 'admin/comment/page',
     'comment/getGoodsAndOrder' => 'admin/comment/getGoodsAndOrder',
-    'comment/updateCommentStatus' => 'admin/comment/updateCommentStatus'
+    'comment/updateCommentStatus' => 'admin/comment/updateCommentStatus',
+    'spec/allKey' => 'admin/spec/allKey',
+    'spec/getSpecKeyByIds' => 'admin/spec/getSpecKeyByIds',
+    'spec/specTree' => 'admin/spec/specTree',
+    'spec/addSpecKey' => 'admin/spec/addSpecKey',
+    'spec/addSpecValue' => 'admin/spec/addSpecValue',
+    'spec/deleteSpecKey' => 'admin/spec/deleteSpecKey',
+    'spec/deleteSpecValue' => 'admin/spec/deleteSpecValue',
 ])
     ->allowCrossDomain()
     ->middleware('VerifyMyUser')
