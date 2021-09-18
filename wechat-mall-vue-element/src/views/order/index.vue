@@ -26,7 +26,7 @@
       border
       style="width: 100%"
       @sort-change="handleSortChange"
-      :default-sort="{prop: 'order_id', order: 'descending'}"
+      :default-sort="{prop: 'order_id', order: 'ascending'}"
     >
       <el-table-column type="index" label="序号" width="51"/>
       <el-table-column prop="order_id" label="订单id" width="51" sortable></el-table-column>

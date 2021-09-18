@@ -18,6 +18,12 @@ export default {
     },
     allComment(){
         return axios.post(`${BASE_URL}/comment/commentList`);
+    },
+    loginAuth(param) {
+        return axios.post(`${BASE_URL}/user/loginAuthen`,param);
+    },
+    registerAuth(param) {
+        return axios.post(`${BASE_URL}/user/registerAuthen`,param);
     }
 }
 

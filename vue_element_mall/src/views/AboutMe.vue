@@ -40,7 +40,7 @@ import UserData from "@/components/UserData";
 import ItemOrder from "../components/ItemOrder";
 import Usersetting from "@/components/Usersetting";
 import CartCard from "../components/CartCard";
-import UserAddress from "@/components/UserAddress";
+// import UserAddress from "@/components/UserAddress";
 
 export default {
   name: "AboutMe",
@@ -51,7 +51,7 @@ export default {
     };
   },
   components: {
-    UserAddress,
+    //UserAddress,
     ItemOrder,
     UserData,
     ThingTittle,
