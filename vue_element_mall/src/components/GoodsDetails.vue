@@ -3,35 +3,35 @@
     <!--购物信息-->
     <el-row justify="center" type="flex" style="width: 100%;">
      <!--左侧图片-->
-      <el-col :span="10" >
-        <el-carousel  style=" float: right;width: 500px;height: 400px;margin-top: 30px;" indicator-position="outside">
-          <el-carousel-item v-for="item in goods.pic" :key="item">
+      <el-col :span="10">
+        <el-carousel  height="420px" style=" width: 100%;margin-top: 30px;" indicator-position="outside" >
+          <el-carousel-item v-for="item in goods.pic" :key="item" >
               <el-image :src="item" :preview-src-list="goods.pic"  :title="ClickTips"  style="width: 100%; height: 100%;" :fit="'fill'" >
               </el-image>
           </el-carousel-item>
         </el-carousel>
       </el-col>
      <!--右侧信息-->
-      <el-col :span="12" style="font-size: 14px;margin-left: 30px;">
-        <div style="margin-left: 30px">
-          <div style="height: 40px;margin-top: 30px;font-size: 20px;">
-<!--            小米米家电动滑板车Pro 45公里续航成人学生迷你便携锂电池可折叠双轮休闲踏板平衡车体感车-->
+      <el-col :span="12" style="font-size: 14px;margin-left: 60px;margin-top: 30px">
+        <div >
+          <div style="height: 100%;font-size: 20px;">
             {{goods.goods_name}}
           </div>
-          <div style="height: 40px;margin-left: 20px;margin-top: 20px;">
-            价格：<span style="font-size: 30px;color: #00A0E9">￥{{goods.goods_price}}</span>
-          </div>
-
-
-            <div style="width: 100%;height: 100%;margin-left: 20px">
-<!--              <el-button type="text" @click="dialogVisible = true">选择款式：</el-button>-->
+          <div style="margin-left: 20px">
+            <div style="margin-top: 20px;">
+              价格：<span style="font-size: 30px;color: #00A0E9">￥{{goods.goods_price}}</span>
+            </div>
+            <!--调用规格-->
+            <div>
               <GoodsAttribute></GoodsAttribute>
             </div>
-          <div style="height: 40px;line-height: 40px;margin-left: 20px;">
-            <span>评论：1000+</span>
-            <span style="margin-left: 40px">收藏：1000+</span>
+<!--            <div style="height: 40px;line-height: 40px;">-->
+<!--              <span>评论：1000+</span>-->
+<!--              <span style="margin-left: 40px">收藏：1000+</span>-->
+<!--            </div>-->
           </div>
-          <div style="height: 60px;line-height: 60px;">
+
+          <div style="margin-top: 20px;">
             购买数量：<el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="购买数量"></el-input-number>
           </div>
 
