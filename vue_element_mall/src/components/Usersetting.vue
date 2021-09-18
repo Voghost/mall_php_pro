@@ -29,7 +29,7 @@
       </el-form-item>
     </el-form>
     <div style="float: right;margin: 100px"><!--头像上传-->
-      头像上传:
+      <el-tag>头像上传：</el-tag>
       <ImageUpload></ImageUpload>
     </div>
   </div>

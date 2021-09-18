@@ -3,8 +3,6 @@
       :data="list_info"
       style="width: 100%"
       default-expand-all>
-<!--    :row-key="getRowKeys"-->
-<!--    :expand-row-keys="expands"-->
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
       <template scope="scope">
         <el-table class="demo-table-expand"
@@ -49,13 +47,11 @@
               width="100"
               label="原因">
           </el-table-column>
-          <el-table-column align="center" label="操作" width="200">
-            <el-table-column align="center" label="操作" width="120">
-              <template scope="scope">
-                <el-button size="small" type="success" @click="Traces(scope.row)">与客服沟通
-                </el-button>
-              </template>
-            </el-table-column>
+          <el-table-column align="center" label="操作" width="120">
+            <template scope="scope">
+              <el-button size="small" type="success" @click="Traces(scope.row)">与客服沟通
+              </el-button>
+            </template>
           </el-table-column>
         </el-table>
       </template>
@@ -68,17 +64,13 @@
                      label="下单时间"
                      prop="date">
     </el-table-column>
-    <el-table-column align="center"
-                     label="订单支付"
-                     prop="all_prices">
-    </el-table-column>
   </el-table>
 </template>
 
 <script>
 export default {
-  methods:{
-    Traces(row){
+  methods: {
+    Traces(row) {
       console.log(row)
     }
   },
@@ -96,7 +88,7 @@ export default {
           goods_number: 2,
           goods_prices: 2 * 123,
           goods_state: "退款失败",
-          feedback:"申请过长",
+          feedback: "申请过长",
         }]
       },
         {
@@ -110,7 +102,7 @@ export default {
             goods_number: 2,
             goods_prices: 2 * 123,
             goods_state: "退款失败",
-            feedback:"申请过长",
+            feedback: "申请过长",
           }]
         }],
     }

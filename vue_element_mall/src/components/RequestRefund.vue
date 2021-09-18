@@ -55,10 +55,6 @@
                      label="下单时间"
                      prop="date">
     </el-table-column>
-    <el-table-column align="center"
-                     label="订单支付"
-                     prop="all_prices">
-    </el-table-column>
   </el-table>
 </template>
 

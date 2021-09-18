@@ -45,17 +45,11 @@
                 width="100"
                 label="状态">
             </el-table-column>
-            <el-table-column align="center" label="操作" width="200">
+            <el-table-column align="center" label="操作" width="150">
               <template scope="scope">
                 <el-button size="small" type="danger" @click="RequestRefund(scope.row)">申请退款
                 </el-button>
-                <el-button size="small" type="danger" @click="DeleteRecord(scope.row)">删除记录
-                </el-button>
               </template>
-              <!--            <template scope="scope">-->
-              <!--              <el-button size="small" type="success" @click="handleUpdate(scope.row)">查看物流-->
-              <!--              </el-button>-->
-              <!--            </template>-->
             </el-table-column>
           </el-table>
         </template>
@@ -67,10 +61,6 @@
       <el-table-column align="center"
                        label="下单时间"
                        prop="date">
-      </el-table-column>
-      <el-table-column align="center"
-                       label="订单支付"
-                       prop="all_prices">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -99,9 +89,6 @@ export default {
     RequestRefund(row){
       console.log(row)
     },
-    DeleteRecord(row){
-      console.log(row)
-    }
   },
   data() {
     return {
