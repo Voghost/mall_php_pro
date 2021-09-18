@@ -21,6 +21,11 @@ class Order extends Controller
 
         $res = OrderModel::where($where);
 //        return json($query);
+        $temp = null;
+        if (array_key_exists("Datevalue", $query)) {
+            $temp = $query["Datevalue"];
+        }
+
         if (array_key_exists("sortColumn", $query) && array_key_exists("sortType", $query)) {
             if ($query["sortType"] == 'ascending') {
                 $res->order($query["sortColumn"], 'asc');
@@ -28,8 +33,14 @@ class Order extends Controller
                 $res->order($query["sortColumn"], 'desc');
             }
         }
-        $res = $res->page($page, $limit)->select();
-        $count = OrderModel::where($where)->count();
+
+        if($temp != null){
+            $count = $res->whereBetweenTime("order_create_time",$temp[0],$temp[1])->count();
+            $res = $res->page($page, $limit)->whereBetweenTime("order_create_time",$temp[0],$temp[1])->select();
+        } else {
+            $res = $res->page($page, $limit)->select();
+            $count = OrderModel::where($where)->count();
+        }
 
         return json(
             ["message" => "ok",

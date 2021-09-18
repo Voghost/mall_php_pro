@@ -9,6 +9,8 @@ use think\App;
 use think\Controller;
 use app\common\model\Users as UsersModel;
 use app\common\model\Cart as CartModel;
+use think\Db;
+
 class Cart extends Controller
 {
     private $CartService;
@@ -28,10 +30,10 @@ class Cart extends Controller
         //测试用
         return $this->CartService->allCartItem();
     }
-    public function changeTotal($id,$total){
+    public function changeNumber($id,$number){
         if ($id != null && $id != '') {
             $cart=new CartModel();
-            $cart->where(['id'=>$id])->update(['total'=>$total]);
+            $cart->where(['id'=>$id])->update(['number'=>$number]);
         }
         return ResultUtil::OK("修改成功");
     }
@@ -39,6 +41,7 @@ class Cart extends Controller
         if ($id != null && $id != '') {
             $cart =new CartModel();
             $cart->where(['id'=>$id])->delete();
+
         }
         return ResultUtil::OK("删除成功");
     }

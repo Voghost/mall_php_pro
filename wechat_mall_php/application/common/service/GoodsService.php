@@ -2,6 +2,7 @@
 
 namespace app\common\service;
 
+use app\admin\controller\Goods;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\model\OrdersGoods as OrderGoodsModel;
@@ -99,8 +100,34 @@ class GoodsService
             $where[] = ["goods_introduce", "like", "%" . $query["goodsName"] . "%"];
         }
 
+        if (array_key_exists("goodsCatThreeId", $query)) {
+            $where[] = ["goods_cat_three_id", "=", $query["goodsCatThreeId"]];
+        }
+
         $res = GoodsModel::page($page, $limit)->where($where)->select();
-        $count = GoodsModel::where($where)->count();
+
+        $res = GoodsModel::where($where);
+
+        $temp = null;
+        if (array_key_exists("Datevalue", $query)) {
+            $temp = $query["Datevalue"];
+        }
+
+        if (array_key_exists("sortColumn", $query) && array_key_exists("sortType", $query)) {
+            if ($query["sortType"] == 'ascending') {
+                $res = $res->order($query["sortColumn"], 'asc');
+            } else {
+                $res = $res->order($query["sortColumn"], 'desc');
+            }
+        }
+
+        if($temp != null){
+            $count = $res->whereBetweenTime("goods_add_time",$temp[0],$temp[1])->count();
+            $res = $res->page($page, $limit)->whereBetweenTime("goods_add_time",$temp[0],$temp[1])->select();
+        } else {
+            $res = $res->page($page, $limit)->select();
+            $count = GoodsModel::where($where)->count();
+        }
 
         foreach ($res as $goods) {
             $imageUrlModel = new ImageUrlModel();
