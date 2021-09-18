@@ -1,5 +1,6 @@
 <template>
   <el-container>
+
     <div class="cart_item">
       <div class="cart_nav">
         <el-row>
@@ -20,14 +21,15 @@
               <input type="checkbox"  :value="index" @click=checked() v-model="arr">
             </div>
             <div class="goods_img">
-
+              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}">
               <el-popover placement="right-start" title="" trigger="hover">
-                <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
-                  <img slot="reference" :src="i.goods_big_logo" class="image">
+                  <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
+                <img slot="reference" :src="i.goods_big_logo" class="image">
               </el-popover>
+              </router-link>
             </div>
             <div class="goods_title">
-              <span><a href="#" style="text-decoration: none;color: black" target="_blank">{{i.goods_name}}</a></span>
+              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}"><p>{{i.goods_name}}</p></router-link>
             </div>
             <div class="goods_introduce">
 
@@ -72,14 +74,10 @@ export default {
       num:1,
       allCheck:false,
       totalPrice:0,
-      // items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
       items:[],
       arr: [],
-      cart_id:[]
+      cart_id:[],
+
     };
   },
   methods: {
@@ -106,6 +104,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$api.cart.deleteCartItem(id)
+        this.getCartInfo()
         this.$message({
           type: 'success',
           message: '删除成功!',
@@ -185,7 +184,9 @@ export default {
           //this.getCartId()
         }
       }
-    }
+    },
+
+
   }
 }
 </script>
@@ -233,10 +234,12 @@ export default {
 .goods_title{
   height: 120px;
   width: 280px;
-
   float: left;
   margin-top: 20px;
   margin-left: 10px;
+}
+.goods_title p{
+  color: #000000;
 }
 .goods_introduce{
   height: 120px;
@@ -255,9 +258,7 @@ export default {
   margin-left: 10px;
 }
 .goods_price p{
-
   display: block;
-
   font-size: 20px;
   font-family: "Microsoft YaHei";
 }

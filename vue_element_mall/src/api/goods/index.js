@@ -8,12 +8,13 @@ export default {
     pageSearch($page, $limit, $query) {
         return axios.post(
             `${BASE_URL}/goods/pageSearch?page=${$page}&limit=${$limit}`,
-            {params: $query}
+            $query
         )
     },
     detail(id) {
         return axios.post(`${BASE_URL}/goods/goodsDetail?id=${id}`)
     },
+
 
 }
 

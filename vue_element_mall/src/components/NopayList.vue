@@ -98,9 +98,6 @@ export default {
     Payment(row){
       console.log(row)
     },
-    Deletegoods(row){
-      console.log(row)
-    },
   },
   data() {
     return {

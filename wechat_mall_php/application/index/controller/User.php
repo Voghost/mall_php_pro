@@ -98,7 +98,11 @@ class User extends Controller
             }
         }else{
 
-            echo $content;
         }
+
+
+//        $this->userService->login();
+
+        echo $content;
     }
 }

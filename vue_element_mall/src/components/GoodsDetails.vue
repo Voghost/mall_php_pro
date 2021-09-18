@@ -3,40 +3,35 @@
     <!--购物信息-->
     <el-row justify="center" type="flex" style="width: 100%;">
      <!--左侧图片-->
-      <el-col :span="10" >
-        <el-carousel  style=" float: right;width: 500px;height: 400px;margin-top: 30px;" indicator-position="outside">
-          <el-carousel-item v-for="item in goods.pic" :key="item">
+      <el-col :span="10">
+        <el-carousel  height="420px" style=" width: 100%;margin-top: 30px;" indicator-position="outside" >
+          <el-carousel-item v-for="item in goods.pic" :key="item" >
               <el-image :src="item" :preview-src-list="goods.pic"  :title="ClickTips"  style="width: 100%; height: 100%;" :fit="'fill'" >
               </el-image>
           </el-carousel-item>
         </el-carousel>
       </el-col>
      <!--右侧信息-->
-      <el-col :span="12" style="font-size: 14px;margin-left: 30px;">
-        <div style="margin-left: 30px">
-          <div style="height: 40px;margin-top: 30px;font-size: 20px;">
-<!--            小米米家电动滑板车Pro 45公里续航成人学生迷你便携锂电池可折叠双轮休闲踏板平衡车体感车-->
+      <el-col :span="12" style="font-size: 14px;margin-left: 60px;margin-top: 30px">
+        <div >
+          <div style="height: 100%;font-size: 20px;">
             {{goods.goods_name}}
           </div>
-          <div style="height: 40px;margin-left: 20px;margin-top: 20px;">
-            价格：<span style="font-size: 30px;color: #00A0E9">￥{{goods.goods_price}}</span>
-          </div>
-
-
-            <div style="width: 100%;height: 100%;margin-left: 20px">
-              选择款式：
-              <el-radio-group v-model="style" >
-                <el-radio :label="1" border>指纹识别</el-radio>
-                <el-radio :label="2" border>指纹识别</el-radio>
-                <el-radio :label="3" border>指纹识别</el-radio>
-                <el-radio :label="4" border>指纹识别</el-radio>
-              </el-radio-group>
+          <div style="margin-left: 20px">
+            <div style="margin-top: 20px;">
+              价格：<span style="font-size: 30px;color: #00A0E9">￥{{goods.goods_price}}</span>
             </div>
-          <div style="height: 40px;line-height: 40px;margin-left: 20px;">
-            <span>评论：1000+</span>
-            <span style="margin-left: 40px">收藏：1000+</span>
+            <!--调用规格-->
+            <div>
+              <GoodsAttribute></GoodsAttribute>
+            </div>
+<!--            <div style="height: 40px;line-height: 40px;">-->
+<!--              <span>评论：1000+</span>-->
+<!--              <span style="margin-left: 40px">收藏：1000+</span>-->
+<!--            </div>-->
           </div>
-          <div style="height: 60px;line-height: 60px;">
+
+          <div style="margin-top: 20px;">
             购买数量：<el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="购买数量"></el-input-number>
           </div>
 
@@ -110,7 +105,8 @@
             <el-tab-pane label="全部评价" name="first">
               <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)" v-for="item in comment" :key="item.user_id">
                 <el-row >
-                  <el-col :span="5" >{{item.user_id}}</el-col>
+<!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
+                  <el-col :span="5" >{{item.user_name}}</el-col>
                   <el-col :span="7" >
                     <el-rate v-model="item.star"
                              disabled
@@ -125,21 +121,21 @@
                   <el-col :span="10" :offset="5">
                     <div style="width: 100%;">{{item.content}}</div>
                       <el-row>
-                        <el-col :span="3" v-for="pics in comment" :key="pics.user_id" >
-<!--                          <el-image :src="item" style="width: 50px;height: 50px;" :preview-src-list="goods.pic"  :title="ClickTips"   :fit="'contain'" >-->
-<!--                          </el-image>-->
-                          <el-image :src="pics.pic_one" style="width: 50px;height: 50px;" :preview-src-list="pics.pic_one"  :title="ClickTips"   :fit="'contain'" >
+                        <el-col :span="3" v-for="(pic,index) in item.pics" :key="index" >
+                          <el-image :src="pic.url" style="width: 50px;height: 50px;"  :title="ClickTips"   :fit="'contain'" >
                           </el-image>
                         </el-col>
                       </el-row>
                   </el-col>
                 </el-row>
               </div>
-              <el-pagination layout="prev, pager, next"
-                             :total="50"
-                             background
-                             :page-size="2"
-                             style="text-align: center"
+              <el-pagination
+                  background
+                  @current-change="changePage"
+                  :page-size="size"
+                  layout="prev, pager, next"
+                  :total="totalNum"
+                  style="text-align: center"
               >
               </el-pagination>
             </el-tab-pane>
@@ -153,8 +149,10 @@
 </template>
 
 <script>
+import GoodsAttribute from "@/components/GoodsAttribute";
 export default {
   name: "GoodsDetails",
+  components: {GoodsAttribute},
   data() {
     return {
       goods :{},
@@ -169,8 +167,16 @@ export default {
         star:null,
       },
       ClickTips : "点击查看大图",
+      dialogVisible: false,
+      username : "傻逼",
+
+      size:3,
+      currentPage:1,
+      row_index:0,
+      totalNum:0
     }
   },
+
   methods: {
     handleChange(value){
       console.log(value);
@@ -183,14 +189,32 @@ export default {
         console.log(err);
       })
     },
-    getCommentInfo(){
-      this.$api.user.allComment().then(res => {
-        this.comment = res.data.message
-        console.log(this.comment);
+    getUserName(id) {
+      this.$api.user.getUserName(id).then(res=>{
+        this.username = res.data.message;
+      }).catch(err=> {
+        console.log(err);
+      })
+    },
+    getComment(page=1){
+      this.currentPage = page
+      this.$api.user.pageSearch(this.currentPage,this.size)
+          .then(res=> {
+            this.comment = res.data.message.content;
+            this.totalNum = res.data.message.total;
+            this.row_index=this.comment.length;
+            if(this.comment.length%this.row_index){
+              this.row_index++;
+            }
+            console.log(this.comment)
           })
           .catch(err => {
             console.log(err)
           })
+    },
+    changePage(page){
+      this.getComment(page)
+      document.documentElement.scrollTop=680;
     },
     handlePicSuccess(file){
       console.log(file)
@@ -220,13 +244,16 @@ export default {
     //购买
     GoodsBuy(){
       console.log('buy')
-    }
+    },
   },
+  props:[
+    'goods_id',
+  ],
   mounted() {
-    this.getGoodsInfo(130);
-    this.getCommentInfo();
-  }
-
+    console.log(this.goods_id);
+    this.getGoodsInfo(this.goods_id);
+    this.getComment();
+  },
 }
 </script>
 

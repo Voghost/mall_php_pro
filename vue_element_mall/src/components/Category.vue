@@ -11,7 +11,11 @@
         <el-submenu v-for="level2 in level1.children" :index="level2.cat_id.toString()" :key="level2.cat_id">
           <span slot="title">{{ level2.cat_name }}</span>
           <el-menu-item v-for="level3 in level2.children" :index="level3.cat_id.toString()" :key="level3.cat_id">
-            {{ level3.cat_name }}
+            <router-link :to="{
+            path:'/allgoods',
+            query:{
+              cat_id:level3.cat_id,
+            }}">{{ level3.cat_name }}</router-link>
           </el-menu-item>
         </el-submenu>
       </el-menu-item-group>

@@ -9,8 +9,8 @@
         <template slot="title">商品分类</template>
         <Category/>
       </el-submenu>
-      <el-menu-item index="2" id="1"><a href="http://localhost:8082/" target="_parent">商城首页</a></el-menu-item>
-      <el-menu-item index="3" id="1"><a href="http://localhost:8082/allgoods" target="_parent">全部商品</a></el-menu-item>
+      <el-menu-item index="2" id="1"><router-link to="/" active-class="active">商城首页</router-link></el-menu-item>
+      <el-menu-item index="3" id="1"><router-link to="/allgoods" active-class="active"> 全部商品</router-link></el-menu-item>
     </el-menu>
 </template>
 <script>
