@@ -171,6 +171,7 @@ export default {
       ClickTips : "点击查看大图",
     }
   },
+
   methods: {
     handleChange(value){
       console.log(value);
@@ -220,13 +221,15 @@ export default {
     //购买
     GoodsBuy(){
       console.log('buy')
-    }
+    },
   },
+  props:[
+    'goods_id',
+  ],
   mounted() {
-    this.getGoodsInfo(130);
+    this.getGoodsInfo(this.goods_id);
     this.getCommentInfo();
-  }
-
+  },
 }
 </script>
 

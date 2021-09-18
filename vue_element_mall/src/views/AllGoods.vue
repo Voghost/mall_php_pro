@@ -15,7 +15,10 @@
       :key="i" style="min-width: 1000px" >
         <el-col v-for="j of col_index"
         :key="j" :span="6" style="min-width: 240px">
-          <GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
+       <router-link :to="{path:'/goodsDetail',
+       query:{
+         goods_id:goods[((i-1)*4)+(j-1)].goods_id,
+       }}"><GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard></router-link>
         </el-col>
       </el-row>
       </div>
@@ -111,7 +114,7 @@ export default {
 }
 .main_content {
 
-  height: 2100px;
+  height: auto;
   width: auto;
   margin: 0 auto;
 }

@@ -10,7 +10,7 @@
 
 
     <el-main>
-      <GoodsDetails/>
+      <GoodsDetails :goods_id="goods_id" />
     </el-main>
 
     <MallFooter/>
@@ -31,7 +31,14 @@ export default {
     MallFooter,
     MallHeader,
     SearchHeader
-  }
+  },
+  data()
+  {
+    return{
+      goods_id:this.$route.query.goods_id,
+    }
+  },
+
 }
 </script>
 
