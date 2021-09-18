@@ -1,10 +1,10 @@
 <template>
   <el-table
       :data="list_info"
-      :row-key="getRowKeys"
-      :expand-row-keys="expands"
       style="width: 100%"
       default-expand-all>
+<!--    :row-key="getRowKeys"-->
+<!--    :expand-row-keys="expands"-->
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
       <template scope="scope">
         <el-table class="demo-table-expand"
@@ -54,10 +54,6 @@
     <el-table-column align="center"
                      label="下单时间"
                      prop="date">
-    </el-table-column>
-    <el-table-column align="center"
-                     label="订单支付"
-                     prop="all_prices">
     </el-table-column>
   </el-table>
 </template>

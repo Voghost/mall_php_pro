@@ -17,10 +17,10 @@
           <el-tab-pane label="账户信息修改">
             <el-tabs :tab-position="tabPosition2">
               <el-tab-pane label="基本信息修改">
-               <Usersetting></Usersetting>
+                <Usersetting></Usersetting>
               </el-tab-pane>
               <el-tab-pane label="快递地址修改">
-
+                <UserAddress></UserAddress>
               </el-tab-pane>
             </el-tabs>
           </el-tab-pane>
@@ -40,6 +40,7 @@ import UserData from "@/components/UserData";
 import ItemOrder from "../components/ItemOrder";
 import Usersetting from "@/components/Usersetting";
 import CartCard from "../components/CartCard";
+import UserAddress from "@/components/UserAddress";
 
 export default {
   name: "AboutMe",
@@ -50,6 +51,7 @@ export default {
     };
   },
   components: {
+    UserAddress,
     ItemOrder,
     UserData,
     ThingTittle,
