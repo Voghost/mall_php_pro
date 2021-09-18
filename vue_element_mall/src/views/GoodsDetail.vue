@@ -35,9 +35,19 @@ export default {
   data()
   {
     return{
-      goods_id:this.$route.query.goods_id,
+      goods_id:0,
     }
   },
+ created() {
+    this.goods_id=this.$route.query.goods_id;
+    if(this.goods_id===undefined)
+    {
+      this.$router.push({
+        path: '/',
+
+      }) // 带参跳转
+    }
+  }
 
 }
 </script>

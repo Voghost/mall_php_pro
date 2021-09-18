@@ -2,7 +2,8 @@
   <div>
     <LoginHeader></LoginHeader>
     <ThingTittle style="box-shadow: rgba(0,0,0,0.3) 0 0 3px"></ThingTittle>
-    <el-container style="width: 1380px;min-height:700px;margin:0 auto">
+    <el-container   direction="vertical">
+      <div class="main_content">
       <el-main class="main_box">
         <el-tabs :tab-position="tabPosition1" style="margin: 10px;">
           <el-tab-pane label="账号资料">
@@ -26,8 +27,9 @@
           </el-tab-pane>
         </el-tabs>
       </el-main>
+      </div>
+      <mall-footer></mall-footer>
     </el-container>
-    <mall-footer></mall-footer>
   </div>
 </template>
 
@@ -70,13 +72,21 @@ export default {
   margin: 0;
   padding: 0
 }
-
+.main_content{
+  margin: 0 auto;
+  min-height: 750px;
+  width: 100%;
+}
+.main_content:before{
+  content: '';
+  clear: both;
+  display: block;
+}
 .main_box {
-  margin: 20px 0;
+  margin: 10px auto;
   border: #7c7c7c solid 1px;
-  float: left;
-  height: auto;
-  width: auto;
+  height: 731px;
+  width: 1380px;
 }
 
 

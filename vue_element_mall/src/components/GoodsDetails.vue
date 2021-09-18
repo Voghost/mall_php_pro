@@ -227,6 +227,7 @@ export default {
     'goods_id',
   ],
   mounted() {
+    console.log(this.goods_id);
     this.getGoodsInfo(this.goods_id);
     this.getCommentInfo();
   },
