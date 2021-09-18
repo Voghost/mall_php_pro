@@ -31,7 +31,7 @@
         </el-descriptions-item>
       </el-descriptions>
     </div>
-    <el-button style="position:absolute;right: 30px;bottom:30px" >修改数据</el-button>
+    <el-link href="/AboutMe?selectedTag=4" class="el-button" style="font-size: 14px ;line-height: 30px;position:absolute;right: 30px;bottom:30px">我的首页</el-link>
   </div>
 </template>
 

@@ -4,17 +4,17 @@
     <ThingTittle style="box-shadow: rgba(0,0,0,0.3) 0 0 3px"></ThingTittle>
     <el-container style="width: 1380px;min-height:700px;margin:0 auto">
       <el-main class="main_box">
-        <el-tabs :tab-position="tabPosition1" style="margin: 10px;">
-          <el-tab-pane label="账号资料">
+        <el-tabs :tab-position="tabPosition1" style="margin: 10px;" v-model="selectedTag" >
+          <el-tab-pane label="账号资料" name="first">
             <UserData></UserData>
           </el-tab-pane>
-          <el-tab-pane label="购物车">
+          <el-tab-pane label="购物车" name="second">
             <CartCard></CartCard>
           </el-tab-pane>
-          <el-tab-pane label="全部订单">
+          <el-tab-pane label="全部订单" name="third">
             <ItemOrder></ItemOrder>
           </el-tab-pane>
-          <el-tab-pane label="账户信息修改">
+          <el-tab-pane label="账户信息修改" name="fourth">
             <el-tabs :tab-position="tabPosition2">
               <el-tab-pane label="基本信息修改">
                 <Usersetting></Usersetting>
@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       tabPosition1: 'top',
-      tabPosition2: 'left'
+      tabPosition2: 'left',
+      selectedTag:"first",
     };
   },
   components: {
@@ -59,6 +60,21 @@ export default {
     MallFooter,
     Usersetting,
     CartCard,
+  },
+  mounted() {
+    let sk=this.$route.query.selectedTag;
+    if(sk==='1') {
+      this.selectedTag='first'
+    }
+    if(sk==='2') {
+      this.selectedTag='second'
+    }
+    if(sk==='3') {
+      this.selectedTag='third'
+    }
+    if(sk==='4') {
+      this.selectedTag='fourth'
+    }
   }
 
 
