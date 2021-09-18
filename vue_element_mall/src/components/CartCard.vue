@@ -21,14 +21,15 @@
               <input type="checkbox"  :value="index" @click=checked() v-model="arr">
             </div>
             <div class="goods_img">
-
+              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}">
               <el-popover placement="right-start" title="" trigger="hover">
-                <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
-                  <img slot="reference" :src="i.goods_big_logo" class="image">
+                  <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
+                <img slot="reference" :src="i.goods_big_logo" class="image">
               </el-popover>
+              </router-link>
             </div>
             <div class="goods_title">
-              <span><a href="#" style="text-decoration: none;color: black" target="_blank">{{i.goods_name}}</a></span>
+              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}"><p>{{i.goods_name}}</p></router-link>
             </div>
             <div class="goods_introduce">
 
@@ -233,10 +234,12 @@ export default {
 .goods_title{
   height: 120px;
   width: 280px;
-
   float: left;
   margin-top: 20px;
   margin-left: 10px;
+}
+.goods_title p{
+  color: #000000;
 }
 .goods_introduce{
   height: 120px;
@@ -255,9 +258,7 @@ export default {
   margin-left: 10px;
 }
 .goods_price p{
-
   display: block;
-
   font-size: 20px;
   font-family: "Microsoft YaHei";
 }
