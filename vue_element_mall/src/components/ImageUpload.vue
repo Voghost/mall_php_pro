@@ -2,7 +2,7 @@
   <div>
     <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action=""
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload">
@@ -13,16 +13,7 @@
 </template>
 
 <style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;

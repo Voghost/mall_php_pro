@@ -6,6 +6,7 @@ use think\Db;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\Comment as CommentModel;
 use app\common\model\OrdersGoods as OrdersGoodsModel;
+use app\common\model\Users as UserModel;
 
 class CommentService
 {
@@ -95,6 +96,12 @@ class CommentService
         }else{
             $res = CommentModel::page($page, $limit)->where($where)->select();
             $count = CommentModel::where($where)->count();
+        }
+
+        for($i = 0;$i < count($res);$i++){
+            $temp = $res[$i];
+            $name = UserModel::where("user_id",$temp["user_id"])->column("user_name");
+            $res[$i]["user_name"] = $name[0];
         }
 
         return ["page" => $page, "total" => $count, "content" => $res];

@@ -2,8 +2,6 @@
   <div>
     <el-table
         :data="list_info"
-        :row-key="getRowKeys"
-        :expand-row-keys="expands"
         style="width: 100%"
         default-expand-all
         ref="multipleTable">
@@ -20,11 +18,13 @@
             <el-table-column
                 prop="goods.goods_image"
                 label="商品照片"
+                width="300"
             >
             </el-table-column>
             <el-table-column
                 prop="goods_name"
                 label="商品名字"
+                width="300"
             >
             </el-table-column>
             <el-table-column
@@ -50,9 +50,9 @@
                 width="100"
                 label="状态">
             </el-table-column>
-            <el-table-column align="center" label="操作" width="120">
-              <template scope="scope">
-                <el-button size="small" type="danger" @click="handleUpdate(scope.row)">删除商品
+            <el-table-column align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button size="small" type="danger" @click="deleteOne(scope.$index.goods)">删除商品
                 </el-button>
               </template>
             </el-table-column>
@@ -67,13 +67,9 @@
                        label="下单时间"
                        prop="date">
       </el-table-column>
-      <el-table-column align="center"
-                       label="订单支付"
-                       prop="all_prices">
-      </el-table-column>
       <el-table-column align="center" label="操作" width="120">
         <template scope="scope">
-          <el-button size="small" type="success" @click="handleUpdate(scope.row)">支付
+          <el-button size="small" type="success" @click="Payment(scope.row)">支付
           </el-button>
         </template>
       </el-table-column>
@@ -87,6 +83,9 @@
 <script>
 export default {
   methods:{
+    deleteOne(index) {
+      this.list_info.goods.splice(index,1)
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -96,6 +95,12 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+    Payment(row){
+      console.log(row)
+    },
+    Deletegoods(row){
+      console.log(row)
+    },
   },
   data() {
     return {
@@ -103,20 +108,26 @@ export default {
       list_info: [{
         names: 'S201841413227',
         date: '2016-05-03',
-        all_prices: 2 * 123,
         goods: [{
           goods_image: '王小虎',
           goods_name: '你好',
           goods_price: 123,
           goods_number: 2,
           goods_prices: 2 * 123,
-          goods_state: "待评价"
-        }]
+          goods_state: "待评价",
+        },
+          {
+            goods_image: '王小虎',
+            goods_name: '你好mua',
+            goods_price: 123,
+            goods_number: 2,
+            goods_prices: 2 * 123,
+            goods_state: "待评价",
+          }]
       },
         {
           names: 'S12456742194',
           date: '2016-05-03',
-          all_prices: 2 * 123,
           goods: [{
             goods_image: '王小虎',
             goods_name: '20飞机杯一号',
