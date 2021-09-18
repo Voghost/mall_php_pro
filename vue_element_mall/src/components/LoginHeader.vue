@@ -18,11 +18,11 @@
       <el-divider direction="vertical"></el-divider>
     </div>
     <div class="right">
-      <el-link href="#" class="link"><i class="el-icon-s-custom">我的资料</i></el-link>
+      <el-link href="/AboutMe?selectedTag=1" class="link"><i class="el-icon-s-custom">我的资料</i></el-link>
       <el-divider direction="vertical"></el-divider>
-      <el-link href="#"><i class="el-icon-c-scale-to-original">我的订单</i></el-link>
+      <el-link href="/AboutMe?selectedTag=3"><i class="el-icon-c-scale-to-original">我的订单</i></el-link>
       <el-divider direction="vertical"></el-divider>
-      <el-link href="#"><i class="el-icon-shopping-cart-1"></i>购物车</el-link>
+      <el-link href="/AboutMe?selectedTag=2"><i class="el-icon-shopping-cart-1"></i>购物车</el-link>
     </div>
   </el-header>
 </template>

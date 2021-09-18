@@ -9,7 +9,7 @@
       <el-table-column label="收件人名字" width="150px">
         <template slot-scope="scope">
                     <span v-if="scope.row.show">
-                        <el-input size="mini" placeholder="请输入内容" v-model="scope.row.title"></el-input>
+                        <el-input size="mini" placeholder="请输入内容" v-model="scope.row.username"></el-input>
                     </span>
           <span v-else>{{ scope.row.username }}</span>
         </template>
@@ -17,7 +17,7 @@
       <el-table-column label="收件地址">
         <template slot-scope="scope">
                     <span v-if="scope.row.show">
-                        <el-input size="mini" placeholder="请输入内容" v-model="scope.row.text"></el-input>
+                        <el-input size="mini" placeholder="请输入内容" v-model="scope.row.userAddress"></el-input>
                     </span>
           <span v-else>{{ scope.row.userAddress }}</span>
         </template>

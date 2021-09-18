@@ -6,6 +6,7 @@ use think\Db;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\Comment as CommentModel;
 use app\common\model\OrdersGoods as OrdersGoodsModel;
+use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\model\Users as UserModel;
 
 class CommentService
@@ -97,12 +98,24 @@ class CommentService
             $res = CommentModel::page($page, $limit)->where($where)->select();
             $count = CommentModel::where($where)->count();
         }
-
         for($i = 0;$i < count($res);$i++){
             $temp = $res[$i];
             $name = UserModel::where("user_id",$temp["user_id"])->column("user_name");
             $res[$i]["user_name"] = $name[0];
         }
+
+        foreach ($res as $comment) {
+            $imageUrlModel = new ImageUrlModel();
+            $imageUrls = $imageUrlModel->where(["from" => 2, "f_id" => $comment["id"]])->select();
+            $pics = [];
+            foreach ($imageUrls as $image) {
+                array_push($pics, ["url" => $image["url"], "id" => $image["id"], "name" => $image["name"]]);
+            }
+            $comment["pics"] = $pics;
+        }
+
+
+
 
         return ["page" => $page, "total" => $count, "content" => $res];
     }

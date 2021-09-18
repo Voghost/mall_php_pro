@@ -6,6 +6,7 @@ import AboutMe from "@/views/AboutMe";
 import GoodsDetail from "@/views/GoodsDetail";
 import AllGoods from "@/views/AllGoods";
 import LoginRegister from "@/views/LoginRegister";
+import UserData from "@/components/UserData";
 
 Vue.use(VueRouter)
 
@@ -29,7 +30,21 @@ const routes = [
     },
     {
         path: '/aboutMe',
-        component: AboutMe
+        component: AboutMe,
+        children:[
+            {
+                path:"UserData",
+                component:UserData,
+            },
+            {
+                path:"UserData",
+                component:UserData,
+            },
+            {
+                path:"UserData",
+                component:UserData,
+            },
+        ]
     },
     {
         path: '/login_register',
