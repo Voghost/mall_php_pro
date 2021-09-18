@@ -24,13 +24,8 @@
 
 
             <div style="width: 100%;height: 100%;margin-left: 20px">
-              选择款式：
-              <el-radio-group v-model="style" >
-                <el-radio :label="1" border>指纹识别</el-radio>
-                <el-radio :label="2" border>指纹识别</el-radio>
-                <el-radio :label="3" border>指纹识别</el-radio>
-                <el-radio :label="4" border>指纹识别</el-radio>
-              </el-radio-group>
+<!--              <el-button type="text" @click="dialogVisible = true">选择款式：</el-button>-->
+              <GoodsAttribute></GoodsAttribute>
             </div>
           <div style="height: 40px;line-height: 40px;margin-left: 20px;">
             <span>评论：1000+</span>
@@ -110,7 +105,8 @@
             <el-tab-pane label="全部评价" name="first">
               <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)" v-for="item in comment" :key="item.user_id">
                 <el-row >
-                  <el-col :span="5" >{{item.user_id}}</el-col>
+<!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
+                  <el-col :span="5" >{{item.user_name}}</el-col>
                   <el-col :span="7" >
                     <el-rate v-model="item.star"
                              disabled
@@ -125,21 +121,21 @@
                   <el-col :span="10" :offset="5">
                     <div style="width: 100%;">{{item.content}}</div>
                       <el-row>
-                        <el-col :span="3" v-for="pics in comment" :key="pics.user_id" >
-<!--                          <el-image :src="item" style="width: 50px;height: 50px;" :preview-src-list="goods.pic"  :title="ClickTips"   :fit="'contain'" >-->
-<!--                          </el-image>-->
-                          <el-image :src="pics.pic_one" style="width: 50px;height: 50px;" :preview-src-list="pics.pic_one"  :title="ClickTips"   :fit="'contain'" >
+                        <el-col :span="3" v-for="(pic,index) in item.pics" :key="index" >
+                          <el-image :src="pic.url" style="width: 50px;height: 50px;"  :title="ClickTips"   :fit="'contain'" >
                           </el-image>
                         </el-col>
                       </el-row>
                   </el-col>
                 </el-row>
               </div>
-              <el-pagination layout="prev, pager, next"
-                             :total="50"
-                             background
-                             :page-size="2"
-                             style="text-align: center"
+              <el-pagination
+                  background
+                  @current-change="changePage"
+                  :page-size="size"
+                  layout="prev, pager, next"
+                  :total="totalNum"
+                  style="text-align: center"
               >
               </el-pagination>
             </el-tab-pane>
@@ -153,8 +149,10 @@
 </template>
 
 <script>
+import GoodsAttribute from "@/components/GoodsAttribute";
 export default {
   name: "GoodsDetails",
+  components: {GoodsAttribute},
   data() {
     return {
       goods :{},
@@ -169,6 +167,13 @@ export default {
         star:null,
       },
       ClickTips : "点击查看大图",
+      dialogVisible: false,
+      username : "傻逼",
+
+      size:3,
+      currentPage:1,
+      row_index:0,
+      totalNum:0
     }
   },
 
@@ -184,14 +189,32 @@ export default {
         console.log(err);
       })
     },
-    getCommentInfo(){
-      this.$api.user.allComment().then(res => {
-        this.comment = res.data.message
-        console.log(this.comment);
+    getUserName(id) {
+      this.$api.user.getUserName(id).then(res=>{
+        this.username = res.data.message;
+      }).catch(err=> {
+        console.log(err);
+      })
+    },
+    getComment(page=1){
+      this.currentPage = page
+      this.$api.user.pageSearch(this.currentPage,this.size)
+          .then(res=> {
+            this.comment = res.data.message.content;
+            this.totalNum = res.data.message.total;
+            this.row_index=this.comment.length;
+            if(this.comment.length%this.row_index){
+              this.row_index++;
+            }
+            console.log(this.comment)
           })
           .catch(err => {
             console.log(err)
           })
+    },
+    changePage(page){
+      this.getComment(page)
+      document.documentElement.scrollTop=680;
     },
     handlePicSuccess(file){
       console.log(file)
@@ -228,7 +251,7 @@ export default {
   ],
   mounted() {
     this.getGoodsInfo(this.goods_id);
-    this.getCommentInfo();
+    this.getComment();
   },
 }
 </script>
