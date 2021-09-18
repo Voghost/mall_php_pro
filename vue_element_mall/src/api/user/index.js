@@ -3,7 +3,6 @@ import axios from "axios";
 import qs from "qs"
 
 const BASE_URL = base.baseRequestUrl + "/index";
-
 // const user = {
 //     login(params) {
 //         return axios.post(`${base.baseRequesUrl}/login`, qs.stringify(params));
@@ -18,6 +17,18 @@ export default {
     },
     allComment(){
         return axios.post(`${BASE_URL}/comment/commentList`);
+    },
+    pageSearch($page, $limit, $query) {
+        return axios.post(
+            `${BASE_URL}/comment/pageSearch?page=${$page}&limit=${$limit}`,
+            {params: $query}
+        )
+    },
+    getUserName(id){
+        return axios.post(
+            'http://mall.php.test/controller/getUserById',
+            {id:id}
+        )
     }
 }
 
