@@ -1,5 +1,6 @@
 <template>
   <el-container>
+
     <div class="cart_item">
       <div class="cart_nav">
         <el-row>
@@ -72,14 +73,10 @@ export default {
       num:1,
       allCheck:false,
       totalPrice:0,
-      // items:[{"img_path":"1","name":"鼎中鼎澳门豆捞1","price":1.00,"number":1.00,"total":1,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞2","price":2.00,"number":1.00,"total":2,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞3","price":3.00,"number":1.00,"total":3,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞4","price":3.00,"number":1.00,"total":3,},
-      //   {"img_path":"12","name":"鼎中鼎澳门豆捞5","price":3.00,"number":1.00,"total":3,}],
       items:[],
       arr: [],
-      cart_id:[]
+      cart_id:[],
+
     };
   },
   methods: {
@@ -106,6 +103,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$api.cart.deleteCartItem(id)
+        this.getCartInfo()
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -185,7 +183,9 @@ export default {
           //this.getCartId()
         }
       }
-    }
+    },
+
+
   }
 }
 </script>

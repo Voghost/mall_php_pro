@@ -91,6 +91,7 @@ class GoodsService
     public function pageSearch($page = null, $limit = null, $query)
     {
         $where = array();
+
         $where[] = ["goods_state", "<>", 0];
 
         if (array_key_exists("goodsName", $query)) {
@@ -99,8 +100,11 @@ class GoodsService
         if (array_key_exists("goodsIntroduce", $query)) {
             $where[] = ["goods_introduce", "like", "%" . $query["goodsName"] . "%"];
         }
-
+//        json($query)->send();
+//        exit();
+//        $where[] = ["goods_cat_three_id", "=", $query["goodsCatThreeId"]];
         if (array_key_exists("goodsCatThreeId", $query)) {
+
             $where[] = ["goods_cat_three_id", "=", $query["goodsCatThreeId"]];
         }
 

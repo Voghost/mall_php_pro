@@ -46,6 +46,7 @@ import SearchHeader from "@/components/SearchHeader";
 import NavColumns from "../components/NavColumns";
 import GoodsCard from "../components/GoodsCard";
 import MallFooter from "../components/MallFooter";
+
 export default {
   name: "AllGoods",
   components:{
@@ -62,14 +63,14 @@ export default {
       size:24,
       row_index:0,
       col_index:4,
-      totalNum:0
-
+      totalNum:0,
+      searchObj:{}
     }
   },
   methods:{
-    getGoodsInfo(page=1){
+    getGoodsInfo(page=1,query=null){
       this.current=page
-      this.$api.goods.pageSearch(this.current,this.size)
+      this.$api.goods.pageSearch(this.current,this.size,query)
           .then(res => {
             this.goods=res.data.message.content;
             this.totalNum=res.data.message.total;
@@ -77,7 +78,7 @@ export default {
             if(this.goods.length%this.col_index){
               this.row_index++;
             }
-
+            console.log(this.goods)
           })
           .catch(err => {
             console.log(err)
@@ -89,7 +90,15 @@ export default {
     }
   },
   mounted(){
-    this.getGoodsInfo()
+    this.searchObj.goodsCatThreeId=this.$route.query.cat_id
+    this.getGoodsInfo(1,this.searchObj)
+  },
+  watch: {
+    $route(){
+      this.searchObj.goodsCatThreeId=this.$route.query.cat_id
+      this.getGoodsInfo(1,this.searchObj)
+      document.documentElement.scrollTop=680;
+    }
   }
 }
 </script>
