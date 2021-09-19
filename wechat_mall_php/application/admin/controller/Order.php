@@ -48,9 +48,11 @@ class Order extends Controller
         for($i = 0;$i < count($res);$i++) {
             $temp = $res[$i];
             $loglist = LogisticsModel::where("order_id", $temp["order_id"])->column("content");
+            $logtime = LogisticsModel::where("order_id", $temp["order_id"])->column("time");
 //            $count = count($loglist) - 1;
             $latest = end($loglist);
             $res[$i]["loglist"] = $loglist;
+            $res[$i]["logtime"] = $logtime;
             $res[$i]["latest"] = $latest;
         }
 
