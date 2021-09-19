@@ -44,7 +44,7 @@
             <i class="el-icon-upload2"/>已支付, 待发货
           </div>
           <div v-if="scope.row.order_state===2">
-            <i class="el-icon-download"/>已发货，待完成
+            {{ scope.row.latest }}
           </div>
           <div v-if="scope.row.order_state===3">
             <i class="el-icon-s-flag"/>已完成
@@ -58,7 +58,7 @@
             size="mini"
             icon="el-icon-truck"
             v-if="scope.row.order_state===1"
-            @click="changeOrderState(scope.row.order_id,2)"
+            @click="newlog(scope.row.order_id)"
           >
             发货
           </el-button>
@@ -66,10 +66,18 @@
             type="danger"
             size="mini"
             icon="el-icon-s-flag"
-            v-if="scope.row.order_state== 2 || scope.row.order_state === 0"
-            @click="changeOrderState(scope.row.order_id,3)"
+            v-if="scope.row.order_state === 0"
           >
-            结束订单
+            等待用户确认
+          </el-button>
+          <el-button
+            type="success"
+            size="mini"
+            icon="el-icon-map-location"
+            v-if="scope.row.order_state === 2"
+            @click="newlog(scope.row.order_id)"
+          >
+            修改物流信息
           </el-button>
           <el-button
             type="danger"
@@ -79,6 +87,26 @@
           >
             已完成
           </el-button>
+
+          <el-dialog title="物流信息" :visible.sync="showLog">
+            <el-form :inline="true" :label-position="'top'" class="demo-form-inline">
+<!--              <el-form-item label="修改物流">-->
+<!--                <el-dropdown :hide-on-click="false">-->
+<!--                  <el-dropdown-menu slot="dropdown">-->
+<!--                    <el-dropdown-item command="1">发货</el-dropdown-item>-->
+<!--                    <el-dropdown-item command="2">完成</el-dropdown-item>-->
+<!--                  </el-dropdown-menu>-->
+<!--                </el-dropdown>-->
+<!--              </el-form-item>-->
+              <el-form-item label="添加物流信息">
+                <el-input v-model="currentLog.logis" placeholder="请输入当前物流状态" required style="width: 300px"></el-input>
+              </el-form-item>
+              <br>
+              <el-form-item>
+                <el-button type="primary" @click="submitLog">提交</el-button>
+              </el-form-item>
+            </el-form>
+          </el-dialog>
         </template>
       </el-table-column>
     </el-table>
@@ -136,7 +164,9 @@ export default {
           }
         }]
       },
-      Datevalue: ''
+      Datevalue: '',
+      showLog: false,
+      currentLog: {}
     }
   },
   // 在渲染前运行
@@ -158,8 +188,19 @@ export default {
           console.log(error)
         })
     },
-    changeOrderState(id, state) {
-      orderApi.updateState(id, state)
+    newlog(id) {
+      this.showLog = true
+      this.currentLog = {}
+      this.currentLog.id = id
+      this.currentLog.state = 2
+      console.log(this.currentLog.id)
+    },
+    submitLog() {
+      this.changeOrderState(this.currentLog.id, this.currentLog.state, this.currentLog)
+      this.showLog = false
+    },
+    changeOrderState(id, state, content) {
+      orderApi.updateState(id, state, content)
         .then(res => {
           console.log(res)
           this.getList(this.current)
