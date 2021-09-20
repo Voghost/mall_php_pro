@@ -96,5 +96,16 @@ class Spec extends Controller
         }
     }
 
+    public function getSpecTableAndKV($goodsId)
+    {
+        if ($goodsId != null) {
+            $res = $this->specService->getSpecTable($goodsId);
+            return \json(['message' => 'ok', "code" => 200, 'data' => $res]);
+        } else {
+            return \json(['message' => 'fail', "code" => 202, 'data' => null]);
+        }
+
+    }
+
 
 }

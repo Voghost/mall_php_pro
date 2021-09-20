@@ -52,6 +52,7 @@ class Goods extends Controller
         $imageUrls = $imageUrlModel->where(["from" => 1, "f_id" => $goodsDetail["goods_id"]])->select();
         $pics = [];
         foreach ($imageUrls as $image) {
+
             array_push($pics, $image["url"]);
         }
         $goodsDetail["pic"] = $pics;

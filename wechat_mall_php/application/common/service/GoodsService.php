@@ -3,10 +3,14 @@
 namespace app\common\service;
 
 use app\admin\controller\Goods;
+use app\common\model\Category as CategoryModel;
 use app\common\model\Goods as GoodsModel;
+use app\common\model\GoodsInfo;
 use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\model\OrdersGoods as OrderGoodsModel;
 use app\common\model\Comment as CommentModel;
+use app\common\model\SpecKeyValue;
+use app\common\model\SpecValue;
 use app\common\model\Users as UserModel;
 use app\common\utils\ResultUtil;
 use think\Db;
@@ -125,9 +129,9 @@ class GoodsService
             }
         }
 
-        if($temp != null){
-            $count = $res->whereBetweenTime("goods_add_time",$temp[0],$temp[1])->count();
-            $res = $res->page($page, $limit)->whereBetweenTime("goods_add_time",$temp[0],$temp[1])->select();
+        if ($temp != null) {
+            $count = $res->whereBetweenTime("goods_add_time", $temp[0], $temp[1])->count();
+            $res = $res->page($page, $limit)->whereBetweenTime("goods_add_time", $temp[0], $temp[1])->select();
         } else {
             $res = $res->page($page, $limit)->select();
             $count = GoodsModel::where($where)->count();
@@ -149,17 +153,141 @@ class GoodsService
     public function getCommentWithOrder($data)
     {
         $index = $data;
-        $temp = OrderGoodsModel::where("order_goods_id",$index["goods_id"])->column("order_id");
-        $where[] = ["order_id","in",$temp];
+        $temp = OrderGoodsModel::where("order_goods_id", $index["goods_id"])->column("order_id");
+        $where[] = ["order_id", "in", $temp];
         $list = CommentModel::where($where)->select();
-        for($i = 0;$i < count($list);$i++)
-        {
-            $temp = OrderGoodsModel::where("order_id",$list[$i]["order_id"])->find();
-            $tmp = UserModel::where("user_id",$list[$i]["user_id"])->find();
+        for ($i = 0; $i < count($list); $i++) {
+            $temp = OrderGoodsModel::where("order_id", $list[$i]["order_id"])->find();
+            $tmp = UserModel::where("user_id", $list[$i]["user_id"])->find();
             $list[$i]["order"] = $temp;
             $list[$i]["user_name"] = $tmp["user_name"];
         }
         return $list;
+    }
+
+    public function saveOrUpdateGoods($query)
+    {
+        $count = 0;
+        if (!array_key_exists("goodsId", $query) || $query["goodsId"] == "") {
+            $goods = new GoodsModel();
+            $goods->goods_add_time = date('Y-m-d H:i:s');
+        } else {
+            $goods = GoodsModel::where("goods_id", $query["goodsId"])->find();
+        }
+
+        if (array_key_exists("goodsName", $query) && $query['goodsName'] != "") {
+            $goods->goods_name = $query['goodsName'];
+            $count++;
+        }
+        if (array_key_exists("goodsPrice", $query)) {
+            $goods->goods_price = $query['goodsPrice'];
+            $count++;
+        }
+        if (array_key_exists("goodsNumber", $query)) {
+            $goods->goods_number = $query['goodsNumber'];
+            $count++;
+        }
+        if (array_key_exists("goodsWeight", $query)) {
+            $goods->goods_weight = $query['goodsWeight'];
+            $count++;
+        }
+        if (array_key_exists("goodsIntroduce", $query)) {
+            $goods->goods_introduce = $query['goodsIntroduce'];
+            $count++;
+        }
+        if (array_key_exists("goodsBigLogo", $query)) {
+            $goods->goods_big_logo = $query['goodsBigLogo'];
+            $goods->goods_small_logo = $query['goodsBigLogo'];
+            $count++;
+        }
+        if (array_key_exists("goodsState", $query)) {
+            $goods->goods_state = $query['goodsState'];
+            $count++;
+        }
+        if (array_key_exists("goodsCatThreeId", $query)) {
+            $goods->goods_cat_three_id = $query['goodsCatThreeId'];
+            $categoryThree = CategoryModel::get($query['goodsCatThreeId']);
+            $categoryTwo = CategoryModel::get($categoryThree->cat_pid);
+            $categoryOne = CategoryModel::get($categoryTwo->cat_pid);
+            $goods->goods_cat_two_id = $categoryTwo->cat_id;
+            $goods->goods_cat_one_id = $categoryOne->cat_id;
+            $count++;
+
+        }
+
+
+        // TODO 图片存入图库
+//        if (array_key_exists("goodsPicOne", $query)) {
+//            $goods->goods_pic_one = $query['goodsPicOne'];
+//            $count++;
+//        }
+//        if (array_key_exists("goodsPicTwo", $query)) {
+//            $goods->goods_pic_two = $query['goodsPicTwo'];
+//            $count++;
+//        }
+//        if (array_key_exists("goodsPicThree", $query)) {
+//            $goods->goods_pic_three = $query['goodsPicThree'];
+//            $count++;
+//        }
+
+
+        // 如果有数据修改或添加
+        if ($count > 0) {
+            $goods->goods_upd_time = date('Y-m-d H:i:s');
+            $goods->save();
+        }
+        if (array_key_exists("pics", $query)) {
+            foreach ($query["pics"] as $pic) {
+                $imageUrl = new ImageUrlModel();
+                $imageUrl->name = $pic["name"];
+                $imageUrl->url = $pic["url"];
+                $imageUrl->from = 1;
+                $imageUrl->f_id = $goods["goods_id"];
+                $imageUrl->save();
+            }
+        }
+
+        if (array_key_exists("goodsInfo", $query)) {
+            $goodsInfoList = $query['goodsInfo'];
+            foreach ($goodsInfoList as $goodsInfo) {
+
+
+                $priceAndStock = $goodsInfo[count($goodsInfo) - 1];
+
+                $specKeyValueModel = new SpecKeyValue();
+                $goodsInfoModel = new GoodsInfo();
+
+                // 如果是更新商品数据
+                if (array_key_exists("goodsId", $query) && array_key_exists("info_id", $priceAndStock)) {
+                    $goodsInfoUpdate = $goodsInfoModel->where(["info_id" => $priceAndStock["info_id"]])->find();
+                    $goodsInfoUpdate->goods_price = $priceAndStock["price"];
+                    $goodsInfoUpdate->goods_stock = $priceAndStock["stock"];
+                    $goodsInfoUpdate->save();
+                } else {
+                    $insertGoodsInfo = $goodsInfoModel->insertGetId([
+                        "goods_id" => $goods["goods_id"],
+                        "goods_stock" => $priceAndStock["stock"],
+                        "goods_price" => $priceAndStock["price"]
+                    ]);
+                    $contentStr = "";
+                    for ($i = 0; $i < count($goodsInfo) - 1; $i++) {
+                        $specValue = new SpecValue();
+                        $collection = $specValue->where(["spec_value_id" => $goodsInfo[$i]["id"]])->find();
+                        $specKeyValueModel->insert([
+                            "spec_key" => $collection["spec_id"],
+                            "spec_value" => $collection["spec_value_id"],
+                            "goods_info" => $insertGoodsInfo
+                        ]);
+                        $contentStr .= $collection["spec_id"] . ":" . $collection["spec_value_id"] . ",";
+                    }
+
+                    $goodsInfoSaveContent = $goodsInfoModel->where(["info_id" => $insertGoodsInfo])->find();
+                    $goodsInfoSaveContent->content = $contentStr;
+                    $goodsInfoSaveContent->save();
+                }
+            }
+        }
+
     }
 
 }

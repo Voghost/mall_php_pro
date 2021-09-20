@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div style="width: 70%; margin: 0 auto; min-width: 800px">
     <!--购物信息-->
     <el-row justify="center" type="flex" style="width: 100%;">
      <!--左侧图片-->
-      <el-col :span="10">
+      <el-col :span="8">
         <el-carousel  height="420px" style=" width: 100%;margin-top: 30px;" indicator-position="outside" >
           <el-carousel-item v-for="item in goods.pic" :key="item" >
               <el-image :src="item" :preview-src-list="goods.pic"  :title="ClickTips"  style="width: 100%; height: 100%;" :fit="'fill'" >
@@ -58,28 +58,31 @@
       <el-tabs  v-model="tabsName" style="margin-left: 35px;margin-top: 20px;font-size: 20px">
 
         <el-tab-pane label="产品评论" name="first" >
-          <el-form  label-width="100px" :model="form">
+          <el-form  label-width="100px" :model="form" ref="loginFormRef">
             <el-form-item label="产品评分:">
               <el-rate v-model="form.star"  show-text></el-rate>
             </el-form-item>
             <el-form-item label="评价内容:">
-              <el-input type="textarea" :rows="4" v-model="form.desc"></el-input>
+              <el-input type="textarea" :rows="3" v-model="form.desc" :maxlength="150"  placeholder="请输入内容" show-word-limit ></el-input>
             </el-form-item>
             <el-form-item label="上传照片:">
               <el-upload :action="baseUpdateUrl"
-                         :limit = 3
-                         multiple
-                         :show-file-list="false"
-                         :before-upload="beforeMainUpload"
+                         list-type="picture-card"
+                         :file-list="fileList"
                          :on-success="handlePicSuccess"
-              >
+                         :on-remove="handleRemove"
+                         :on-preview="handlePictureCardPreview">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传3个jpg/png文件，且不超过10MB</div>
               </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
+
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">提交</el-button>
-              <el-button>取消</el-button>
+              <el-button  >取消</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -159,25 +162,38 @@ export default {
       comment :{},
       num: 1,
       style : 1,
+      fileList: [],
       tabsName : 'first',//标签页默认显示
       evaluationName : 'first',  //评论页默认显示
-      baseUpdateUrl: 'http://mall.php.test/upload/file',
+      // baseUpdateUrl: 'http://mall.php.test/upload/file',
+      baseUpdateUrl: 'https://jsonplaceholder.typicode.com/posts/',
+
       form : {
         desc:"",
         star:null,
       },
       ClickTips : "点击查看大图",
-      dialogVisible: false,
       username : "傻逼",
 
       size:3,
       currentPage:1,
       row_index:0,
-      totalNum:0
+      totalNum:0,
+
+      dialogImageUrl: '',
+      dialogVisible: false,
     }
   },
 
   methods: {
+    //照片上传
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     handleChange(value){
       console.log(value);
     },
@@ -218,20 +234,6 @@ export default {
     },
     handlePicSuccess(file){
       console.log(file)
-    },
-    beforeMainUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isPNG = file.type === 'image/png'
-      const isLt2M = file.size / 1024 / 1024 < 10
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 10MB!')
-      }
-      if(!isJPG){
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }else if (!isPNG){
-        this.$message.error('上传头像图片只能是 PNG 格式!');
-      }
-      return isLt2M && isPNG && isJPG
     },
     //评论提交
     onSubmit(){

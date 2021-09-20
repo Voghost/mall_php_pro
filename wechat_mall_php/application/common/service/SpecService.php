@@ -3,6 +3,7 @@
 namespace app\common\service;
 
 use app\admin\controller\Spec;
+use app\common\model\Goods;
 use app\common\model\GoodsInfo;
 use app\common\model\SpecKey;
 use app\common\model\SpecKeyValue;
@@ -142,5 +143,47 @@ class SpecService
             return $spec_key_id;
         }
     }
+
+    public function getSpecTable($goodsId)
+    {
+        $goodsInfoModel = new GoodsInfo();
+        $goodsInfos = $goodsInfoModel->where(["goods_id" => $goodsId])->select();
+        $tableArr = []; //表格数据
+        $resKey = []; // 使用到的键名
+        $flag = true;
+        foreach ($goodsInfos as $goodsInfo) {
+            $specKeyValueModel = new SpecKeyValue();
+            $specKeyValues = $specKeyValueModel->where(["goods_info" => $goodsInfo["info_id"]])->select();
+            $colKV = [];
+            foreach ($specKeyValues as $specKV) {
+                $specValueModel = new SpecValue();
+                $specValue = $specValueModel->where(["spec_value_id" => $specKV["spec_value"]])->find();
+                array_push($colKV, ["id" => $specKV["spec_value"], "name" => $specValue["spec_value"]]);
+                if ($flag) {
+                    $specKeyModel = new SpecKey();
+                    $specKey = $specKeyModel->where(["spec_id" => $specValue["spec_id"]])->find();
+                    array_push($resKey, $specKey);
+                }
+            }
+            $flag = false;
+            array_push($colKV, [
+                "price" => $goodsInfo["goods_price"],
+                "stock" => $goodsInfo["goods_stock"],
+                "info_id" => $goodsInfo["info_id"]
+            ]);
+            array_push($tableArr, $colKV);
+        }
+
+//        if (count($tableArr) > 0) {
+//            foreach ($tableArr[0] as $item) {
+//                $specKeyModel = new SpecKey();
+//                $specKey = $specKeyModel->where(["spec_id" => $item[]])->find();
+//                array_push($resKey, $specKey);
+//            }
+//        }
+
+        return ["tableArr" => $tableArr, "resKey" => $resKey];
+    }
+
 
 }

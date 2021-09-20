@@ -56,71 +56,8 @@ class Goods extends Controller
     public function saveOrUpdate()
     {
         $query = $this->request->put();
-        $count = 0;
-        if (!array_key_exists("goodsId", $query) || $query["goodsId"] == "") {
-            $goods = new GoodsModel();
-            $goods->goods_add_time = date('Y-m-d H:i:s');
-        } else {
-            $goods = GoodsModel::where("goods_id", $query["goodsId"])->find();
-        }
-
-        if (array_key_exists("goodsName", $query) && $query['goodsName'] != "") {
-            $goods->goods_name = $query['goodsName'];
-            $count++;
-        }
-        if (array_key_exists("goodsPrice", $query)) {
-            $goods->goods_price = $query['goodsPrice'];
-            $count++;
-        }
-        if (array_key_exists("goodsNumber", $query)) {
-            $goods->goods_number = $query['goodsNumber'];
-            $count++;
-        }
-        if (array_key_exists("goodsWeight", $query)) {
-            $goods->goods_weight = $query['goodsWeight'];
-            $count++;
-        }
-        if (array_key_exists("goodsIntroduce", $query)) {
-            $goods->goods_introduce = $query['goodsIntroduce'];
-            $count++;
-        }
-        if (array_key_exists("goodsBigLogo", $query)) {
-            $goods->goods_big_logo = $query['goodsBigLogo'];
-            $goods->goods_small_logo = $query['goodsBigLogo'];
-            $count++;
-        }
-        if (array_key_exists("goodsState", $query)) {
-            $goods->goods_state = $query['goodsState'];
-            $count++;
-        }
-        if (array_key_exists("goodsCatThreeId", $query)) {
-            $goods->goods_cat_three_id = $query['goodsCatThreeId'];
-            $categoryThree = CategoryModel::get($query['goodsCatThreeId']);
-            $categoryTwo = CategoryModel::get($categoryThree->cat_pid);
-            $categoryOne = CategoryModel::get($categoryTwo->cat_pid);
-            $goods->goods_cat_two_id = $categoryTwo->cat_id;
-            $goods->goods_cat_one_id = $categoryOne->cat_id;
-            $count++;
-
-        }
-        if (array_key_exists("goodsPicOne", $query)) {
-            $goods->goods_pic_one = $query['goodsPicOne'];
-            $count++;
-        }
-        if (array_key_exists("goodsPicTwo", $query)) {
-            $goods->goods_pic_two = $query['goodsPicTwo'];
-            $count++;
-        }
-        if (array_key_exists("goodsPicThree", $query)) {
-            $goods->goods_pic_three = $query['goodsPicThree'];
-            $count++;
-        }
-        // 如果有数据修改或添加
-        if ($count > 0) {
-            $goods->goods_upd_time = date('Y-m-d H:i:s');
-            $goods->save();
-        }
-        return \json(['message' => 'ok', "code" => 200, 'data' => $goods]);
+        $saveOrUpdateGoods = $this->goodsService->saveOrUpdateGoods($query);
+        return \json(['message' => 'ok', "code" => 200, 'data' => $saveOrUpdateGoods]);
     }
 
     public function getCategory($level, $catId)
@@ -141,6 +78,7 @@ class Goods extends Controller
         }
         return json(['message' => 'ok', "code" => 200, "data" => null]);
     }
+
 
     public function getCommentWithOrder()
     {
