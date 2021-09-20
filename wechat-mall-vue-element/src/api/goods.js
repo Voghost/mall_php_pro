@@ -94,6 +94,12 @@ export default {
       method: 'post',
       data: data
     })
+  },
+  getSpecTableAndKv(goodsId) {
+    return request({
+      url: `/admin/spec/getSpecTableAndKV?goodsId=${goodsId}`,
+      method: 'get'
+    })
   }
 }
 
