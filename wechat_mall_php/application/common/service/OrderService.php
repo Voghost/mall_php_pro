@@ -105,6 +105,9 @@ class OrderService
 
         $ordersResult = array();
         for ($i = 0; $i < count($ordersList); $i++) {
+
+            
+
             $temp = array(
                 "order_id" => $ordersList[$i]->order_id,
                 "user_id" => $ordersList[$i]->order_user_id,

@@ -3,6 +3,7 @@ import axios from "axios";
 import qs from "qs"
 
 const BASE_URL = base.baseRequestUrl + "/index";
+
 // const user = {
 //     login(params) {
 //         return axios.post(`${base.baseRequesUrl}/login`, qs.stringify(params));
@@ -17,6 +18,12 @@ export default {
     },
     allComment(){
         return axios.post(`${BASE_URL}/comment/commentList`);
+    },
+    loginAuth(param) {
+        return axios.post(`${BASE_URL}/user/loginAuthen`,param);
+    },
+    registerAuth(param) {
+        return axios.post(`${BASE_URL}/user/registerAuthen`,param);
     },
     pageSearch($page, $limit, $query) {
         return axios.post(

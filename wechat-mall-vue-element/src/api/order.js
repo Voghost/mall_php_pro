@@ -9,10 +9,11 @@ export default {
       data: data
     })
   },
-  updateState(id, state) {
+  updateState(id, state, data) {
     return request({
       url: `/admin/order/updateState?id=${id}&state=${state}`,
-      method: 'get'
+      method: 'post',
+      data: data
     })
   }
 }
