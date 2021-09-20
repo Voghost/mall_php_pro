@@ -53,10 +53,10 @@
           <div v-if="scope.row.order_state===1 && scope.row.order_refund === 0">
             <i class="el-icon-upload2"/>已支付, 待发货
           </div>
-          <div v-if="scope.row.order_state===2 && scope.row.order_refund === 0">
+          <div v-if="scope.row.order_state===2 && scope.row.order_refund === 0" @click="showLogVisible = true, currentLog=scope.row.loglist">
             {{ scope.row.latest }}
           </div>
-          <div v-if="scope.row.order_state===3 && scope.row.order_refund === 0">
+          <div v-if="scope.row.order_state===3 && scope.row.order_refund === 0" @click="showLogVisible = true, currentLog=scope.row.loglist">
             <i class="el-icon-s-flag"/>已完成
           </div>
           <div v-if="scope.row.order_refund===1">
@@ -148,6 +148,27 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="物流详情" :visible.sync="showLogVisible">
+      <div class="block">
+        <div class="radio">
+          排序：
+          <el-radio-group v-model="reverse">
+            <el-radio :label="true">倒序</el-radio>
+            <el-radio :label="false">正序</el-radio>
+          </el-radio-group>
+          <br>
+          <br>
+          <el-timeline :reverse="reverse">
+            <el-timeline-item
+              v-for="(activity, index) in currentLog"
+              :key="index"
+              :timestamp="activity.time">
+              {{activity.content}}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </div>
+    </el-dialog>
     <!--目录-->
     <div class="block">
       <!--      <span class="demonstration">直接前往</span>-->
@@ -170,10 +191,12 @@ import orderApi from '@/api/order'
 export default {
   data() {
     return {
+      reverse: true,
       searchObj: {},
       tableData: [],
       current: 1,
       total: 0,
+      showLogVisible: false,
       limit: 10,
       pickerOptions: {
         shortcuts: [{

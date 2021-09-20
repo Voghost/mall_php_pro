@@ -70,9 +70,13 @@ class Order extends Controller
             $loglist = LogisticsModel::where("order_id", $temp["order_id"])->column("content");
             $logtime = LogisticsModel::where("order_id", $temp["order_id"])->column("time");
 //            $count = count($loglist) - 1;
+            $logList = array();
+            for($j = 0;$j < count($logtime);$j++) {
+                array_push($logList,["time"=>$logtime[$j],"content"=>$loglist[$j]]);
+            }
             $latest = end($loglist);
-            $res[$i]["loglist"] = $loglist;
-            $res[$i]["logtime"] = $logtime;
+            $res[$i]["loglist"] = $logList;
+//            $res[$i]["logtime"] = $logtime;
             $res[$i]["latest"] = $latest;
         }
 
