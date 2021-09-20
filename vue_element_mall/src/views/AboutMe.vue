@@ -90,7 +90,7 @@ export default {
 }
 .main_content{
   margin: 0 auto;
-  min-height: 750px;
+  min-height: 700px;
   width: 100%;
 }
 .main_content:before{
@@ -101,7 +101,7 @@ export default {
 .main_box {
   margin: 10px auto;
   border: #7c7c7c solid 1px;
-  height: 731px;
+  height: 700px;
   width: 1380px;
 }
 

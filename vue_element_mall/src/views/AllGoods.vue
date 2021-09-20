@@ -15,10 +15,7 @@
       :key="i" style="min-width: 1000px" >
         <el-col v-for="j of col_index"
         :key="j" :span="6" style="min-width: 240px">
-       <router-link :to="{path:'/goodsDetail',
-       query:{
-         goods_id:goods[((i-1)*4)+(j-1)].goods_id,
-       }}"><GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard></router-link>
+       <GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
         </el-col>
       </el-row>
       </div>
@@ -70,6 +67,9 @@ export default {
       searchObj:{}
     }
   },
+   props:[
+     'cat_id',
+   ],
   methods:{
     getGoodsInfo(page=1,query=null){
       this.current=page

@@ -1,5 +1,9 @@
 <template>
       <div class="main" v-if="goods!==undefined">
+        <router-link :to="{path:'/goodsDetail',
+       query:{
+         goods_id:goods.goods_id,
+       }}"  target="_blank">
         <el-card :body-style="{ padding: '0px' }" @click.native="test()" :title="goods.goods_name" shadow="hover">
           <div class="goods_img">
             <img :src="goods.goods_big_logo" class="image">
@@ -19,6 +23,7 @@
             </div>
           </div>
         </el-card>
+          </router-link>
       </div>
 </template>
 
