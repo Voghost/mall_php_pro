@@ -55,6 +55,7 @@ Route::get('hello/:name', 'index/hello');
     'spec/addSpecValue' => 'admin/spec/addSpecValue',
     'spec/deleteSpecKey' => 'admin/spec/deleteSpecKey',
     'spec/deleteSpecValue' => 'admin/spec/deleteSpecValue',
+    'spec/getSpecTableAndKV' => 'admin/spec/getSpecTableAndKv',
 ])
     ->allowCrossDomain()
     ->middleware('VerifyMyUser')

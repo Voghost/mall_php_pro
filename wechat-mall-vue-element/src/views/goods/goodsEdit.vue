@@ -94,7 +94,7 @@
             </el-tab-pane>
             <el-tab-pane label="商品属性设置" name="second">
               <el-row>
-                <el-button @click="showSpecKey = true">
+                <el-button @click="showSpecKey = true" v-if="!isEdit">
                   选择商品需要的属性
                 </el-button>
               </el-row>
@@ -148,10 +148,24 @@
                       ></el-input-number>
                     </template>
                   </el-table-column>
+                  <el-table-column
+                    label="操作"
+                    width="80"
+                  >
+                    <template slot-scope="scop">
+                      <el-button
+                        type="danger"
+                        icon="el-icon-delete"
+                        circle
+                        v-if="!isEdit"
+                        @click="deleteTableRow(scop.$index, tableSpecMessage)"
+                      ></el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-row>
               <el-row>
-                <el-button @click="showAddSpec = spec_key_val.length > 0">添加并设置商品属性值</el-button>
+                <el-button @click="showAddSpec = spec_key_val.length > 0" v-if="!isEdit">添加并设置商品属性值</el-button>
               </el-row>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -308,6 +322,7 @@ export default {
     if (this.$route.query.goods) {
       this.isEdit = true
       console.log(this.$route.query)
+      this.goods.isEdit = true
       this.goods.goodsId = this.$route.query.goods.goods_id
       this.goods.goodsName = this.$route.query.goods.goods_name
       this.goods.goodsIntroduce = this.$route.query.goods.goods_introduce
@@ -326,6 +341,14 @@ export default {
         const item = this.goods.goodsPics[i]
         this.fileList.push({ name: item.name, url: item.url, id: item.id })
       }
+      goodsApi.getSpecTableAndKv(this.goods.goodsId)
+        .then(res => {
+          this.res_spec_kv = res.data.resKey
+          this.tableSpecMessage = res.data.tableArr
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
     this.getAllSpecKey()
   },
@@ -404,6 +427,9 @@ export default {
     },
     handleSecondSuccess(file) {
       this.fileList.push({ 'name': file.data.name, 'url': file.data.url, id: -1 })
+    },
+    deleteTableRow(index, rows) {
+      rows.splice(index, 1)
     },
     // 根据属性值删除函数
     removeByValue(arr, attr, value) {
