@@ -15,7 +15,7 @@
             <el-input placeholder="请输入密码" v-model="form.userpwd" show-password></el-input>
             <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
-          <button class="bbutton" @click="login" id="TencentCaptcha" data-appid="appId" data-cbfn="callback">登录</button>
+          <button class="bbutton" @click="handleGetCode" id="TencentCaptcha" data-appid="appId" data-cbfn="callback">登录</button>
         </div>
         <div class="big-contain" v-else>
           <div class="btitle">创建账户</div>
@@ -29,7 +29,7 @@
             <el-input placeholder="请输入密码" v-model="form.userpwd" show-password></el-input>
             <el-input placeholder="请再次输入密码" v-model="form.userrepwd" show-password></el-input>
           </div>
-          <button class="bbutton" @click="register">注册</button>
+          <button class="bbutton" @click="registerGetCode" data-appid="appId" data-cbfn="callback">注册</button>
         </div>
       </div>
       <div class="small-box" :class="{active:isLogin}">
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import userApi from '@/api/user'
 
 export default {
   name: 'login_register',
@@ -62,7 +63,23 @@ export default {
         username: '',
         userrepwd: '',
         userpwd: ''
-      }
+      },
+      requestId: '', // 验证码接口返回信息
+      countTime: '', // 倒计时
+      // appId: '10000003', // appId
+      wallId: '2015834758', // 腾讯防水墙id
+      regionCode: 'CN', // 必填 地区代码
+      temp: {}
+    }
+  },
+  created() {
+    if (window.TencentCaptcha === undefined) {
+      let script = document.createElement('script')
+      let head = document.getElementsByTagName('head')[0]
+      script.type = 'text/javascript'
+      script.charset = 'UTF-8'
+      script.src = 'https://ssl.captcha.qq.com/TCaptcha.js'
+      head.appendChild(script)
     }
   },
   methods: {
@@ -128,6 +145,93 @@ export default {
             .catch(err => {
               console.log(err);
             })
+      } else if (self.form.username != "" && self.form.userpwd != self.form.userrepwd) {
+        alert("两次密码输入不相同！");
+      } else {
+        alert("填写不能为空");
+      }
+    },
+    initCaptcha() {
+      if (window.TencentCaptcha === undefined) {
+        let script = document.createElement('script')
+        let head = document.getElementsByTagName('head')[0]
+        script.type = 'text/javascript'
+        script.charset = 'UTF-8'
+        script.src = 'https://ssl.captcha.qq.com/TCaptcha.js'
+        head.appendChild(script)
+      }
+    },
+    handleGetCode() {
+      if (this.form.username != "" && this.form.userpwd != "") {
+        let that = this
+        var captcha = new window.TencentCaptcha(that.wallId, async response => {
+          // console.log('response', response)
+          if (response.ret === 0) {
+            let temp = response
+            temp.username = this.form.username
+            temp.userpwd = this.form.userpwd
+            userApi.loginAuth(temp)
+                .then(response => {
+                  console.log('response', response)
+                  if(response.data != null){
+                    self.$axios({
+                      method: 'post',
+                      url: 'http://localhost:8080/',
+                    })
+                  } else {
+                    alert("登陆失败")
+                  }
+                })
+            try {
+              // let res = await apis.sendAuthorizationCode(params)
+              // console.log('res', res)
+            } catch (e) {
+              console.log(e)
+            }
+          } else {
+            this.toast('请先完成滑块验证')
+          }
+        })
+        captcha.show();
+      } else {
+        alert("填写不能为空！");
+      }
+
+      // captcha.show();
+    },
+    registerGetCode() {
+      const self = this;
+      if (self.form.username != "" && self.form.userpwd == self.form.userrepwd) {
+        let that = this
+        var captcha = new window.TencentCaptcha(that.wallId, async response => {
+          // console.log('response', response)
+          if (response.ret === 0) {
+            let temp = response
+            temp.username = this.form.username
+            temp.userpwd = this.form.userpwd
+            userApi.registerAuth(temp)
+                .then(response => {
+                  console.log('response', response)
+                  if(response.data != null){
+                    self.$axios({
+                      method: 'post',
+                      url: 'http://localhost:8080/',
+                    })
+                  } else {
+                    alert("登陆失败")
+                  }
+                })
+            try {
+              // let res = await apis.sendAuthorizationCode(params)
+              // console.log('res', res)
+            } catch (e) {
+              console.log(e)
+            }
+          } else {
+            this.toast('请先完成滑块验证')
+          }
+        })
+        captcha.show();
       } else if (self.form.username != "" && self.form.userpwd != self.form.userrepwd) {
         alert("两次密码输入不相同！");
       } else {

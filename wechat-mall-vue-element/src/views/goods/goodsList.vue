@@ -32,7 +32,7 @@
       border
       style="width: 100%"
       @sort-change="handleSortChange"
-      :default-sort="{prop: 'goods_id', order: 'descending'}"
+      :default-sort="{prop: 'goods_id', order: 'ascending'}"
     >
       <el-table-column type="index" label="序号" width="51"/>
       <el-table-column prop="goods_id" label="商品id" width="65" sortable>

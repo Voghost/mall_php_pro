@@ -1,5 +1,5 @@
 <template>
-  <div style="width: auto;height: 500px;">
+  <div style="width: auto;height: 500px;position:relative">
     <div>
       <el-col :span="4" style="height: 200px;width: 200px;">
         <el-col style="padding: 20px 100px 10px;width: 400px;float: left">
@@ -31,20 +31,16 @@
         </el-descriptions-item>
       </el-descriptions>
     </div>
-    <div>
-
-    </div>
+    <el-link href="/AboutMe?selectedTag=4" class="el-button" style="font-size: 14px ;line-height: 30px;position:absolute;right: 30px;bottom:30px">我的首页</el-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: "userData",
+  name: "UserData",
   data() {
     return {
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-      sizeList: ["large", "medium", "small"]
     }
   }
 }

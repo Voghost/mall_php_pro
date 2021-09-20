@@ -18,6 +18,24 @@ export default {
     },
     allComment(){
         return axios.post(`${BASE_URL}/comment/commentList`);
+    },
+    loginAuth(param) {
+        return axios.post(`${BASE_URL}/user/loginAuthen`,param);
+    },
+    registerAuth(param) {
+        return axios.post(`${BASE_URL}/user/registerAuthen`,param);
+    },
+    pageSearch($page, $limit, $query) {
+        return axios.post(
+            `${BASE_URL}/comment/pageSearch?page=${$page}&limit=${$limit}`,
+            {params: $query}
+        )
+    },
+    getUserName(id){
+        return axios.post(
+            'http://mall.php.test/controller/getUserById',
+            {id:id}
+        )
     }
 }
 

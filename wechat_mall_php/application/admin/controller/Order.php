@@ -2,8 +2,11 @@
 
 namespace app\admin\controller;
 
+use app\common\model\Logistics;
+use DateTime;
 use think\Controller;
 use app\common\model\Orders as OrderModel;
+use app\common\model\Logistics as LogisticsModel;
 
 class Order extends Controller
 {
@@ -42,6 +45,17 @@ class Order extends Controller
             $count = OrderModel::where($where)->count();
         }
 
+        for($i = 0;$i < count($res);$i++) {
+            $temp = $res[$i];
+            $loglist = LogisticsModel::where("order_id", $temp["order_id"])->column("content");
+            $logtime = LogisticsModel::where("order_id", $temp["order_id"])->column("time");
+//            $count = count($loglist) - 1;
+            $latest = end($loglist);
+            $res[$i]["loglist"] = $loglist;
+            $res[$i]["logtime"] = $logtime;
+            $res[$i]["latest"] = $latest;
+        }
+
         return json(
             ["message" => "ok",
                 "code" => 200,
@@ -54,14 +68,53 @@ class Order extends Controller
         );
     }
 
+    public function refund($id, $content)
+    {
+        $order = OrderModel::where("order_id", $id)->find();
+        $order->order_refund = 1;
+        $order->save();
+        $log = new Logistics();
+        $log["order_id"] = $order->order_id;
+        $log["content"] = $content;
+        $log["status"] = 0;
+        $dt = new DateTime();
+        $log["time"] = $dt->format('Y-m-d H:i:s');
+        $log->save();
+        return json(["message"=>"正在申请退款","code"=>200]);
+    }
+
+    public function finishOrder($id)
+    {
+        $order = OrderModel::where("order_id", $id)->find();
+        $order->order_state = 3;
+        $order->save();
+        return json(["message"=>"订单完成","code"=>200]);
+    }
+
     public function updateState($id, $state)
     {
         if ($id != null && $state != null) {
             $order = OrderModel::where("order_id", $id)->find();
+
             if ($order == null) {
-                return \json(['message' => '修改失败', "code" => 201, 'data' => null]);
+                return \json(['message' => '修改失败', "code" => 201, 'data' => $id]);
             }
-            $order->order_state = $state;
+            $query = $this->request->post();
+            if($query != null){
+                $order->order_state = $state;
+            }
+            if($state == 2 && $query != null) {
+                $log = new Logistics();
+                $log["order_id"] = $order->order_id;
+                $count = LogisticsModel::where("order_id",$order->order_id)->count();
+                $log["status"] = $count + 1;
+                $log["content"] = $query["logis"];
+                $dt = new DateTime();
+                $log["time"] = $dt->format('Y-m-d H:i:s');
+                $log->save();
+            } elseif ($query == null) {
+                $order->order_refund = $state;
+            }
             $order->save();
             return \json(['message' => 'ok', "code" => 200, 'data' => $order]);
         } else {
