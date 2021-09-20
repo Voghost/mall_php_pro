@@ -37,17 +37,23 @@
       <el-table-column prop="order_update_time" label="订单更新时间" width="200" sortable/>
       <el-table-column label="订单状态" width="120" sortable>
         <template slot-scope="scope">
-          <div v-if="scope.row.order_state===0">
+          <div v-if="scope.row.order_state===0 && scope.row.order_refund === 0">
             <i class="el-icon-upload2"/>已下单，未支付
           </div>
-          <div v-if="scope.row.order_state===1">
+          <div v-if="scope.row.order_state===1 && scope.row.order_refund === 0">
             <i class="el-icon-upload2"/>已支付, 待发货
           </div>
-          <div v-if="scope.row.order_state===2">
+          <div v-if="scope.row.order_state===2 && scope.row.order_refund === 0">
             {{ scope.row.latest }}
           </div>
-          <div v-if="scope.row.order_state===3">
+          <div v-if="scope.row.order_state===3 && scope.row.order_refund === 0">
             <i class="el-icon-s-flag"/>已完成
+          </div>
+          <div v-if="scope.row.order_refund===1">
+            <i class="el-icon-s-flag"/>申请退款，待审核
+          </div>
+          <div v-if="scope.row.order_refund===2">
+            <i class="el-icon-s-flag"/>已退款
           </div>
         </template>
       </el-table-column>
@@ -57,7 +63,7 @@
             type="primary"
             size="mini"
             icon="el-icon-truck"
-            v-if="scope.row.order_state===1"
+            v-if="scope.row.order_state===1 && scope.row.order_refund === 0"
             @click="newlog(scope.row.order_id)"
           >
             发货
@@ -66,7 +72,7 @@
             type="danger"
             size="mini"
             icon="el-icon-s-flag"
-            v-if="scope.row.order_state === 0"
+            v-if="scope.row.order_state === 0 && scope.row.order_refund === 0"
           >
             等待用户确认
           </el-button>
@@ -74,7 +80,7 @@
             type="success"
             size="mini"
             icon="el-icon-map-location"
-            v-if="scope.row.order_state === 2"
+            v-if="scope.row.order_state === 2 && scope.row.order_refund === 0"
             @click="newlog(scope.row.order_id)"
           >
             修改物流信息
@@ -83,27 +89,49 @@
             type="danger"
             size="mini"
             icon="el-icon-s-flag"
-            v-if="scope.row.order_state== 3"
+            v-if="scope.row.order_state === 3 && scope.row.order_refund === 0"
           >
-            已完成
+            已完成订单
           </el-button>
-
+          <el-button
+            type="success"
+            size="mini"
+            icon="el-icon-s-flag"
+            v-if="scope.row.order_refund === 1"
+            @click="audit(scope.row)"
+          >
+            审核
+          </el-button>
+          <el-button
+            type="danger"
+            size="mini"
+            icon="el-icon-s-flag"
+            v-if="scope.row.order_refund === 2"
+          >
+            已完成退款
+          </el-button>
           <el-dialog title="物流信息" :visible.sync="showLog">
             <el-form :inline="true" :label-position="'top'" class="demo-form-inline">
-<!--              <el-form-item label="修改物流">-->
-<!--                <el-dropdown :hide-on-click="false">-->
-<!--                  <el-dropdown-menu slot="dropdown">-->
-<!--                    <el-dropdown-item command="1">发货</el-dropdown-item>-->
-<!--                    <el-dropdown-item command="2">完成</el-dropdown-item>-->
-<!--                  </el-dropdown-menu>-->
-<!--                </el-dropdown>-->
-<!--              </el-form-item>-->
               <el-form-item label="添加物流信息">
                 <el-input v-model="currentLog.logis" placeholder="请输入当前物流状态" required style="width: 300px"></el-input>
               </el-form-item>
               <br>
               <el-form-item>
                 <el-button type="primary" @click="submitLog">提交</el-button>
+              </el-form-item>
+            </el-form>
+          </el-dialog>
+          <el-dialog title="退款信息" :visible.sync="showRef">
+            <el-form :inline="true" :label-position="'top'" class="demo-form-inline">
+              <el-form-item label="退款理由:">
+                {{ currentRef.order_refund_content}}
+              </el-form-item>
+              <br>
+              <el-form-item>
+                <el-button type="primary" @click="submitRef(currentRef.order_id, 2)">允许</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="submitRef(currentRef.order_id,0)">拒绝</el-button>
               </el-form-item>
             </el-form>
           </el-dialog>
@@ -166,7 +194,9 @@ export default {
       },
       Datevalue: '',
       showLog: false,
-      currentLog: {}
+      currentLog: {},
+      showRef: false,
+      currentRef: {}
     }
   },
   // 在渲染前运行
@@ -213,6 +243,24 @@ export default {
       this.searchObj.sortColumn = column.prop
       this.searchObj.sortType = column.order
       this.getList(1)
+    },
+    audit(data) {
+      this.showRef = true
+      this.currentRef = data
+    },
+    submitRef(id, state) {
+      this.changeOrderRefund(id, state)
+      this.showRef = false
+    },
+    changeOrderRefund(id, state) {
+      orderApi.updateState(id, state)
+        .then(res => {
+          console.log(res)
+          this.getList(this.current)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
