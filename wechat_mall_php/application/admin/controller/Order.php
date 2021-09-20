@@ -22,6 +22,26 @@ class Order extends Controller
 //        if (array_key_exists("sortColumn", $query) && array_key_exists("sortType", $query)) {
 //        }
 
+        if (array_key_exists("order_state", $query) && $query["order_state"] != 0) {
+            if($query["order_state"] == 1) {
+                $where[] = ["order_state", "=", 0];
+                $where[] = ["order_refund", "=", 0];
+            } else if($query["order_state"] == 2) {
+                $where[] = ["order_state", "=", 1];
+                $where[] = ["order_refund", "=", 0];
+            } else if($query["order_state"] == 3) {
+                $where[] = ["order_state", "=", 2];
+                $where[] = ["order_refund", "=", 0];
+            } else if($query["order_state"] == 4) {
+                $where[] = ["order_refund", "=", 1];
+            } else if($query["order_state"] == 5) {
+                $where[] = ["order_refund", "=", 2];
+            } else if($query["order_state"] == 6) {
+                $where[] = ["order_state", "=", 3];
+                $where[] = ["order_refund", "=", 0];
+            }
+        }
+
         $res = OrderModel::where($where);
 //        return json($query);
         $temp = null;

@@ -4,6 +4,16 @@
       <el-form-item label="订单编号">
         <el-input v-model="searchObj.order_number" placeholder="订单编号"/>
       </el-form-item>
+      <el-form-item label="订单状态">
+        <el-select v-model="searchObj.order_state" clearable placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-date-picker
         v-model="searchObj.Datevalue"
         type="daterange"
@@ -196,7 +206,27 @@ export default {
       showLog: false,
       currentLog: {},
       showRef: false,
-      currentRef: {}
+      currentRef: {},
+      options: [{
+        value: '1',
+        label: '待支付'
+      }, {
+        value: '2',
+        label: '待发货'
+      }, {
+        value: '3',
+        label: '待确认'
+      }, {
+        value: '4',
+        label: '待审批'
+      }, {
+        value: '5',
+        label: '已退款'
+      }, {
+        value: '6',
+        label: '已完成'
+      }],
+      value: ''
     }
   },
   // 在渲染前运行
