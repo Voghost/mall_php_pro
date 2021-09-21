@@ -20,4 +20,8 @@ class Index
         $res =$jwtUtil->jwtDecode("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2VjaGF0LW1hbGwuZ2hvdm9zLmNvbSIsImF1ZCI6Imh0dHBzOlwvXC93ZWNoYXQtbWFsbC5naG92b3MuY29tXC9hZG1pblwvbG9naW4iLCJpYXQiOjE2MjIzMDI3NDYsIm5iZiI6MTYyMjMwMjc0NiwiZXhwIjoxNjI0ODk0NzQ2LCJzdWIiOiJhZG1pbjc3ODgifQ.Yrk-dlLTAqOJbx_BAVXuN6E-hjtcVL0MyuYL6Uznv38");
         return json($res);
     }
+
+    public function testMd5(){
+        echo md5("admin7788");
+    }
 }
