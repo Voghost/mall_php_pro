@@ -44,6 +44,7 @@ const toLogin = () => {
  * @param {Number} status 请求失败的状态码
  */
 const errorHandle = (status, other) => {
+    console.log("error", status)
     switch (status) {
         case 401:
             toLogin();
@@ -91,7 +92,18 @@ instance.interceptors.request.use(
  * 响应拦截器
  */
 instance.interceptors.response.use(
-    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+    res => {
+        // console.log("res: " , res)
+        if (res.status === 200) {
+            // if(res.data.code !== 200){
+            //     tip("error");
+            // }
+            return Promise.resolve(res)
+        } else {
+            return Promise.reject(res);
+        }
+        // return res.status === 200 ? {Promise.resolve(res), console.log(res)} : Promise.reject(res);
+    },
     // 请求失败
     error => {
         const {response} = error;
@@ -109,5 +121,8 @@ instance.interceptors.response.use(
         }
     }
 );
+
+export default instance;
+
 
 
