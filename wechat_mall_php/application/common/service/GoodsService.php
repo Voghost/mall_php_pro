@@ -270,6 +270,7 @@ class GoodsService
                         "goods_price" => $priceAndStock["price"]
                     ]);
                     $contentStr = "";
+                    $contentArr = [];
                     for ($i = 0; $i < count($goodsInfo) - 1; $i++) {
                         $specValue = new SpecValue();
                         $collection = $specValue->where(["spec_value_id" => $goodsInfo[$i]["id"]])->find();
@@ -278,7 +279,16 @@ class GoodsService
                             "spec_value" => $collection["spec_value_id"],
                             "goods_info" => $insertGoodsInfo
                         ]);
-                        $contentStr .= $collection["spec_id"] . ":" . $collection["spec_value_id"] . ",";
+//                        $contentStr .= $collection["spec_id"] . ":" . $collection["spec_value_id"] . ",";
+                        array_push($contentArr, [
+                            "spec_key" => $collection["spec_id"],
+                            "spec_value" => $collection["spec_value_id"]
+                        ]);
+                    }
+                    $idArr = array_column($contentArr, 'spec_key');
+                    array_multisort($idArr, SORT_ASC, $contentArr);
+                    foreach ($contentArr as $content) {
+                        $contentStr .= $content["spec_key"] . ":" . $content["spec_value"] . ",";
                     }
 
                     $goodsInfoSaveContent = $goodsInfoModel->where(["info_id" => $insertGoodsInfo])->find();
