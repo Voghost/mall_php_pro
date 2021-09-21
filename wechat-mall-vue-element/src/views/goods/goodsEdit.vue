@@ -94,7 +94,7 @@
             </el-tab-pane>
             <el-tab-pane label="商品属性设置" name="second">
               <el-row>
-                <el-button @click="showSpecKey = true" v-if="!isEdit">
+                <el-button @click="showSpecKey = true" v-if="!isEdit || noneSpec">
                   选择商品需要的属性
                 </el-button>
               </el-row>
@@ -128,8 +128,10 @@
                         v-model="scope.row[scope.row.length-1]['price']"
                         size="small"
                         :min="0"
-                        :max="9999"
+                        :max="99999"
+                        :precision="2"
                         label="描述文字"
+                        @change="(curr, old) =>{scope.row[scope.row.length-1]['price'] = curr}"
                       ></el-input-number>
                     </template>
                   </el-table-column>
@@ -157,7 +159,7 @@
                         type="danger"
                         icon="el-icon-delete"
                         circle
-                        v-if="!isEdit"
+                        v-if="!isEdit || noneSpec"
                         @click="deleteTableRow(scop.$index, tableSpecMessage)"
                       ></el-button>
                     </template>
@@ -165,7 +167,11 @@
                 </el-table>
               </el-row>
               <el-row>
-                <el-button @click="showAddSpec = spec_key_val.length > 0" v-if="!isEdit">添加并设置商品属性值</el-button>
+                <el-button
+                  @click="showAddSpec = spec_key_val.length > 0"
+                  v-if="!isEdit || noneSpec"
+                >添加并设置商品属性值
+                </el-button>
               </el-row>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -263,6 +269,7 @@ export default {
   data() {
     return {
       isEdit: false,
+      noneSpec: false,
       fileList: [],
       baseUpdateUrl: 'http://mall.php.test/upload/file',
       catArr: [],
@@ -345,6 +352,9 @@ export default {
         .then(res => {
           this.res_spec_kv = res.data.resKey
           this.tableSpecMessage = res.data.tableArr
+          if (this.tableSpecMessage.length === 0) {
+            this.noneSpec = true
+          }
         })
         .catch(err => {
           console.log(err)
@@ -354,19 +364,49 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.goods.goodsCatThreeId = this.catArr[2]
-      this.goods.pics = this.fileList
-      this.goods.goodsInfo = this.tableSpecMessage
-      goodsApi.saveOrUpdateGoods(this.goods)
-        .then(res => {
-          console.log(res)
-          this.$router.push({
-            path: '/goodsManager/goodsList'
+      if (this.noneSpec || !this.isEdit) {
+        return this.$confirm('设置好的属性提交后将不能修改?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.goods.goodsCatThreeId = this.catArr[2]
+          this.goods.pics = this.fileList
+          this.goods.goodsInfo = this.tableSpecMessage
+          goodsApi.saveOrUpdateGoods(this.goods)
+            .then(res => {
+              console.log(res)
+              this.$router.push({
+                path: '/goodsManager/goodsList'
+              })
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+          this.reject(new Error('取消')).catch(err => {
+            console.log(err)
           })
         })
-        .catch(error => {
-          console.log(error)
-        })
+      } else {
+        this.goods.goodsCatThreeId = this.catArr[2]
+        this.goods.pics = this.fileList
+        this.goods.goodsInfo = this.tableSpecMessage
+        goodsApi.saveOrUpdateGoods(this.goods)
+          .then(res => {
+            console.log(res)
+            this.$router.push({
+              path: '/goodsManager/goodsList'
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     },
     changStep() {
       if (this.activeStep === 1 && this.activeName === 'first') {
