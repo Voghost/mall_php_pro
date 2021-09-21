@@ -2,6 +2,7 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
@@ -36,7 +37,7 @@ service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
-  */
+   */
 
   /**
    * Determine the request status by custom code
@@ -44,6 +45,14 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    // if (response.status !== 200) {
+    //   router.replace({
+    //     path: '/login',
+    //     query: {
+    //       redirect: router.currentRoute.fullPath
+    //     }
+    //   })
+    // }
     const res = response.data
 
     // console.log(res)

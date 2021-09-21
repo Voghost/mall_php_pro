@@ -7,6 +7,7 @@ import GoodsDetail from "@/views/GoodsDetail";
 import AllGoods from "@/views/AllGoods";
 import LoginRegister from "@/views/LoginRegister";
 import UserData from "@/components/UserData";
+import SettlementPage from "../views/SettlementPage";
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,10 @@ const routes = [
     {
         path: '/goodsDetail',
         component: GoodsDetail
+    },
+    {
+      path:'/settlementPage',
+      component:SettlementPage
     },
     {
         path: '/aboutMe',

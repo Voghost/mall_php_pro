@@ -185,5 +185,47 @@ class SpecService
         return ["tableArr" => $tableArr, "resKey" => $resKey];
     }
 
+    public function getSpecKvInfoByGoodsId($goodsId)
+    {
+        $goodsInfo = new GoodsInfo();
+        $specKeyValue = new SpecKeyValue();
+        $goodsInfos = $goodsInfo->where(["goods_id" => $goodsId])->select();
+
+
+        $specList = [];
+        $skuList = [];
+        $flag = true;
+        foreach ($goodsInfos as $goodsInfo) {
+            $select = $specKeyValue->where(["goods_info" => $goodsInfo["info_id"]])->select();
+
+            if ($flag) {
+                foreach ($select->toArray() as $item) {
+                    $specKeyModel = new SpecKey();
+                    $specKey = $specKeyModel->where(["spec_id" => $item["spec_key"]])->find();
+                    array_push($specList, [
+                        "id" => $item["spec_key"],
+                        "title" => $specKey["spec_name"],
+                        "list" => []
+                    ]);
+                }
+                $flag = false;
+            }
+            $skuTmp = [];
+            for ($index = 0; $index < count($select); $index++) {
+                $specValueModel = new SpecValue();
+                $specValue = $specValueModel->where(["spec_value_id" => $select[$index]["spec_value"]])->find();
+                $tmp = ["id" => $specValue["spec_value_id"], "content" => $specValue["spec_value"]];
+                array_push($skuTmp, $tmp);
+                if (!in_array($tmp, $specList[$index]["list"], true)) {
+                    array_push($specList[$index]["list"], $tmp);
+                }
+//                array_push($skuList[$index]["specs"], $tmp);
+            }
+            array_push($skuList, ["id" => $goodsInfo["info_id"], "specs" => $skuTmp]);
+            // 混合
+        }
+        return ["specList" => $specList, "skuList" => $skuList];
+    }
+
 
 }

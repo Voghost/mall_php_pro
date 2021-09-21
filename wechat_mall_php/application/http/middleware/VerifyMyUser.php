@@ -18,7 +18,7 @@ class VerifyMyUser
         // token 不存在 返回 201
         if (!isset($token) || $token == "" || $token == null) {
 //            return response()->content(["message" => "token不存在", "code" => 201, "data" => null]);
-            return json(["message" => "token不存在", "code" => 201, "data" => null]);
+            return json(["message" => "token不存在", "code" => 201, "data" => null], 403);
         }
         $jwtUtil = new JwtUtil();
         $res = $jwtUtil->jwtDecode($token);
@@ -28,10 +28,10 @@ class VerifyMyUser
         }
         $myUser = MyUserModel::where("user_name", $res["message"])->find();
         if (is_null($myUser) || !isset($myUser)) {
-            return json(["message" => "用户不存在", "code" => 201, "data" => null]);
+            return json(["message" => "用户不存在", "code" => 201, "data" => null], 403);
         }
         if ($myUser->user_token != $token) {
-            return json(["message" => "token失效", "code" => 201, "data" => null]);
+            return json(["message" => "token失效", "code" => 201, "data" => null], 403);
         }
         return $next($request);
 //        return json($myUser);

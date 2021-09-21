@@ -21,7 +21,7 @@
               <input type="checkbox"  :value="index" @click=checked() v-model="arr">
             </div>
             <div class="goods_img">
-              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}">
+              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}" target="_blank">
               <el-popover placement="right-start" title="" trigger="hover">
                   <img  :src="i.goods_big_logo" style="width:300px;height: 300px">
                 <img slot="reference" :src="i.goods_big_logo" class="image">
@@ -29,7 +29,7 @@
               </router-link>
             </div>
             <div class="goods_title">
-              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}"><p>{{i.goods_name}}</p></router-link>
+              <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}" target="_blank"><p>{{i.goods_name}}</p></router-link>
             </div>
             <div class="goods_introduce">
 
@@ -38,10 +38,10 @@
               <p>￥{{ i.price }}</p>
             </div>
             <div class="goods_num">
-              <el-input-number v-model="i.number" @change="handleChange(index,i.id,i.number)" :min="1" :max="999" label="描述文字"></el-input-number>
+              <el-input-number v-model="i.number" @change="handleChange(index,i.id,i.number)" :min="1" :max="99" label="描述文字"></el-input-number>
             </div>
             <div class="goods_total">
-              <p>￥{{ i.total }}</p>
+              <p>￥{{ i.total | numFilter}}</p>
             </div>
             <div class="operation">
               <p><el-button type="text" @click="deleteItem(i.id)">删除</el-button></p>
@@ -52,10 +52,15 @@
       <div class="cart_footer" >
         <el-row>
           <el-col :span="24">
-            <span style="width: 120px;margin-left: 1000px;margin-top:10px;display: block;float:left">已选商品<span style="color: red">{{this.arr.length}}</span>件</span>
-            <span style="width: 100px;margin-left: 20px;margin-top:10px;display: block;float: left">合计:<span style="color: red;">{{this.totalPrice}}</span></span>
-            <el-button type="danger" style="margin-right: 60px;float: right" @click="calculation()">结算</el-button>
-<!--            结算按钮-->
+            <router-link :to="{path:'/SettlementPage',
+            query:{
+              cart_id:cart_id
+            }}">
+              <el-button type="danger" style="margin-right: 60px;float: right" @click="calculation()">结算</el-button>
+            </router-link>
+            <span style="width: 150px;margin-top:10px;display: block;float: right">合计:<span style="color: red;">{{this.totalPrice | numFilter}}</span></span>
+            <span style="width: 120px;margin-top:10px;display: block;float:right">已选商品<span style="color: red">{{this.arr.length}}</span>件</span>
+
           </el-col>
         </el-row>
       </div>
@@ -79,6 +84,13 @@ export default {
       cart_id:[],
 
     };
+  },
+  filters: {
+    numFilter (value) {
+      // 截取当前数据到小数点后两位
+      let realVal = parseFloat(value).toFixed(2)
+      return realVal
+    }
   },
   methods: {
     getCartInfo(){
@@ -161,8 +173,12 @@ export default {
     },
     //结算时，获取购买商品的cart_id
     getCartId(){
+      if(this.cart_id.length>0)
+      {
+        this.cart_id=[];
+      }
       for(let index=0;index<this.arr.length;index++){
-        this.cart_id.push(this.items[this.arr[index]]['id'])
+        this.cart_id.push(this.items[this.arr[index]]['id']);
       }
     },
     calculation(){
@@ -181,7 +197,6 @@ export default {
         if (newValue !== oldValue) {
           this.TotalMoney()
           this.checked()
-          //this.getCartId()
         }
       }
     },
