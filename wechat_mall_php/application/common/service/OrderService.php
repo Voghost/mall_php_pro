@@ -33,7 +33,7 @@ class OrderService
 //            $countyName = $temp["countyName"];
 //            $detailInfo = $temp["detailInfo"];
 //            $address = $provinceName . $cityName . $countyName . $detailInfo . $userName . "电话:" . $telNumber . "邮政编码:" . $postalCode;
-            $address=$temp["address"];
+            $address = $temp["address"];
             $orders["order_address"] = $address;
         } else if ($postMap["address"] != null && $postMap["address"] != '') {
             // 如果是网页端的地址
@@ -123,14 +123,14 @@ class OrderService
     {
         $userId = $userTemp->user_id;
 
+
         $where["order_user_id"] = $userId;
-        if ($type != null && $refund != '') {
+        if ($type != null && $type != '') {
             $where["order_state"] = $type;
         }
         if ($refund != null && $refund != '') {
             $where["order_refund"] = $refund;
         }
-//        return json($where);
         $ordersList = \app\common\model\Orders::where($where)->select();
         if ($ordersList == null) {
             return json([
