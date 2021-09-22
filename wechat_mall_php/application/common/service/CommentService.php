@@ -95,6 +95,7 @@ class CommentService
             $comment["username"] = $users["user_name"];
 
         }
-        return $commentList;
+        $collection = $commentModel->where(["goods_id" => $goodsId])->select();
+        return ["content" => $commentList, "total" => count($collection), "page" => (int)$page];
     }
 }
