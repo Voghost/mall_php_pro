@@ -34,10 +34,11 @@
             >
             </el-table-column>
             <el-table-column
-                prop="goods_prices"
                 label="商品总价"
                 width="100"
-            >
+            ><template slot-scope="scope">
+              {{scope.row.all_prices=scope.row.goods_number*scope.row.goods_price}}
+            </template>
             </el-table-column>
             <el-table-column
                 prop="goods_state"
@@ -103,8 +104,8 @@ export default {
           goods_name: '你好',
           goods_price: 123,
           goods_number: 2,
-          goods_prices: 2 * 123,
-          goods_state: "配送中"
+          goods_prices: 0,
+          goods_state: "已完成"
         }]
       },
         {
@@ -116,7 +117,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         },
@@ -129,7 +130,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         },
@@ -142,7 +143,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         },
@@ -155,7 +156,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         },
@@ -168,7 +169,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         },
@@ -181,7 +182,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -193,7 +194,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -205,7 +206,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -217,7 +218,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -229,7 +230,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -241,7 +242,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -253,7 +254,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -265,7 +266,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -277,7 +278,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -289,7 +290,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -301,7 +302,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -313,7 +314,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -325,7 +326,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -337,7 +338,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -349,7 +350,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -361,7 +362,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -373,7 +374,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -385,7 +386,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -397,7 +398,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -409,7 +410,19 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
+            goods_state: "已完成"
+          }]
+        }, {
+          names: 'S201841413227',
+          date: '2016-05-03',
+          all_prices: 2 * 123,
+          goods: [{
+            goods_image: '王小虎',
+            goods_name: '你好',
+            goods_price: 123,
+            goods_number: 2,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -421,7 +434,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -433,7 +446,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -445,7 +458,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -457,7 +470,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -469,7 +482,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -481,7 +494,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -493,7 +506,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -505,7 +518,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }, {
@@ -517,19 +530,7 @@ export default {
             goods_name: '你好',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
-            goods_state: "配送中"
-          }]
-        }, {
-          names: 'S201841413227',
-          date: '2016-05-03',
-          all_prices: 2 * 123,
-          goods: [{
-            goods_image: '王小虎',
-            goods_name: '你好',
-            goods_price: 123,
-            goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         },
@@ -544,7 +545,7 @@ export default {
             goods_name: '20飞机杯一号',
             goods_price: 123,
             goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_prices: 0,
             goods_state: "配送中"
           }]
         }],

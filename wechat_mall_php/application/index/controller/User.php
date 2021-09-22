@@ -140,10 +140,13 @@ class User extends Controller
             if ($result['response'] == 1) {
                 return 1;
             } else {
-                json(($result['response'] . ":" . $result['err_msg']), 403);
+                json(($result['response'] . ":" . $result['err_msg']), 403)->send();
+                exit();
             }
         } else {
-            return ResultUtil::FAIL();
+            json(($result['response'] . ":" . $result['err_msg']), 403)->send();
+            exit();
+//            return ResultUtil::FAIL();
         }
 
 
