@@ -44,12 +44,11 @@ class Order extends Controller
 
         }
 
-
         return $this->orderService->createOrder($map, $userList);
     }
 
 
-    public function all($type)
+    public function all($type, $refund)
     {
         $userTemp = $this->checkUser();
 
@@ -61,10 +60,13 @@ class Order extends Controller
         return $this->orderService->allOrder($type, $userTemp);
     }
 
-    public function allOrder($type)
+    public function allOrder($type, $refund)
     {
+        var_dump($type);
+        var_dump($refund);
+
         $userTemp = $this->checkUser();
-        return $this->orderService->allOrder($type, $userTemp);
+        return $this->orderService->allOrder($type, $userTemp, $refund);
     }
 
     public function chkOrder()

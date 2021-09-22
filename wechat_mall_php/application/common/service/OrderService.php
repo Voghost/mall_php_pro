@@ -118,14 +118,18 @@ class OrderService
     }
 
 
-    public function allOrder($type, $userTemp)
+    public function allOrder($type, $userTemp, $refund = null)
     {
         $userId = $userTemp->user_id;
 
-        $where["order_user_id"] = [$userId];
-        if ($type != null) {
-            $where["order_state"] = [$type];
+        $where["order_user_id"] = $userId;
+        if ($type != null && $refund != '') {
+            $where["order_state"] = $type;
         }
+        if ($refund != null && $refund != '') {
+            $where["order_refund"] = $refund;
+        }
+        return json($where);
         $ordersList = \app\common\model\Orders::where($where)->select();
         if ($ordersList == null) {
             return json([
