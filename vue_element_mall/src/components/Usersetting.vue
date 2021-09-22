@@ -10,9 +10,9 @@
         <el-input v-model="userdata.user_name"></el-input>
       </el-form-item>
       <el-form-item label="用户性别">
-        <el-radio v-model="userdata.user_sex" label="1">男</el-radio>
-        <el-radio v-model="userdata.user_sex" label="2">女</el-radio>
-        <el-radio v-model="userdata.user_sex" label="3">隐藏</el-radio>
+        <el-radio v-model="userdata.user_sex" label="男">男</el-radio>
+        <el-radio v-model="userdata.user_sex" label="女">女</el-radio>
+        <el-radio v-model="userdata.user_sex" label="隐藏">隐藏</el-radio>
       </el-form-item>
       <el-form-item label="用户年龄">
         <el-input-number v-model="userdata.user_age"></el-input-number>
@@ -49,7 +49,7 @@ export default {
     this.userdata = this.$store.state.userInfo
     console.log(this.userdata)
   },
-  name: "Usersetting",
+  name: "UserSetting",
   components: {ImageUpload},
   data() {
     const checkPhone = (rule, value, callback) => {

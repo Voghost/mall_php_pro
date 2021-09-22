@@ -106,7 +106,7 @@ export default {
 
 .main_content {
   margin: 0 auto;
-  min-height: 700px;
+  min-height: 800px;
   width: 100%;
 }
 
@@ -119,7 +119,7 @@ export default {
 .main_box {
   margin: 10px auto;
   border: #7c7c7c solid 1px;
-  height: 700px;
+  height: 800px;
   width: 1480px;
 }
 
