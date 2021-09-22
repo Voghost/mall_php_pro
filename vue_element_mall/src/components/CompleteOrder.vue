@@ -4,8 +4,6 @@
         :data="list_info.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         style="width: 100%"
         default-expand-all>
-<!--      :row-key="getRowKeys"-->
-<!--      :expand-row-keys="expands"-->
       <el-table-column type="expand"> //type="expand" 带下层数据的字段
         <template scope="scope">
           <el-table class="demo-table-expand"
@@ -15,6 +13,7 @@
             <el-table-column
                 prop="goods.goods_image"
                 label="商品照片"
+                width="300"
             >
             </el-table-column>
             <el-table-column

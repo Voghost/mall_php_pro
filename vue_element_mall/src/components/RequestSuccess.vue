@@ -14,6 +14,7 @@
           <el-table-column
               prop="goods.goods_image"
               label="商品照片"
+              width="300"
           >
           </el-table-column>
           <el-table-column

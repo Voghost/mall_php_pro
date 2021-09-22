@@ -18,10 +18,13 @@
           <el-tab-pane label="账户信息修改" name="fourth">
             <el-tabs :tab-position="tabPosition2">
               <el-tab-pane label="基本信息修改">
-                <Usersetting></Usersetting>
+                <UserSetting></UserSetting>
               </el-tab-pane>
               <el-tab-pane label="快递地址修改">
                 <UserAddress></UserAddress>
+              </el-tab-pane>
+              <el-tab-pane label="登录密码修改">
+                <PasswordSetting></PasswordSetting>
               </el-tab-pane>
             </el-tabs>
           </el-tab-pane>
@@ -40,9 +43,10 @@ import LoginHeader from "../components/LoginHeader";
 import ThingTittle from "../components/ThingTittle";
 import UserData from "@/components/UserData";
 import ItemOrder from "../components/ItemOrder";
-import Usersetting from "@/components/Usersetting";
+import UserSetting from "@/components/UserSetting";
 import CartCard from "../components/CartCard";
-// import UserAddress from "@/components/UserAddress";
+import UserAddress from "@/components/UserAddress";
+import PasswordSetting from "@/components/PasswordSetting";
 
 export default {
   name: "AboutMe",
@@ -54,14 +58,15 @@ export default {
     };
   },
   components: {
-    //UserAddress,
+    UserAddress,
     ItemOrder,
     UserData,
     ThingTittle,
     LoginHeader,
     MallFooter,
-    Usersetting,
+    UserSetting,
     CartCard,
+    PasswordSetting
   },
   mounted() {
     let sk=this.$route.query.selectedTag;
