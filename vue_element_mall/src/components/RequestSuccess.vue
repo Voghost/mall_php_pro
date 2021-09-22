@@ -6,7 +6,7 @@
 <!--    :row-key="getRowKeys"-->
 <!--    :expand-row-keys="expands"-->
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
-      <template scope="scope">
+      <template slot-scope="scope">
         <el-table class="demo-table-expand"
                   :data="scope.row.goods"
                   border
@@ -14,6 +14,7 @@
           <el-table-column
               prop="goods.goods_image"
               label="商品照片"
+              width="300"
           >
           </el-table-column>
           <el-table-column

@@ -4,7 +4,7 @@
       style="width: 100%"
       default-expand-all>
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
-      <template scope="scope">
+      <template slot-scope="scope">
         <el-table class="demo-table-expand"
                   :data="scope.row.goods"
                   border
@@ -12,6 +12,7 @@
           <el-table-column
               prop="goods.goods_image"
               label="商品照片"
+              width="300"
           >
           </el-table-column>
           <el-table-column
@@ -47,12 +48,6 @@
               width="100"
               label="原因">
           </el-table-column>
-          <el-table-column align="center" label="操作" width="120">
-            <template scope="scope">
-              <el-button size="small" type="success" @click="Traces(scope.row)">与客服沟通
-              </el-button>
-            </template>
-          </el-table-column>
         </el-table>
       </template>
     </el-table-column>
@@ -69,11 +64,6 @@
 
 <script>
 export default {
-  methods: {
-    Traces(row) {
-      console.log(row)
-    }
-  },
   data() {
     return {
       dialogVisible: false,

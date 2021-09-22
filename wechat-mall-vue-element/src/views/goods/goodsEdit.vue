@@ -130,8 +130,8 @@
                         :min="0"
                         :max="99999"
                         :precision="2"
+                        :step="0.5"
                         label="描述文字"
-                        @change="(curr, old) =>{scope.row[scope.row.length-1]['price'] = curr}"
                       ></el-input-number>
                     </template>
                   </el-table-column>
