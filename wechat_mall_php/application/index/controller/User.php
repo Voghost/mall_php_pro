@@ -25,8 +25,12 @@ class User extends Controller
         $ticket = $this->request->post("ticket");
         $randStr = $this->request->post("randstr");
         $appId = $this->request->post("appid");
+//        return ResultUtil::FAIL();
 
-        if($this->check($ticket,$randStr,$appId) == 1){
+//        json("null", 403)->send();
+//        exit();
+
+        if ($this->check($ticket, $randStr, $appId) == 1) {
             $result = $this->userService->login($username, $password);
             if ($result != null) {
                 $jwtUtil = new JwtUtil();
@@ -34,10 +38,19 @@ class User extends Controller
                 $result["user_token"] = $jwtEncode;
                 $result->save();
 
-                $data = ["token" => $result["user_token"]];
-                return \json(["message" => "ok", "code" => 200, "data" => $data, "ok" => true]);
+                $userInfo = [
+                    "user_id" => $result["user_id"],
+                    "user_name" => $result["user_name"],
+                    "user_avatar" => $result["user_avatar"],
+                    "user_phone" => $result["user_phone"],
+                ];
+
+                $data = ["token" => $result["user_token"], "user_info" => $userInfo];
+                return ResultUtil::OK($data);
+//                return \json(["message" => "ok", "code" => 200, "data" => $data, "ok" => true]);
             } else {
-                return \json(["message" => "验证失败", "code" => 201, "data" => null]);
+                return ResultUtil::FAIL();
+//                return \json(["message" => "验证失败", "code" => 201, "data" => null]);
             }
             return $result;
         }
@@ -51,7 +64,8 @@ class User extends Controller
         $randStr = $this->request->post("randstr");
         $appId = $this->request->post("appid");
 
-        if($this->check($ticket,$randStr,$appId) == 1){
+
+        if ($this->check($ticket, $randStr, $appId) == 1) {
             $user = new Users();
             $user["user_name"] = $username;
             $user["user_password"] = md5($password);
@@ -73,7 +87,7 @@ class User extends Controller
         }
     }
 
-    public function check($ticket, $randStr,$appid)
+    public function check($ticket, $randStr, $appid)
     {
         $url = "https://ssl.captcha.qq.com/ticket/verify";
         $params = array(
@@ -85,19 +99,19 @@ class User extends Controller
 //            "UserIP" => "127.0.0.1"
         );
         $paramstring = http_build_query($params);
-        $content = $this->userService->txcurl($url,$paramstring);
+        $content = $this->userService->txcurl($url, $paramstring);
 
-        $result = json_decode($content,true);
+        $result = json_decode($content, true);
 //        json($result)->send();
 //        exit();
-        if($result){
-            if($result['response'] == 1){
+        if ($result) {
+            if ($result['response'] == 1) {
                 return 1;
-            }else{
-                echo $result['response'].":".$result['err_msg'];
+            } else {
+                json(($result['response'] . ":" . $result['err_msg']), 403);
             }
-        }else{
-
+        } else {
+            return ResultUtil::FAIL();
         }
 
 

@@ -15,7 +15,9 @@
             <el-input placeholder="请输入密码" v-model="form.userpwd" show-password></el-input>
             <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
-          <button class="bbutton" @click="handleGetCode" id="TencentCaptcha" data-appid="appId" data-cbfn="callback">登录</button>
+          <button class="bbutton" @click="handleGetCode" id="TencentCaptcha" data-appid="appId" data-cbfn="callback">
+            登录
+          </button>
         </div>
         <div class="big-contain" v-else>
           <div class="btitle">创建账户</div>
@@ -89,68 +91,6 @@ export default {
       this.form.userpwd = ''
       this.form.userrepwd = ''
     },
-    login() {
-      const self = this;
-      if (self.form.username != "" && self.form.userpwd != "") {
-        self.$axios({
-          method: 'post',
-          url: 'http://127.0.0.1:10520/api/user/login',
-          data: {
-            username: self.form.username,
-            password: self.form.userpwd
-          }
-        })
-            .then(res => {
-              switch (res.data) {
-                case 0:
-                  alert("登陆成功！");
-                  break;
-                case -1:
-                  this.userError = true;
-                  break;
-                case 1:
-                  this.passwordError = true;
-                  break;
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            })
-      } else {
-        alert("填写不能为空！");
-      }
-    },
-    register() {
-      const self = this;
-      if (self.form.username != "" && self.form.userpwd == self.form.userrepwd) {
-        self.$axios({
-          method: 'post',
-          url: 'http://127.0.0.1:10520/api/user/add',
-          data: {
-            username: self.form.username,
-            password: self.form.userpwd
-          }
-        })
-            .then(res => {
-              switch (res.data) {
-                case 0:
-                  alert("注册成功！");
-                  this.login();
-                  break;
-                case -1:
-                  this.existed = true;
-                  break;
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            })
-      } else if (self.form.username != "" && self.form.userpwd != self.form.userrepwd) {
-        alert("两次密码输入不相同！");
-      } else {
-        alert("填写不能为空");
-      }
-    },
     initCaptcha() {
       if (window.TencentCaptcha === undefined) {
         let script = document.createElement('script')
@@ -162,7 +102,7 @@ export default {
       }
     },
     handleGetCode() {
-      if (this.form.username != "" && this.form.userpwd != "") {
+      if (this.form.username !== "" && this.form.userpwd !== "") {
         let that = this
         var captcha = new window.TencentCaptcha(that.wallId, async response => {
           // console.log('response', response)
@@ -172,11 +112,14 @@ export default {
             temp.userpwd = this.form.userpwd
             userApi.loginAuth(temp)
                 .then(response => {
-                  console.log('response', response)
-                  if(response.data != null){
-                    self.$axios({
-                      method: 'post',
-                      url: 'http://localhost:8080/',
+                  // console.log('response', response.data)
+                  if (response.data != null) {
+                    console.log(response.data.message);
+                    // this.$store.dispatch("loginSuccess", response.data.message.token, response.data.message.user_info)
+                    this.$store.commit("SET_TOKEN", response.data.message.token)
+                    this.$store.commit("SET_USER_INFO", response.data.message.user_info)
+                    this.$router.push({
+                      path: "/"
                     })
                   } else {
                     alert("登陆失败")
@@ -212,7 +155,7 @@ export default {
             userApi.registerAuth(temp)
                 .then(response => {
                   console.log('response', response)
-                  if(response.data != null){
+                  if (response.data != null) {
                     self.$axios({
                       method: 'post',
                       url: 'http://localhost:8080/',
