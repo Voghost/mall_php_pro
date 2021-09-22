@@ -4,7 +4,7 @@
       style="width: 100%"
       default-expand-all>
     <el-table-column type="expand"> //type="expand" 带下层数据的字段
-      <template scope="scope">
+      <template slot-scope="scope">
         <el-table class="demo-table-expand"
                   :data="scope.row.goods"
                   border

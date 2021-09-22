@@ -10,7 +10,7 @@
           width="55">
       </el-table-column>
       <el-table-column type="expand">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-table class="demo-table-expand"
                     :data="scope.row.goods"
                     border
@@ -60,7 +60,7 @@
                        prop="order_create_time">
       </el-table-column>
       <el-table-column align="center" label="操作" width="120">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button size="small" type="success" @click="Payment(scope.row)">支付
           </el-button>
         </template>
@@ -88,7 +88,7 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    Payment(row){
+    Payment(row) {
       console.log(row)
     },
   },
@@ -105,7 +105,7 @@ export default {
           goods_number: 2,
           goods_prices: 2 * 123,
           goods_state: "待评价",
-          goods_id:123,
+          goods_id: 123,
         },
           {
             goods_image: '王小虎',
@@ -114,7 +114,7 @@ export default {
             goods_number: 2,
             goods_prices: 2 * 123,
             goods_state: "待评价",
-            goods_id:1234,
+            goods_id: 1234,
           }]
       },
         {
@@ -127,7 +127,7 @@ export default {
             goods_number: 2,
             goods_prices: 2 * 123,
             goods_state: "已完成",
-            goods_id:1235,
+            goods_id: 1235,
           }]
         }],
     }
