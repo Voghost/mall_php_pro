@@ -82,14 +82,18 @@ class CommentService
         $commentList = $comment->page($page, $limit)->select();
 
         $imageUrlModel = new ImageUrlModel();
+        $usersModel = new UserModel();
 
         foreach ($commentList as $comment) {
             $imageUrlList = $imageUrlModel->where(["f_id" => $comment["id"], "from" => 2])->select();
+            $users = $usersModel->where(["user_id" => $comment["user_id"]])->find();
             $pic = [];
             foreach ($imageUrlList as $image) {
                 array_push($pic, $image["url"]);
             }
             $comment["pics"] = $pic;
+            $comment["username"] = $users["user_name"];
+
         }
         return $commentList;
     }
