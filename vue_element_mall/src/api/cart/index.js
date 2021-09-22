@@ -18,5 +18,8 @@ export default {
     showCartItem($cart_id){
         return axios.post(`${BASE_URL}/cart/showCartItem?cart_id=${$cart_id}`)
     },
+    createOrder(){
+        return axios.post(`${BASE_URL}/order/create`)
+    }
 
 }

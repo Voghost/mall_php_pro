@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use app\common\utils\CheckUser;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
@@ -21,29 +22,33 @@ class Cart extends Controller
     }
     public function addItem(){
         $map=$this->request->post();
-        $user=$this->checkUser();
+        $user=CheckUser::checkUser($this->request);
         return $this->CartService->addCartItem($map,$user);
     }
     public function all(){
-        $userTemp=$this->checkUser();
-        //return $this->CartService->allCartItem($userTemp);
-        //测试用
-        return $this->CartService->allCartItem();
-    }
-    //
-    //结算页面展示购买的东西
-    public function showCartItem($cart_id=[]){
-        $userTemp=$this->checkUser();
 
+        $userTemp=CheckUser::checkUser($this->request);
+        return $this->CartService->allCartItem($userTemp);
+
+    }
+    //结算页面展示购买的东西
+    public function showCartItem($cart_id){
+        $userTemp=CheckUser::checkUser($this->request);
         $arr=[];
+        $temp='';
         for($i=0;$i<strlen($cart_id);$i++){
-            if(is_numeric($cart_id[$i])){
-                $arr[] = $cart_id[$i];
+            if(!is_numeric($cart_id[$i])){
+                $arr[] = $temp;
+                $temp="";
+            }else{
+                $temp.=$cart_id[$i];
+            }
+            if($i==(strlen($cart_id)-1)){
+                $arr[] = $temp;
+                $temp="";
             }
         }
-        // return $this->CartService->showConfirmCartItem($userTemp,$this->cart_id);
-        //测试用
-       return $this->CartService->showConfirmCartItem($arr);
+         return $this->CartService->showConfirmCartItem($userTemp,$arr);
     }
 
     public function changeNumber($id,$number){
@@ -54,24 +59,28 @@ class Cart extends Controller
         return ResultUtil::OK("修改成功");
     }
     public function deleteCartItem($id){
+        $userTemp=CheckUser::checkUser($this->request);
+        $userId=$userTemp->user_id;
         if ($id != null && $id != '') {
             $cart =new CartModel();
-            $cart->where(['id'=>$id])->delete();
-
+            $cart->where(['id'=>$id,"user_id"=>$userId])->delete();
+            return ResultUtil::OK("删除成功");
         }
-        return ResultUtil::OK("删除成功");
+
     }
     //查询用户
-    private function checkUser(){
-        $token = $this->request->header('Authorization');
-        // 查询是否存在用户
-        $userTemp = UsersModel::where("user_token", $token)->find();
-        if($userTemp == null){
-            json(["message" => "未找到用户","token" => $token])->send();
-            exit;
-        } else {
-            return $userTemp;
-        }
-    }
+//    private function checkUser(){
+//        $token = $this->request->header('Authorization');
+//        if($token!=null){
+//            $userTemp = UsersModel::where("user_token", $token)->find();
+//            if($userTemp == null){
+//                json(["message" => "未找到用户","token" => $token])->send();
+//                exit;
+//            } else {
+//                return $userTemp;
+//            }
+//        }
+//        // 查询是否存在用户
+//    }
 
 }

@@ -137,8 +137,7 @@ export default {
       })
     },
     getUsername(){
-      //获取用户id，待写
-      this.$api.address.getUsername(18).then(res=>{
+      this.$api.address.getUsername().then(res=>{
         this.username=res.data.data;
       }).catch(err=>{
         console.log(err);
@@ -156,7 +155,7 @@ export default {
       this.totalPrice=temp
     },
     submit(){
-      console.log(this.addresses[this.radio].address)
+      console.log(this.cart_id)
     }
 
   },
