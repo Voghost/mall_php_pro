@@ -3,10 +3,12 @@
 namespace app\index\controller;
 
 use app\common\model\Users;
+use app\common\model\Users as UsersModel;
 use app\common\utils\JwtUtil;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
+use think\Exception;
 
 class User extends Controller
 {
@@ -25,17 +27,14 @@ class User extends Controller
         $ticket = $this->request->post("ticket");
         $randStr = $this->request->post("randstr");
         $appId = $this->request->post("appid");
-//        return ResultUtil::FAIL();
-
-//        json("null", 403)->send();
-//        exit();
 
         if ($this->check($ticket, $randStr, $appId) == 1) {
             $result = $this->userService->login($username, $password);
             if ($result != null) {
                 $jwtUtil = new JwtUtil();
-                $jwtEncode = $jwtUtil->jwtEncode($result["user_name"]);
+                $jwtEncode = $jwtUtil->jwtEncode($result["user_id"]);
                 $result["user_token"] = $jwtEncode;
+                $result["user_last_login_time"] = date("Y-m-d H:i:s", time());;
                 $result->save();
 
                 $userInfo = [
@@ -43,6 +42,9 @@ class User extends Controller
                     "user_name" => $result["user_name"],
                     "user_avatar" => $result["user_avatar"],
                     "user_phone" => $result["user_phone"],
+                    "user_sex" => $result["user_sex"],
+                    "user_age" => $result["user_age"],
+                    "user_email" => $result["user_email"],
                 ];
 
                 $data = ["token" => $result["user_token"], "user_info" => $userInfo];
@@ -87,6 +89,36 @@ class User extends Controller
         }
     }
 
+
+    public function updateUser()
+    {
+        $user = $this->checkUser();
+        return json(["ok" => $user]);
+    }
+
+
+    private function checkUser()
+    {
+        // 解密token
+        $token = $this->request->header('Authorization');
+        try {
+            $jwtUtil = new JwtUtil();
+            $res = $jwtUtil->jwtDecode($token);
+        } catch (Exception $e) {
+            json(["message" => ["meta" => ["msg" => "error: token无效=> $e", "code" => 403]]])->send();
+            exit();
+        }
+
+        // 查询是否存在用户
+        $userTemp = UsersModel::where("user_id", $res["message"])->find();
+        if ($userTemp == null || $userTemp["user_id"] == null || $userTemp["user_is_active"] == false) {
+            json(["message" => ["meta" => ["msg" => "error: 鉴权失败", "code" => 403]]])->send();
+            exit();
+        } else {
+            return $userTemp;
+        }
+    }
+
     public function check($ticket, $randStr, $appid)
     {
         $url = "https://ssl.captcha.qq.com/ticket/verify";
@@ -119,4 +151,6 @@ class User extends Controller
 
         echo $content;
     }
+
+
 }

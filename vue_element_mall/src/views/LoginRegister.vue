@@ -113,7 +113,7 @@ export default {
             userApi.loginAuth(temp)
                 .then(response => {
                   // console.log('response', response.data)
-                  if (response.data != null) {
+                  if (response.data != null && response.data.meta.code === 200) {
                     console.log(response.data.message);
                     // this.$store.dispatch("loginSuccess", response.data.message.token, response.data.message.user_info)
                     this.$store.commit("SET_TOKEN", response.data.message.token)
