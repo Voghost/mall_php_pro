@@ -3,6 +3,7 @@
 namespace app\common\service;
 
 use app\common\model\Goods as GoodsModel;
+use app\common\model\GoodsInfo;
 use app\common\model\Orders as OrdersModel;
 use think\Db;
 use think\Model;
@@ -22,7 +23,7 @@ class OrderService
         $totalPrice = 0;
 
         $orders = new OrdersModel;
-        if ($postMap["consignee_addr"] != null) {
+        if (array_key_exists("consignee_addr", $postMap) && $postMap["consignee_addr"] != null) {
             $temp = $postMap["consignee_addr"];
             $userName = $temp["userName"];
             $telNumber = $temp["telNumber"];
@@ -33,6 +34,9 @@ class OrderService
             $detailInfo = $temp["detailInfo"];
             $address = $provinceName . $cityName . $countyName . $detailInfo . $userName . "电话:" . $telNumber . "邮政编码:" . $postalCode;
             $orders["order_address"] = $address;
+        } else if ($postMap["address"] != null && $postMap["address"] != '') {
+            // 如果是网页端的地址
+            $orders["order_address"] = $postMap["address"];
         }
         $orders->order_user_id = $user["user_id"];
         $orders->order_number = "Order" . time() . mt_rand(100, 999);
@@ -52,14 +56,47 @@ class OrderService
             } else if ($leftNumber == 0) {
                 $tempGoods->goods_state = 1;
             }
+
+            // 如果通过规格选商品
+            if (array_key_exists("info_id", $temp)) {
+                // 获取某种规格的库存
+                $goodsInfoModel = new GoodsInfo();
+                $goodsInfo = $goodsInfoModel->where(["info_id" => $temp["info_id"]])->find();
+                $leftGoodsInfoNum = $goodsInfo["goods_stock"] - $temp["goods_number"];
+                if ($leftGoodsInfoNum < 0) {
+                    return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
+                }
+                $goodsInfo->goods_stock = $leftGoodsInfoNum;
+                $totalPrice = $totalPrice + ($temp["goods_number"] * $goodsInfo["goods_price"]);
+                $goodsInfo->save();
+            } else {
+                $totalPrice = $totalPrice + ($temp["goods_number"] * $tempGoods["goods_price"]);
+            }
+
+
             $tempGoods->gooods_number = $leftNumber;
             $orders->order_goods_number = $temp["goods_number"];
             $ordersGoodsList[] = $orders;
-            $totalPrice = $totalPrice + ($temp["goods_number"] * $tempGoods["goods_price"]);
             $tempGoods->save();
 
-            // 设置关联表的额外属性 (设置与1号商品关联的中间表的属性)
-            $orders->goods()->attach($temp["goods_id"], ["order_goods_number" => $temp["goods_number"], "order_price" => $tempGoods["goods_price"]]);
+
+            // 如果存在goods_info
+            if (array_key_exists("info_id", $temp)) {
+                $goodsInfoModel = new GoodsInfo();
+                $goodsInfo = $goodsInfoModel->where(["info_id" => $temp["info_id"]])->find();
+                $orders->goods()->attach($temp["goods_id"], [
+                    "order_goods_number" => $temp["goods_number"],
+                    "order_price" => $goodsInfo["goods_price"],
+                    "order_goods_info" => $goodsInfo["info_id"]
+                ]);
+            } else {
+                // 设置关联表的额外属性 (设置与1号商品关联的中间表的属性)
+                $orders->goods()->attach($temp["goods_id"], [
+                    "order_goods_number" => $temp["goods_number"],
+                    "order_price" => $tempGoods["goods_price"]
+                ]);
+            }
+
         }
 
         $orders->order_user_id = $user->user_id;
@@ -106,7 +143,6 @@ class OrderService
         $ordersResult = array();
         for ($i = 0; $i < count($ordersList); $i++) {
 
-            
 
             $temp = array(
                 "order_id" => $ordersList[$i]->order_id,

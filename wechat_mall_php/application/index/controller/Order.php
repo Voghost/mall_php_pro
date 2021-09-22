@@ -3,6 +3,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\GoodsInfo;
 use app\common\model\Orders as OrdersModel;
 use app\common\model\Users as UsersModel;
 use app\common\utils\JwtUtil;
@@ -23,10 +24,30 @@ class Order extends Controller
 
     public function create()
     {
-        $map = $this->request->post();
         $userList = $this->checkUser();
+
+        $cartIdList = $this->request->post("ids");
+        $address = $this->request->post("address");
+        $cartModel = new \app\common\model\Cart();
+        $map["address"] = $address;
+        $map["goods"] = [];
+
+        foreach ($cartIdList as $cartId) {
+            $cart = $cartModel->where(["id" => $cartId])->find();
+            $goodsInfoModel = new GoodsInfo();
+            $goodsInfo = $goodsInfoModel->where(["info_id" => $cart["goods_info_id"]])->find();
+            array_push($map["goods"], [
+                "info_id" => $cart["goods_info_id"],
+                "goods_id" => $goodsInfo["goods_id"],
+                "goods_number" => $cart["number"],
+            ]);
+
+        }
+
+
         return $this->orderService->createOrder($map, $userList);
     }
+
 
     public function all($type)
     {
@@ -37,6 +58,12 @@ class Order extends Controller
         } else {
             $type = $type - 2;
         }
+        return $this->orderService->allOrder($type, $userTemp);
+    }
+
+    public function allOrder($type)
+    {
+        $userTemp = $this->checkUser();
         return $this->orderService->allOrder($type, $userTemp);
     }
 
@@ -119,14 +146,18 @@ class Order extends Controller
 
         // 查询是否存在用户
 //        $userTemp = UsersModel::where("user_openid", $res["message"])->find();
-        $userTemp = UsersModel::where("user_token", $token)->find();
-        if($userTemp == null){
-            json(["message" => "未找到用户","token" => $token])->send();
-            exit;
-        } else {
-            json(["message"=>"已找到用户"])->send();
-            return $userTemp;
+        if ($token != null) {
+            $userTemp = UsersModel::where("user_token", $token)->find();
+            if ($userTemp == null) {
+                json(["message" => "未找到用户", "token" => $token])->send();
+                exit;
+            } else {
+//            json(["message" => "已找到用户"])->send();
+                return $userTemp;
+            }
         }
+        json(["message" => "未找到用户", "token" => $token])->send();
+        exit;
 //        if ($userTemp == null || $userTemp["user_id"] == null || $userTemp["user_is_active"] == false) {
 //            json(["message" => ["meta" => ["msg" => "error: 鉴权失败", "code" => 403]]])->send();
 //            exit();
