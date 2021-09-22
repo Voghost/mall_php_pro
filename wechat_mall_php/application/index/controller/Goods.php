@@ -3,6 +3,8 @@
 namespace app\index\controller;
 
 use app\common\model\ImageUrl as ImageUrlModel;
+use app\common\model\Comment as CommentModel;
+use app\common\model\Users as UserModel;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
@@ -51,6 +53,12 @@ class Goods extends Controller
         $imageUrlModel = new ImageUrlModel();
         $imageUrls = $imageUrlModel->where(["from" => 1, "f_id" => $goodsDetail["goods_id"]])->select();
         $pics = [];
+//        $commentlist = CommentModel::where("goods_id",$id)->select();
+//        for($i = 0;$i < count($commentlist);$i++){
+//            $temp = UserModel::where("user_id",$commentlist[$i]["user_id"])->column("user_name");
+//            $commentlist[$i]["user_name"] = $temp[0];
+//        }
+//        $goodsDetail["comment"] = $commentlist;
         foreach ($imageUrls as $image) {
 
             array_push($pics, $image["url"]);
@@ -58,5 +66,4 @@ class Goods extends Controller
         $goodsDetail["pic"] = $pics;
         return ResultUtil::OK($goodsDetail);
     }
-
 }

@@ -21,6 +21,7 @@ class Cart extends Controller
     }
     public function addItem(){
         $map=$this->request->post();
+//        return json($map);
         $user=$this->checkUser();
         return $this->CartService->addCartItem($map,$user);
     }

@@ -47,7 +47,6 @@ class User extends Controller
         }
 
     }
-
     public function getUserById()
     {
         $query = $this->request->post();
@@ -55,5 +54,6 @@ class User extends Controller
         $user = $users->where(["user_id"=> $query["user_id"]])->column("username");
         return json($user);
     }
+
 
 }
