@@ -228,4 +228,22 @@ class SpecService
     }
 
 
+    public function getSpecKvByInfoId($id)
+    {
+        $specKeyValueModel = new SpecKeyValue();
+        $specKeyValues = $specKeyValueModel->where(["goods_info" => $id])->select();
+        $arr = [];
+        foreach ($specKeyValues as $specKv) {
+            $specKeyModel = new SpecKey();
+            $specValueModel = new SpecValue();
+            $specKey = $specKeyModel->where(["spec_id" => $specKv["spec_key"]])->find();
+            $specValue = $specValueModel->where(["spec_value_id" => $specKv["spec_value"]])->find();
+            array_push($arr, ["key" => $specKey, "value" => $specValue]);
+        }
+
+        return $arr;
+
+    }
+
+
 }

@@ -54,8 +54,8 @@ class User extends Controller
                 return ResultUtil::FAIL();
 //                return \json(["message" => "验证失败", "code" => 201, "data" => null]);
             }
-            return $result;
         }
+        return ResultUtil::FAIL();
     }
 
     public function registerAuthen()

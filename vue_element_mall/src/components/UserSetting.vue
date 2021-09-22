@@ -7,21 +7,21 @@
              :rules="rules"
              label-position="top">
       <el-form-item label="用户名字" required>
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model="form.user_name"></el-input>
       </el-form-item>
       <el-form-item label="用户性别">
-        <el-radio v-model="form.sex" label="1">男</el-radio>
-        <el-radio v-model="form.sex" label="2">女</el-radio>
-        <el-radio v-model="form.sex" label="3">隐藏</el-radio>
+        <el-radio v-model="form.user_sex" label="1">男</el-radio>
+        <el-radio v-model="form.user_sex" label="2">女</el-radio>
+        <el-radio v-model="form.user_sex" label="3">隐藏</el-radio>
       </el-form-item>
       <el-form-item label="用户年龄">
-        <el-input-number v-model="form.age"></el-input-number>
+        <el-input-number v-model="form.user_age"></el-input-number>
       </el-form-item>
       <el-form-item label="用户邮箱" prop="userEmail">
-        <el-input v-model="form.userEmail"></el-input>
+        <el-input v-model="form.user_email"></el-input>
       </el-form-item>
       <el-form-item label="用户电话" prop="userPhone">
-        <el-input v-model="form.userPhone"></el-input>
+        <el-input v-model="form.user_phone"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="Onsubmit('form')">修改完成</el-button>
@@ -43,11 +43,12 @@ input[type="file"] {
 <script>
 
 import ImageUpload from "@/components/ImageUpload";
+
 export default {
   name: "Usersetting",
   components: {ImageUpload},
   data() {
-      const  checkPhone = (rule, value, callback) => {
+    const checkPhone = (rule, value, callback) => {
       const phoneReg = /^1[3-8][0-9]{9}$/
       if (!value) {
         return callback(new Error('电话号码不能为空'))
@@ -81,11 +82,11 @@ export default {
       dialogTableVisible: false,
       baseUpdateUrl: 'http://mall.php.test/upload/file',
       form: {
-        name: '',
-        sex: '3',
-        age: '18',
-        userEmail: '请填写邮箱地址',
-        userPhone: '请填写可使用的手机号码',
+        // name: '',
+        // sex: '3',
+        // age: '18',
+        // userEmail: '请填写邮箱地址',
+        // userPhone: '请填写可使用的手机号码',
       },
       rules: {
         userEmail: [
@@ -108,8 +109,12 @@ export default {
           this.$refs[form].resetFields();
           this.form.imageUrl = '';
         },
-      }
+      },
     }
+  },
+  created() {
+    this.form = this.$store.state.userInfo;
+    console.log("form", this.form)
   }
 }
 </script>

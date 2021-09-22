@@ -36,4 +36,11 @@ class Spec extends Controller
         return ResultUtil::OK($goodsInfo);
     }
 
+
+    public function getKVByInfoId($id)
+    {
+        $KVByInfoId = $this->specService->getSpecKvByInfoId($id);
+        return ResultUtil::OK($KVByInfoId);
+    }
+
 }
