@@ -8,7 +8,10 @@
         </el-col>
         <div class="demo-basic--circle" style="float: left;padding: 40px">
           <div class="block">
-            <el-avatar :size="250" :src="circleUrl" style="display: block"></el-avatar>
+            <el-avatar
+                :size="250" icon="el-icon-user-solid"
+                :src="userdata.user_avatar"
+                style="display: block"></el-avatar>
           </div>
         </div>
       </el-col>
@@ -26,9 +29,9 @@
         <el-descriptions-item label="用户电话">
           <el-tag class="text">{{ this.userdata.user_phone }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="快递地址">
-          <el-tag class="text">{{ this.userdata.user_address_default }}</el-tag>
-        </el-descriptions-item>
+        <!--        <el-descriptions-item label="快递地址">-->
+        <!--          <el-tag class="text">{{ this.userdata.user_address_default }}</el-tag>-->
+        <!--        </el-descriptions-item>-->
       </el-descriptions>
     </div>
     <el-link href="/AboutMe?selectedTag=4" class="el-button"
@@ -43,15 +46,19 @@ export default {
   data() {
     return {
       userdata: {
-        user_email: '123456789@qq.com',
-        user_phone: '123456789',
-        user_name: '王小虎',
-        user_sex: '男',
-        user_address_default: 'xxxxxxxxxxx',
-        user_age: '18'
+        // user_email: '123456789@qq.com',
+        // user_phone: '123456789',
+        // user_name: '王小虎',
+        // user_sex: '男',
+        // user_address_default: 'xxxxxxxxxxx',
+        // user_age: '18'
       },
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
     }
+  },
+  created() {
+    this.userdata = this.$store.state.userInfo
+    console.log(this.userdata)
   }
 }
 </script>
