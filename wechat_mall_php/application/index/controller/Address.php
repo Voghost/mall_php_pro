@@ -35,12 +35,14 @@ class Address extends Controller
         return json(["message"=>"删除成功"]);
     }
 
-    public function add($id) {
+    public function add() {
         $query = $this->request->post();
+        $userTemp=CheckUser::checkUser($this->request);
+        $userId=$userTemp->user_id;
         $temp = new \app\common\model\UserAddress();
         $temp->address = $query["address"];
         $temp->phone = $query["phone"];
-        $temp->user_id = $id;
+        $temp->user_id = $userId;
         $temp->save();
         return json(["message"=>"添加成功"]);
     }
