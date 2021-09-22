@@ -1,14 +1,15 @@
-import base from "@/api/base";
-import axios from "axios";
+import base from "../../api/base";
+import axios from "../../utils/http";
+
 
 
 const BASE_URL = base.baseRequestUrl + "/index";
 
 export default {
-    getAddress($id){
-        return axios.post(`${BASE_URL}/Address/getById?id=${$id}`)
+    getAddress(){
+        return axios.post(`${BASE_URL}/Address/getById`)
     },
-    getUsername($id){
-        return axios.post(`${BASE_URL}/Address/getUsernameById?id=${$id}`)
+    getUsername(){
+        return axios.post(`${BASE_URL}/Address/getUsernameById`)
     }
 }

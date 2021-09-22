@@ -43,10 +43,11 @@ import MallFooter from "../components/MallFooter";
 import ThingTittle from "../components/ThingTittle";
 import UserData from "@/components/UserData";
 import ItemOrder from "../components/ItemOrder";
-import UserSetting from "@/components/UserSetting";
 import CartCard from "../components/CartCard";
 import UserAddress from "@/components/UserAddress";
 import MallHeader from "@/components/MallHeader";
+import UserSetting from "../components/Usersetting";
+
 // import PasswordSetting from "@/components/PasswordSetting";
 
 export default {
@@ -119,7 +120,7 @@ export default {
   margin: 10px auto;
   border: #7c7c7c solid 1px;
   height: 700px;
-  width: 1380px;
+  width: 1480px;
 }
 
 

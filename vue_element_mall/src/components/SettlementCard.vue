@@ -8,9 +8,9 @@
         </el-col>
       </el-row>
       <div class="address">
-        <el-radio-group v-model="radio" v-for="(i,index) in address" :key="i.id" >
+        <el-radio-group v-model="radio" v-for="(i,index) in addresses" :key="i.id" >
           <div class="address_item">
-            <el-radio :label="index">{{ i.address }} ({{username}} {{i.phone}})</el-radio>
+            <el-radio :label="index" @change="radioChange()">{{ i.address }} ({{username}} {{i.phone}})</el-radio>
           </div>
         </el-radio-group>
       </div>
@@ -41,14 +41,14 @@
             <p>{{ i.goods_name }}</p>
           </div>
           <div class="goods_introduce">
-
+            <p>{{i.spec}}</p>
           </div>
           <div class="goods_price">
             <p>￥{{i.price |numFilter}}</p>
           </div>
           <div class="goods_num">{{ i.number }}</div>
           <div class="goods_total">
-            <p>￥{{ i.total }}</p>
+            <p>￥{{ i.total |numFilter}}</p>
           </div>
         </el-card>
       </el-col>
@@ -62,11 +62,11 @@
                 <p class="total_title">实付款：</p>
               </div>
               <div class="final_address">
-                <span class="user_address">{{address[radio].address}}</span>
+                <span class="user_address">{{finalAddress}}</span>
                 <p class="user_address_title">寄送至：</p>
               </div>
               <div class="user">
-                <span class="user_info">{{username}} {{address[radio].phone}}</span>
+                <span class="user_info">{{username}} {{finalPhone}}</span>
                 <p class="user_title">收货人：</p>
               </div>
             </div>
@@ -90,10 +90,11 @@ export default {
     return{
       radio:0,
       items:[],
-      address:[],
+      addresses:[],
       username:'',
       totalPrice:0,
-
+      finalAddress:'',
+      finalPhone:''
     }
   },
   filters: {
@@ -107,6 +108,18 @@ export default {
     getCartItem(data){
       this.$api.cart.showCartItem(data).then(res=>{
             this.items=res.data.message;
+        //获取商品规格
+        for(let i=0;i<this.items.length;i++){
+          this.$api.goods.getKVByInfoId(this.items[i]['goods_info_id']).then(res=>{
+            this.goods_info=res.data.message
+            let ItemSpec=''
+            for(let i=0;i<this.goods_info.length;i++){
+              ItemSpec+=this.goods_info[i]['key']['spec_name']+':'
+              ItemSpec+=this.goods_info[i]['value']['spec_value']+'  '
+            }
+            this.$set(this.items[i],'spec',ItemSpec)
+          })
+        }
             this.getTotalPrice()
           })
           .catch(err=>{
@@ -114,9 +127,10 @@ export default {
           })
     },
     getAddressInfo(){
-      //获取用户id，待写
-      this.$api.address.getAddress(18).then(res=>{
-        this.address=res.data.data;
+      this.$api.address.getAddress().then(res=>{
+        this.addresses=res.data.data;
+        this.finalAddress=this.addresses[0].address
+        this.finalPhone=this.addresses[0].phone
           })
       .catch(err=>{
         console.log(err);
@@ -130,6 +144,10 @@ export default {
         console.log(err);
       })
     },
+    radioChange(){
+      this.finalAddress=this.addresses[this.radio].address
+      this.finalPhone=this.addresses[this.radio].phone
+    },
     getTotalPrice(){
       let temp=0;
       for(let i=0;i<this.items.length;i++){
@@ -138,7 +156,7 @@ export default {
       this.totalPrice=temp
     },
     submit(){
-      console.log(this.address[this.radio].id)
+      console.log(this.addresses[this.radio].address)
     }
 
   },
@@ -223,10 +241,14 @@ export default {
 .goods_introduce{
   height: 120px;
   width: 230px;
-
   float: left;
   margin-top: 20px;
   margin-left: 10px;
+}
+.goods_introduce p{
+  display: block;
+  font-size: 15px;
+  font-family: "Microsoft YaHei";
 }
 .goods_price{
   height: 120px;

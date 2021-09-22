@@ -28,11 +28,12 @@ class OrderService
             $userName = $temp["userName"];
             $telNumber = $temp["telNumber"];
             $postalCode = $temp["postalCode"];
-            $provinceName = $temp["provinceName"];
-            $cityName = $temp["cityName"];
-            $countyName = $temp["countyName"];
-            $detailInfo = $temp["detailInfo"];
-            $address = $provinceName . $cityName . $countyName . $detailInfo . $userName . "电话:" . $telNumber . "邮政编码:" . $postalCode;
+//            $provinceName = $temp["provinceName"];
+//            $cityName = $temp["cityName"];
+//            $countyName = $temp["countyName"];
+//            $detailInfo = $temp["detailInfo"];
+//            $address = $provinceName . $cityName . $countyName . $detailInfo . $userName . "电话:" . $telNumber . "邮政编码:" . $postalCode;
+            $address=$temp["address"];
             $orders["order_address"] = $address;
         } else if ($postMap["address"] != null && $postMap["address"] != '') {
             // 如果是网页端的地址

@@ -1,5 +1,5 @@
-import base from "@/api/base";
-import axios from "axios";
+import base from "../../api/base";
+import axios from "../../utils/http";
 
 
 const BASE_URL = base.baseRequestUrl + "/index";

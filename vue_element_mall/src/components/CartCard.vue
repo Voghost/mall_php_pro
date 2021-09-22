@@ -1,6 +1,5 @@
 <template>
   <el-container>
-
     <div class="cart_item">
       <div class="cart_nav">
         <el-row>
@@ -32,7 +31,7 @@
               <router-link :to="{path:'/goodsDetail',query:{goods_id:i.goods_id,}}" target="_blank"><p>{{i.goods_name}}</p></router-link>
             </div>
             <div class="goods_introduce">
-
+              <p>{{ i.spec }}</p>
             </div>
             <div class="goods_price">
               <p>￥{{ i.price }}</p>
@@ -80,10 +79,12 @@ export default {
       allCheck:false,
       totalPrice:0,
       items:[],
+      goods_info:[],
       arr: [],
       cart_id:[],
       button:true,
       url:'/AboutMe?selectedTag=2',
+
     };
   },
   filters: {
@@ -93,11 +94,25 @@ export default {
       return realVal
     }
   },
+  inject:['reload'],
   methods: {
     getCartInfo(){
       this.$api.cart.allCartItem()
       .then(res=>{
         this.items=res.data.message;
+        //获取商品规格
+        for(let i=0;i<this.items.length;i++){
+          this.$api.goods.getKVByInfoId(this.items[i]['goods_info_id']).then(res=>{
+            this.goods_info=res.data.message
+            let ItemSpec=''
+            for(let i=0;i<this.goods_info.length;i++){
+              ItemSpec+=this.goods_info[i]['key']['spec_name']+':'
+              ItemSpec+=this.goods_info[i]['value']['spec_value']+'  '
+            }
+            this.$set(this.items[i],'spec',ItemSpec)
+
+          })
+        }
       })
       .catch(err=>{
         console.log(err);
@@ -117,12 +132,17 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$api.cart.deleteCartItem(id)
-        this.getCartInfo()
+
+        this.reload()
         this.$message({
           type: 'success',
           message: '删除成功!',
         });
-      }).catch(() => {
+        this.$router.push({
+          path:'/AboutMe?selectedTag=2'
+        })
+      })
+          .catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
@@ -201,13 +221,13 @@ export default {
         this.getCartId()
         console.log(this.cart_id)
       }
-    }
-
+    },
   },
   created() {
     this.getCartInfo()
     this.TotalMoney()
   },
+
   watch:{
     'arr.length': {
       handler(newValue, oldValue) {
@@ -218,7 +238,6 @@ export default {
         }
       }
     },
-
 
   }
 }
@@ -277,10 +296,14 @@ export default {
 .goods_introduce{
   height: 120px;
   width: 230px;
-
   float: left;
   margin-top: 20px;
   margin-left: 10px;
+}
+.goods_introduce p{
+  display: block;
+  font-size: 15px;
+  font-family: "Microsoft YaHei";
 }
 .goods_price{
   height: 120px;
