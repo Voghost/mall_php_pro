@@ -46,7 +46,7 @@ import ItemOrder from "../components/ItemOrder";
 import UserSetting from "@/components/UserSetting";
 import CartCard from "../components/CartCard";
 import UserAddress from "@/components/UserAddress";
-import PasswordSetting from "@/components/PasswordSetting";
+//import PasswordSetting from "@/components/PasswordSetting";
 
 export default {
   name: "AboutMe",
@@ -66,7 +66,7 @@ export default {
     MallFooter,
     UserSetting,
     CartCard,
-    PasswordSetting
+    //PasswordSetting
   },
   mounted() {
     let sk=this.$route.query.selectedTag;

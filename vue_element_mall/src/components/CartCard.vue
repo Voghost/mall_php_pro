@@ -52,11 +52,11 @@
       <div class="cart_footer" >
         <el-row>
           <el-col :span="24">
-            <router-link :to="{path:'/SettlementPage',
+            <router-link :to="{path:this.url,
             query:{
               cart_id:cart_id
             }}">
-              <el-button type="danger" style="margin-right: 60px;float: right" @click="calculation()">结算</el-button>
+              <el-button type="danger" style="margin-right: 60px;float: right" @click="calculation()" :disabled="button">结算</el-button>
             </router-link>
             <span style="width: 150px;margin-top:10px;display: block;float: right">合计:<span style="color: red;">{{this.totalPrice | numFilter}}</span></span>
             <span style="width: 120px;margin-top:10px;display: block;float:right">已选商品<span style="color: red">{{this.arr.length}}</span>件</span>
@@ -82,7 +82,8 @@ export default {
       items:[],
       arr: [],
       cart_id:[],
-
+      button:true,
+      url:'/AboutMe?selectedTag=2',
     };
   },
   filters: {
@@ -133,6 +134,15 @@ export default {
       if(this.items.length>this.arr.length)
       {
         this.allCheck=false
+        if(this.arr.length>0) {
+          this.button = false
+          this.url="/SettlementPage"
+        }
+        else
+        {
+          this.button=true
+          this.url="/AboutMe?selectedTag=2"
+        }
       }
       if(this.items.length===this.arr.length)
       {
@@ -149,9 +159,14 @@ export default {
           this.arr.push(index)
         }
         this.allCheck=true
-      } else {
+        this.button=false
+        this.url="/SettlementPage"
+      }
+      else {
         this.arr = [];
         this.allCheck=false
+        this.button=true
+        this.url="/AboutMe?selectedTag=2"
       }
       this.TotalMoney()
     },
@@ -182,8 +197,10 @@ export default {
       }
     },
     calculation(){
-      this.getCartId()
-      console.log(this.cart_id)
+      if(this.button===false){
+        this.getCartId()
+        console.log(this.cart_id)
+      }
     }
 
   },
@@ -197,6 +214,7 @@ export default {
         if (newValue !== oldValue) {
           this.TotalMoney()
           this.checked()
+          this.calculation()
         }
       }
     },

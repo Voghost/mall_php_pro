@@ -3,9 +3,11 @@
 
 namespace app\index\controller;
 
+use app\common\model\UserAddress as AddressModel;
+use app\common\model\Users as UserModel;
 use think\Controller;
 
-class UserAddress extends Controller
+class Address extends Controller
 {
 
     public function all()
@@ -15,9 +17,12 @@ class UserAddress extends Controller
     }
 
     public function getById($id) {
-        $list = AddressModel::where("user_id", $id)->select();
-
+        $list= AddressModel::where("user_id", $id)->select();
         return json(["message"=>"获取成功","code"=>200,"data"=>$list]);
+    }
+    public function getUsernameById($id){
+        $username=UserModel::where("user_id",$id)->value("user_name");
+        return json(["message"=>"获取成功","code"=>200,"data"=>$username]);
     }
 
     public function delete($id) {

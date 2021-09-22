@@ -8,17 +8,10 @@
         </el-col>
       </el-row>
       <div class="address">
-        <el-radio-group v-model="radio" >
+        <el-radio-group v-model="radio" v-for="(i,index) in address" :key="i.id" >
           <div class="address_item">
-            <el-radio :label="3">备选项</el-radio>
+            <el-radio :label="index">{{ i.address }} ({{username}} {{i.phone}})</el-radio>
           </div>
-          <div class="address_item">
-            <el-radio :label="6">备选项</el-radio>
-          </div>
-          <div class="address_item">
-            <el-radio :label="9">备选项</el-radio>
-          </div>
-
         </el-radio-group>
       </div>
     </div>
@@ -51,7 +44,7 @@
 
           </div>
           <div class="goods_price">
-            <p>￥{{i.price}}</p>
+            <p>￥{{i.price |numFilter}}</p>
           </div>
           <div class="goods_num">{{ i.number }}</div>
           <div class="goods_total">
@@ -65,20 +58,20 @@
           <el-col :span="24">
             <div class="panel">
               <div class="total">
-                <span class="total_price">￥66666</span>
+                <span class="total_price">￥{{ totalPrice |numFilter}}</span>
                 <p class="total_title">实付款：</p>
               </div>
               <div class="final_address">
-                <span class="user_address">广东省 东莞市 松山湖管委会 大学路1号东莞理工学院松山湖校区小麦公社</span>
+                <span class="user_address">{{address[radio].address}}</span>
                 <p class="user_address_title">寄送至：</p>
               </div>
               <div class="user">
-                <span class="user_info">梁伟舜 13539456252</span>
+                <span class="user_info">{{username}} {{address[radio].phone}}</span>
                 <p class="user_title">收货人：</p>
               </div>
             </div>
             <div class="submit_button">
-              <el-button type="danger" >提交订单</el-button>
+              <el-button type="danger" @click="submit()">提交订单</el-button>
             </div>
             <div class="return_card">
               <el-link :underline="false" type="primary" icon="el-icon-back" href="/AboutMe?selectedTag=2">返回购物车</el-link>
@@ -95,26 +88,67 @@ export default {
   name: "SettlementCard",
   data(){
     return{
-      radio:3,
+      radio:0,
       items:[],
+      address:[],
+      username:'',
+      totalPrice:0,
 
+    }
+  },
+  filters: {
+    numFilter (value) {
+      // 截取当前数据到小数点后两位
+      let realVal = parseFloat(value).toFixed(2)
+      return realVal
     }
   },
   methods:{
     getCartItem(data){
       this.$api.cart.showCartItem(data).then(res=>{
             this.items=res.data.message;
+            this.getTotalPrice()
           })
           .catch(err=>{
             console.log(err);
           })
     },
+    getAddressInfo(){
+      //获取用户id，待写
+      this.$api.address.getAddress(18).then(res=>{
+        this.address=res.data.data;
+          })
+      .catch(err=>{
+        console.log(err);
+      })
+    },
+    getUsername(){
+      //获取用户id，待写
+      this.$api.address.getUsername(18).then(res=>{
+        this.username=res.data.data;
+      }).catch(err=>{
+        console.log(err);
+      })
+    },
+    getTotalPrice(){
+      let temp=0;
+      for(let i=0;i<this.items.length;i++){
+        temp+=this.items[i].total
+      }
+      this.totalPrice=temp
+    },
+    submit(){
+      console.log(this.address[this.radio].id)
+    }
+
   },
   props:[
     'cart_id',
   ],
   created() {
     this.getCartItem(this.cart_id)
+    this.getAddressInfo()
+    this.getUsername()
   }
 }
 </script>

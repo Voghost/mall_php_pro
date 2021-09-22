@@ -34,14 +34,15 @@ class Cart extends Controller
     //结算页面展示购买的东西
     public function showCartItem($cart_id=[]){
         $userTemp=$this->checkUser();
-       // return $this->CartService->showConfirmCartItem($userTemp,$this->cart_id);
-        //测试用
+
         $arr=[];
         for($i=0;$i<strlen($cart_id);$i++){
             if(is_numeric($cart_id[$i])){
                 $arr[] = $cart_id[$i];
             }
         }
+        // return $this->CartService->showConfirmCartItem($userTemp,$this->cart_id);
+        //测试用
        return $this->CartService->showConfirmCartItem($arr);
     }
 
