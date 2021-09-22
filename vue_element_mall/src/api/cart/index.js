@@ -1,5 +1,5 @@
-import base from "@/api/base";
-import axios from "axios";
+import base from "../../api/base";
+import axios from "../../utils/http";
 
 
 const BASE_URL = base.baseRequestUrl + "/index";
@@ -18,5 +18,8 @@ export default {
     showCartItem($cart_id){
         return axios.post(`${BASE_URL}/cart/showCartItem?cart_id=${$cart_id}`)
     },
+    createOrder(){
+        return axios.post(`${BASE_URL}/order/create`)
+    }
 
 }

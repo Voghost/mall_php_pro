@@ -25,7 +25,7 @@
                   <UserAddress></UserAddress>
                 </el-tab-pane>
                 <el-tab-pane label="登录密码修改">
-                  <!--                <PasswordSetting></PasswordSetting>-->
+                                  <PasswordSetting></PasswordSetting>
                 </el-tab-pane>
               </el-tabs>
             </el-tab-pane>
@@ -43,11 +43,12 @@ import MallFooter from "../components/MallFooter";
 import ThingTittle from "../components/ThingTittle";
 import UserData from "@/components/UserData";
 import ItemOrder from "../components/ItemOrder";
-import UserSetting from "@/components/UserSetting";
 import CartCard from "../components/CartCard";
 import UserAddress from "@/components/UserAddress";
 import MallHeader from "@/components/MallHeader";
-// import PasswordSetting from "@/components/PasswordSetting";
+import UserSetting from "../components/UserSetting";
+
+import PasswordSetting from "@/components/PasswordSetting";
 
 export default {
   name: "AboutMe",
@@ -67,7 +68,7 @@ export default {
     MallFooter,
     UserSetting,
     CartCard,
-    // PasswordSetting
+    PasswordSetting
   },
   mounted() {
     let sk = this.$route.query.selectedTag;
@@ -85,12 +86,12 @@ export default {
     }
   },
   created() {
-    let info = this.$store.state.userInfo;
-    if (Object.keys(info).length < 1) {
-      this.$router.push({
-        path: '/Login_Register'
-      })
-    }
+    // let info = this.$store.state.userInfo;
+    // if (Object.keys(info).length < 1) {
+    //   this.$router.push({
+    //     path: '/Login_Register'
+    //   })
+    // }
   }
 
 
@@ -105,7 +106,7 @@ export default {
 
 .main_content {
   margin: 0 auto;
-  min-height: 700px;
+  min-height: 800px;
   width: 100%;
 }
 
@@ -118,8 +119,8 @@ export default {
 .main_box {
   margin: 10px auto;
   border: #7c7c7c solid 1px;
-  height: 700px;
-  width: 1380px;
+  height: 800px;
+  width: 1480px;
 }
 
 

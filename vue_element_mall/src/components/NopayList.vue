@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-        :data="list_info"
+        :data="this.tabledatas"
         style="width: 100%"
         default-expand-all
         ref="multipleTable">
@@ -16,10 +16,9 @@
                     border
                     style="width: 100%">
             <el-table-column
-                prop="goods_image"
+                prop="good_small_logo"
                 label="商品照片"
-                width="300"
-            >
+                width="300">
             </el-table-column>
             <el-table-column
                 prop="goods_name"
@@ -38,26 +37,23 @@
             >
             </el-table-column>
             <el-table-column
-                prop="goods_prices"
+                prop="goods_total_price"
                 label="商品总价"
-                width="150"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="goods_state"
-                width="150"
-                label="状态">
+                width="150">
+<!--              <template slot-scope="scope">-->
+<!--              {{scope.row.all_prices=scope.row.goods_number*scope.row.goods_price}}-->
+<!--            </template>-->
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
       <el-table-column align="center"
                        label="订单编号"
-                       prop="order_id">
+                       prop="order_number">
       </el-table-column>
       <el-table-column align="center"
                        label="下单时间"
-                       prop="order_create_time">
+                       prop="create_time">
       </el-table-column>
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
@@ -74,11 +70,10 @@
 
 <script>
 export default {
-  created() {
 
-  },
 
   methods: {
+
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -95,43 +90,10 @@ export default {
   data() {
     return {
       multipleSelection: [],
-      list_info: [{
-        order_id: 'S201841413227',
-        order_create_time: '2016-05-03',
-        goods: [{
-          goods_image: '王小虎',
-          goods_name: '你好',
-          goods_price: 123,
-          goods_number: 2,
-          goods_prices: 2 * 123,
-          goods_state: "待评价",
-          goods_id: 123,
-        },
-          {
-            goods_image: '王小虎',
-            goods_name: '你好mua',
-            goods_price: 123,
-            goods_number: 2,
-            goods_prices: 2 * 123,
-            goods_state: "待评价",
-            goods_id: 1234,
-          }]
-      },
-        {
-          order_id: 'S12456742194',
-          order_create_time: '2016-05-03',
-          goods: [{
-            goods_image: '王小虎',
-            goods_name: '20飞机杯一号',
-            goods_price: 123,
-            goods_number: 2,
-            goods_prices: 2 * 123,
-            goods_state: "已完成",
-            goods_id: 1235,
-          }]
-        }],
+      tabledatas:[]
     }
   }
+
 }
 
 

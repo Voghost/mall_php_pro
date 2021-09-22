@@ -10,7 +10,7 @@
         <span slot="title">{{ level1.cat_name }}</span>
         <el-submenu v-for="level2 in level1.children" :index="level2.cat_id.toString()" :key="level2.cat_id">
           <span slot="title">{{ level2.cat_name }}</span>
-          <el-menu-item v-for="level3 in level2.children" @click="toCat(level3.cat_id)"
+          <el-menu-item v-for="level3 in level2.children" @click="toCat(level3.cat_id,level3.cat_icon)"
                         :index="level3.cat_id.toString()" :key="level3.cat_id">
             {{ level3.cat_name }}
           </el-menu-item>
@@ -38,11 +38,12 @@ export default {
         })
   },
   methods: {
-    toCat(catId) {
+    toCat(catId,catIcon) {
       this.$router.push({
         path: '/allGoods',
         query: {
-          cat_id: catId
+          cat_id: catId,
+          cat_icon:catIcon,
         }
       })
     }

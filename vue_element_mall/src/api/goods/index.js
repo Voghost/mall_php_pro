@@ -22,6 +22,9 @@ export default {
             `${BASE_URL}/spec/getGoodsInfoBySpecKv?goodsId=${gid}`,
             {specKv}
         )
+    },
+    getKVByInfoId(info_id){
+        return axios.post(`${BASE_URL}/spec/getKVByInfoId?id=${info_id}`)
     }
 
 

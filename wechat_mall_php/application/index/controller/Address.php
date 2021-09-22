@@ -3,9 +3,12 @@
 
 namespace app\index\controller;
 
+use app\common\model\UserAddress as AddressModel;
+use app\common\model\Users as UserModel;
+use app\common\utils\CheckUser;
 use think\Controller;
 
-class UserAddress extends Controller
+class Address extends Controller
 {
 
     public function all()
@@ -14,10 +17,17 @@ class UserAddress extends Controller
         return json($query);
     }
 
-    public function getById($id) {
-        $list = AddressModel::where("user_id", $id)->select();
-
+    public function getById(){
+        $userTemp=CheckUser::checkUser($this->request);
+        $userId=$userTemp->user_id;
+        $list= AddressModel::where("user_id", $userId)->select();
         return json(["message"=>"获取成功","code"=>200,"data"=>$list]);
+    }
+    public function getUsernameById(){
+        $userTemp=CheckUser::checkUser($this->request);
+        $userId=$userTemp->user_id;
+        $username=UserModel::where("user_id",$userId)->value("user_name");
+        return json(["message"=>"获取成功","code"=>200,"data"=>$username]);
     }
 
     public function delete($id) {
@@ -25,12 +35,14 @@ class UserAddress extends Controller
         return json(["message"=>"删除成功"]);
     }
 
-    public function add($id) {
+    public function add() {
         $query = $this->request->post();
+        $userTemp=CheckUser::checkUser($this->request);
+        $userId=$userTemp->user_id;
         $temp = new \app\common\model\UserAddress();
         $temp->address = $query["address"];
         $temp->phone = $query["phone"];
-        $temp->user_id = $id;
+        $temp->user_id = $userId;
         $temp->save();
         return json(["message"=>"添加成功"]);
     }
