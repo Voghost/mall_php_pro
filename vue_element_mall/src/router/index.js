@@ -8,6 +8,8 @@ import AllGoods from "@/views/AllGoods";
 import LoginRegister from "@/views/LoginRegister";
 import UserData from "@/components/UserData";
 import SettlementPage from "../views/SettlementPage";
+import NopayList from "@/components/NopayList";
+import PaidList from "@/components/PaidList";
 
 Vue.use(VueRouter)
 
@@ -38,12 +40,14 @@ const routes = [
         component: AboutMe,
         children:[
             {
-                path:"UserData",
-                component:UserData,
+                path:"NopayList/:list_state",
+                name:"Nopay",
+                component:NopayList
             },
             {
-                path:"UserData",
-                component:UserData,
+                path:"PaidList/:list_state",
+                name:'Paid',
+                component:PaidList,
             },
             {
                 path:"UserData",

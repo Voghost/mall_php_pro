@@ -37,6 +37,8 @@
     <el-link href="/AboutMe?selectedTag=4" class="el-button"
              style="font-size: 14px ;line-height: 30px;position:absolute;right: 30px;bottom:30px">修改信息
     </el-link>
+    <div>
+    </div>
   </div>
 </template>
 
@@ -50,7 +52,6 @@ export default {
         // user_phone: '123456789',
         // user_name: '王小虎',
         // user_sex: '男',
-        // user_address_default: 'xxxxxxxxxxx',
         // user_age: '18'
       },
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -74,4 +75,5 @@ export default {
 .text {
   font-size: 14px;
 }
+
 </style>

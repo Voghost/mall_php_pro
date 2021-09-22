@@ -35,10 +35,11 @@
           >
           </el-table-column>
           <el-table-column
-              prop="goods_prices"
               label="商品总价"
               width="100"
-          >
+          ><template slot-scope="scope">
+            {{scope.row.all_prices=scope.row.goods_number*scope.row.goods_price}}
+          </template>
           </el-table-column>
           <el-table-column
               prop="goods_state"
