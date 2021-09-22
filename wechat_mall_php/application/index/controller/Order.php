@@ -62,8 +62,6 @@ class Order extends Controller
 
     public function allOrder($type, $refund)
     {
-        var_dump($type);
-        var_dump($refund);
 
         $userTemp = $this->checkUser();
         return $this->orderService->allOrder($type, $userTemp, $refund);
