@@ -5,7 +5,7 @@
       <!--左侧图片-->
       <el-col :span="8">
         <el-carousel height="420px" style=" width: 100%;margin-top: 30px;" indicator-position="outside">
-          <el-carousel-item v-for="item in goods.pic" :key="item">
+          <el-carousel-item v-for="(item,index) in goods.pic" :key="index">
             <el-image :src="item" :preview-src-list="goods.pic" :title="ClickTips" style="width: 100%; height: 100%;"
                       :fit="'fill'">
             </el-image>
@@ -30,6 +30,7 @@
             <!--              <span>评论：1000+</span>-->
             <!--              <span style="margin-left: 40px">收藏：1000+</span>-->
             <!--            </div>-->
+            <div class="GoodsCount" style="margin-top: 10px;font-size: 0.8em;">以剩库存: {{goodsInfo.goods_stock}}</div>
           </div>
 
           <div style="margin-top: 20px;">
@@ -99,10 +100,7 @@
           <el-descriptions-item label="商品重量：">{{ goods.goods_weight }}</el-descriptions-item>
         </el-descriptions>
         <div v-html="goods.goods_introduce">{{ goods.goods_introduce }}</div>
-        <!--        <div v-for="item in goods.pic" :key="item">-->
-        <!--          <el-image :src="item" style="width: 100%; height: 100%;" :fit="'cover'">-->
-        <!--          </el-image>-->
-        <!--        </div>-->
+
       </el-tab-pane>
 
       <el-tab-pane label="销售记录" name="third" style="font-size: 14px">
