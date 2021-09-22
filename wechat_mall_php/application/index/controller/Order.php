@@ -40,6 +40,12 @@ class Order extends Controller
         return $this->orderService->allOrder($type, $userTemp);
     }
 
+    public function allOrder($type)
+    {
+        $userTemp = $this->checkUser();
+        return $this->orderService->allOrder($type, $userTemp);
+    }
+
     public function chkOrder()
     {
         $map = $this->request->post();
@@ -120,11 +126,11 @@ class Order extends Controller
         // 查询是否存在用户
 //        $userTemp = UsersModel::where("user_openid", $res["message"])->find();
         $userTemp = UsersModel::where("user_token", $token)->find();
-        if($userTemp == null){
-            json(["message" => "未找到用户","token" => $token])->send();
+        if ($userTemp == null) {
+            json(["message" => "未找到用户", "token" => $token])->send();
             exit;
         } else {
-            json(["message"=>"已找到用户"])->send();
+//            json(["message" => "已找到用户"])->send();
             return $userTemp;
         }
 //        if ($userTemp == null || $userTemp["user_id"] == null || $userTemp["user_is_active"] == false) {
