@@ -1,17 +1,17 @@
 <template>
   <!--订单状态-->
-  <el-tabs :tab-position="tabPosition" style="height: auto;">
-    <el-tab-pane label="待付款">
-      <NopayList></NopayList>
+  <el-tabs :tab-position="tabPosition" style="height: auto;" tabindex="/About">
+    <el-tab-pane label="未支付">
+      <List :status='0'></List>
     </el-tab-pane>
-    <el-tab-pane label="待收货">
-      <PaidList></PaidList>
+    <el-tab-pane label="待发货">
+      <List :status='1'></List>
+    </el-tab-pane>
+    <el-tab-pane label="已发货">
+      <List :status='2'></List>
     </el-tab-pane>
     <el-tab-pane label="待评价">
-      <ReceivedList></ReceivedList>
-    </el-tab-pane>
-    <el-tab-pane label="已完成">
-      <CompleteOrder></CompleteOrder>
+      <List :status='3'></List>
     </el-tab-pane>
     <el-tab-pane label="退款中">
       <RequestRefund></RequestRefund>
@@ -27,29 +27,23 @@
 </template>
 
 <script>
-import NopayList from "@/components/NopayList";
-import PaidList from "@/components/PaidList";
-import ReceivedList from "@/components/ReceivedList";
-import CompleteOrder from "@/components/CompleteOrder";
+import List from "@/components/List";
 import RequestRefund from "@/components/RequestRefund";
 import RequestFailed from "@/components/RequestFailed";
 import RequestSuccess from "@/components/RequestSuccess";
 export default {
   name: "ItemOrder",
-  components: {
-    RequestSuccess,
-    RequestFailed,
-    RequestRefund,
-    CompleteOrder,
-    ReceivedList,
-    NopayList,
-    PaidList,
-  },
   data() {
     return {
       tabPosition: 'left'
     };
-  }
+  },
+  components:{
+    RequestRefund,
+    RequestFailed,
+    RequestSuccess,
+    List
+  },
 }
 </script>
 

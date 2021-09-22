@@ -32,6 +32,19 @@ export default {
 
         )
     },
+    getUserName(id){
+        return axios.post(
+            'http://mall.php.test/controller/getUserById',
+            {id:id}
+        )
+    },
+    getAllOrder(type){
+        return axios.get(
+            `${BASE_URL}/order/allOrder?type=${type}`,
+
+        )
+    }
+
 
 }
 

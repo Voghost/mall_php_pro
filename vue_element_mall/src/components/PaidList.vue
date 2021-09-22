@@ -15,7 +15,7 @@
           <el-table-column
               prop="goods.goods_image"
               label="商品照片"
-              width="300"
+              width="200"
           >
           </el-table-column>
           <el-table-column
@@ -36,17 +36,18 @@
           >
           </el-table-column>
           <el-table-column
-              prop="goods_prices"
               label="商品总价"
               width="100"
-          >
+          ><template slot-scope="scope">
+            {{scope.row.all_prices=scope.row.goods_number*scope.row.goods_price}}
+          </template>
           </el-table-column>
           <el-table-column
               prop="goods_state"
               width="100"
               label="状态">
           </el-table-column>
-          <el-table-column align="center" label="操作" width="200">
+          <el-table-column align="center" label="操作" width="">
             <template slot-scope="scope">
               <el-button size="small" type="success" @click="logistics_info_dialog = true">物品物流
               </el-button>
@@ -80,18 +81,16 @@
 <script>
 import Logistics_info_card from "@/components/Logistics_info_card";
 export default {
+  created() {
+    // this.getListinfo()
+  },
   components: {Logistics_info_card},
   methods:{
-    Request_refund(row) {
-      console.log(row)
+    TotalMoney() {
+      return this.list_info
     },
-    goods_allprice(){
-      let allprice=this.list_info.goods.goods_prices
-      this.list_info.goods.forEach(function (index,array){
-        const allprices=array[index].goods_number*array[index].goods_price
-        allprice=allprice+allprices;
-      })
-      this.list_info.all_prices=allprice
+    Request_refund(row) {
+      row.goods_state="待退款"
     },
   },
   data() {
@@ -100,14 +99,14 @@ export default {
       list_info: [{
         names: 'S201841413227',
         date: '2016-05-03',
-        all_prices:0,
         goods: [{
+          list_number:1,
           goods_image: '王小虎',
           goods_name: '你好',
           goods_price: 123,
-          goods_number: 2,
-          goods_prices: 0,
-          goods_state: "配送中"
+          goods_number:6,
+          goods_state: "配送中",
+          goods_prices: 0
         }]
       },
         {
@@ -119,16 +118,16 @@ export default {
             goods_name: '20飞机杯一号',
             goods_price: 123,
             goods_number: 3,
-            goods_prices: 0,
-            goods_state: "配送中"
+            goods_state: "配送中",
+            goods_prices: 0
           },
             {
               goods_image: '冯炳超',
               goods_name: '冯炳超飞机杯二号',
               goods_price: 123,
               goods_number: 2,
-              goods_prices: 2 * 123,
-              goods_state: "配送中"
+              goods_state: "配送中",
+              goods_prices: 0
             }]
         }],
     }
