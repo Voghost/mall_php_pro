@@ -15,6 +15,7 @@
           <el-table-column
               prop="goods.goods_image"
               label="商品照片"
+              width="300"
           >
           </el-table-column>
           <el-table-column
@@ -83,7 +84,15 @@ export default {
   methods:{
     Request_refund(row) {
       console.log(row)
-    }
+    },
+    goods_allprice(){
+      let allprice=this.list_info.goods.goods_prices
+      this.list_info.goods.forEach(function (index,array){
+        const allprices=array[index].goods_number*array[index].goods_price
+        allprice=allprice+allprices;
+      })
+      this.list_info.all_prices=allprice
+    },
   },
   data() {
     return {
@@ -91,13 +100,13 @@ export default {
       list_info: [{
         names: 'S201841413227',
         date: '2016-05-03',
-        all_prices: 2 * 123,
+        all_prices:0,
         goods: [{
           goods_image: '王小虎',
           goods_name: '你好',
           goods_price: 123,
           goods_number: 2,
-          goods_prices: 2 * 123,
+          goods_prices: 0,
           goods_state: "配送中"
         }]
       },
@@ -109,8 +118,8 @@ export default {
             goods_image: '王小虎',
             goods_name: '20飞机杯一号',
             goods_price: 123,
-            goods_number: 2,
-            goods_prices: 2 * 123,
+            goods_number: 3,
+            goods_prices: 0,
             goods_state: "配送中"
           },
             {

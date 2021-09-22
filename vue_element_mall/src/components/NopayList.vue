@@ -9,23 +9,21 @@
           type="selection"
           width="55">
       </el-table-column>
-      <el-table-column type="expand"> //type="expand" 带下层数据的字段
+      <el-table-column type="expand">
         <template scope="scope">
           <el-table class="demo-table-expand"
                     :data="scope.row.goods"
                     border
                     style="width: 100%">
             <el-table-column
-                prop="goods.goods_image"
+                prop="goods_image"
                 label="商品照片"
                 width="300"
             >
             </el-table-column>
             <el-table-column
                 prop="goods_name"
-                label="商品名字"
-                width="300"
-            >
+                label="商品名字">
             </el-table-column>
             <el-table-column
                 prop="goods_price"
@@ -36,36 +34,30 @@
             <el-table-column
                 prop="goods_number"
                 label="商品数量"
-                width="100"
+                width="150"
             >
             </el-table-column>
             <el-table-column
                 prop="goods_prices"
                 label="商品总价"
-                width="100"
+                width="150"
             >
             </el-table-column>
             <el-table-column
                 prop="goods_state"
-                width="100"
+                width="150"
                 label="状态">
-            </el-table-column>
-            <el-table-column align="center" label="操作">
-              <template slot-scope="scope">
-                <el-button size="small" type="danger" @click="deleteOne(scope.$index.goods)">删除商品
-                </el-button>
-              </template>
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
       <el-table-column align="center"
                        label="订单编号"
-                       prop="names">
+                       prop="order_id">
       </el-table-column>
       <el-table-column align="center"
                        label="下单时间"
-                       prop="date">
+                       prop="order_create_time">
       </el-table-column>
       <el-table-column align="center" label="操作" width="120">
         <template scope="scope">
@@ -82,10 +74,11 @@
 
 <script>
 export default {
-  methods:{
-    deleteOne(index) {
-      this.list_info.goods.splice(index,1)
-    },
+  created() {
+
+  },
+
+  methods: {
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -103,8 +96,8 @@ export default {
     return {
       multipleSelection: [],
       list_info: [{
-        names: 'S201841413227',
-        date: '2016-05-03',
+        order_id: 'S201841413227',
+        order_create_time: '2016-05-03',
         goods: [{
           goods_image: '王小虎',
           goods_name: '你好',
@@ -112,6 +105,7 @@ export default {
           goods_number: 2,
           goods_prices: 2 * 123,
           goods_state: "待评价",
+          goods_id:123,
         },
           {
             goods_image: '王小虎',
@@ -120,18 +114,20 @@ export default {
             goods_number: 2,
             goods_prices: 2 * 123,
             goods_state: "待评价",
+            goods_id:1234,
           }]
       },
         {
-          names: 'S12456742194',
-          date: '2016-05-03',
+          order_id: 'S12456742194',
+          order_create_time: '2016-05-03',
           goods: [{
             goods_image: '王小虎',
             goods_name: '20飞机杯一号',
             goods_price: 123,
             goods_number: 2,
             goods_prices: 2 * 123,
-            goods_state: "已完成"
+            goods_state: "已完成",
+            goods_id:1235,
           }]
         }],
     }
