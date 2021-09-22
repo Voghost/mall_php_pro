@@ -5,7 +5,7 @@
         style="width: 100%"
         default-expand-all>
       <el-table-column type="expand"> //type="expand" 带下层数据的字段
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-table class="demo-table-expand"
                     :data="scope.row.goods"
                     border
@@ -45,7 +45,7 @@
                 label="状态">
             </el-table-column>
             <el-table-column align="center" label="操作" width="150">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-button size="small" type="danger" @click="RequestRefund(scope.row)">申请退款
                 </el-button>
               </template>
