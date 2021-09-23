@@ -72,39 +72,57 @@ class UserService
         ]);
     }
 
-    function txcurl($url,$params=false,$ispost=0){
+    function txcurl($url, $params = false, $ispost = 0)
+    {
         $httpInfo = array();
         $ch = curl_init();
 
-        curl_setopt( $ch, CURLOPT_HTTP_VERSION , CURL_HTTP_VERSION_1_1 );
-        curl_setopt( $ch, CURLOPT_USERAGENT , 'JuheData' );
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT , 60 );
-        curl_setopt( $ch, CURLOPT_TIMEOUT , 60);
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER , true );
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'JuheData');
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        if( $ispost )
-        {
-            curl_setopt( $ch , CURLOPT_POST , true );
-            curl_setopt( $ch , CURLOPT_POSTFIELDS , $params );
-            curl_setopt( $ch , CURLOPT_URL , $url );
-        }
-        else
-        {
-            if($params){
-                curl_setopt( $ch , CURLOPT_URL , $url.'?'.$params );
-            }else{
-                curl_setopt( $ch , CURLOPT_URL , $url);
+        if ($ispost) {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_URL, $url);
+        } else {
+            if ($params) {
+                curl_setopt($ch, CURLOPT_URL, $url . '?' . $params);
+            } else {
+                curl_setopt($ch, CURLOPT_URL, $url);
             }
         }
-        $response = curl_exec( $ch );
+        $response = curl_exec($ch);
         if ($response === FALSE) {
             echo "cURL Error: " . curl_error($ch);
             return false;
         }
-        $httpCode = curl_getinfo( $ch , CURLINFO_HTTP_CODE );
-        $httpInfo = array_merge( $httpInfo , curl_getinfo( $ch ) );
-        curl_close( $ch );
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpInfo = array_merge($httpInfo, curl_getinfo($ch));
+        curl_close($ch);
         return $response;
+    }
+
+    public function updateUser($user, $map)
+    {
+        $usersModel = new UsersModel();
+        $user = $usersModel->where(["user_id" => $user["user_id"]])->find();
+        if (array_key_exists("user_avatar", $map)) {
+            $user->user_avatar = $map["user_avatar"];
+        }
+        if (array_key_exists("user_age", $map)) {
+            $user->user_age = $map["user_age"];
+        }
+
+        if (array_key_exists("user_email", $map)) {
+            $user->user_email = $map["user_email"];
+        }
+        if (array_key_exists("user_sex", $map)) {
+            $user->user_sex = $map["user_sex"];
+        }
+        $user->save();
     }
 
     public function show()

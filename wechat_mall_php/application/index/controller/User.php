@@ -93,6 +93,8 @@ class User extends Controller
     public function updateUser()
     {
         $user = $this->checkUser();
+        $map = $this->request->post();
+        $this->userService->updateUser($user, $map);
         return json(["ok" => $user]);
     }
 
