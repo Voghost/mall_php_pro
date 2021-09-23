@@ -66,7 +66,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
-          <el-button v-if="status===0" size="small" type="success" @click="Payment(scope.row)">支付
+          <el-button v-if="status===0" size="small" type="success" @click="Payment(scope.row.order_number)">支付
           </el-button>
         </template>
       </el-table-column>
@@ -99,6 +99,17 @@
 <!--      </span>-->
 <!--      </el-form>-->
     </el-dialog>
+    <el-dialog
+        title="支付"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+      <span>确定支付</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="handleClose">取 消</el-button>
+    <el-button type="primary" @click="handleSave">免密支付</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -123,8 +134,12 @@ export default {
       tabledata: [],
       handle: false,
       comment : {},
+      dialogVisible:false,
+      orderNumber:'',
+
     }
   },
+  inject:['reload'],
   components: {GoodsComment},
   methods: {
     handlecomment(data){
@@ -161,6 +176,33 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+    Payment(orderNumber){
+      this.orderNumber=orderNumber
+      this.dialogVisible=true
+    },
+    handleClose() {
+      this.dialogVisible=false
+      this.$message({
+        message: '放弃购买',
+        type: 'warning'
+      });
+      this.reload()
+      this.$router.push({
+        path:'/AboutMe?selectedTag=3'
+      })
+    },
+    handleSave(){
+      this.$api.cart.pay(this.orderNumber)
+      this.dialogVisible=false
+      this.$message({
+        message: '购买成功',
+        type: 'success'
+      });
+      this.reload()
+      this.$router.push({
+        path:'/AboutMe?selectedTag=3'
+      })
+    }
   },
 }
 
