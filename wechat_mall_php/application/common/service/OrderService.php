@@ -5,6 +5,7 @@ namespace app\common\service;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\GoodsInfo;
 use app\common\model\Orders as OrdersModel;
+use app\common\utils\ResultUtil;
 use think\Db;
 use think\Model;
 
@@ -23,6 +24,7 @@ class OrderService
         $totalPrice = 0;
 
         $orders = new OrdersModel;
+        $orders->startTrans();
         if (array_key_exists("consignee_addr", $postMap) && $postMap["consignee_addr"] != null) {
             $temp = $postMap["consignee_addr"];
             $userName = $temp["userName"];
@@ -53,7 +55,10 @@ class OrderService
             $tempGoods = GoodsModel::where("goods_id", $temp["goods_id"])->find();
             $leftNumber = $tempGoods["goods_number"] - $temp["goods_number"];
             if ($leftNumber < 0) {
-                return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
+                $orders->rollback();
+                // return ResultUtil::FAIL("商品库存不够, 名字". $tempGoods["goods_name"] ."");
+                return json(["message" => null, "meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "status" => 400]]);
+                //return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
             } else if ($leftNumber == 0) {
                 $tempGoods->goods_state = 1;
             }
@@ -65,7 +70,9 @@ class OrderService
                 $goodsInfo = $goodsInfoModel->where(["info_id" => $temp["info_id"]])->find();
                 $leftGoodsInfoNum = $goodsInfo["goods_stock"] - $temp["goods_number"];
                 if ($leftGoodsInfoNum < 0) {
-                    return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
+                    $orders->rollback();
+                    //return ResultUtil::FAIL("商品库存不够, 名字". $tempGoods["goods_name"] ."");
+                    return json(["message" => null, "meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "status" => 400]]);
                 }
                 $goodsInfo->goods_stock = $leftGoodsInfoNum;
                 $totalPrice = $totalPrice + ($temp["goods_number"] * $goodsInfo["goods_price"]);
@@ -103,6 +110,7 @@ class OrderService
         $orders->order_user_id = $user->user_id;
         $orders->order_price = $totalPrice;
         $orders->save();
+        $orders->commit();
 
 
         return json(["message" => [
@@ -111,11 +119,11 @@ class OrderService
             "order_number" => $orders->order_number,
             "order_price" => $orders->order_price,
             "create_time" => strtotime($orders->order_create_time),
-            "update_time" => strtotime($orders->order_update_time),
+            "update_time" => strtotime($orders->order_update_time),],
             "meta" => [
                 "msg" => "创建订单成功",
                 "status" => 200
-            ]]]);
+            ]]);
     }
 
 
@@ -131,6 +139,7 @@ class OrderService
         if ($refund != null && $refund != '') {
             $where["order_refund"] = $refund;
         }
+        return json($where);
         $ordersList = \app\common\model\Orders::where($where)->select();
         if ($ordersList == null) {
             return json([

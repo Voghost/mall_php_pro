@@ -28,11 +28,13 @@ class Order extends Controller
         $userList = $this->checkUser();
 
         $cartIdList = $this->request->post("ids");
+        if(!is_array($cartIdList)){
+            $cartIdList=[$cartIdList];
+        }
         $address = $this->request->post("address");
         $cartModel = new \app\common\model\Cart();
         $map["address"] = $address;
         $map["goods"] = [];
-
         foreach ($cartIdList as $cartId) {
             $cart = $cartModel->where(["id" => $cartId])->find();
             $goodsInfoModel = new GoodsInfo();
@@ -60,7 +62,7 @@ class Order extends Controller
         return $this->orderService->allOrder($type, $userTemp);
     }
 
-    public function allOrder($type, $refund)
+    public function allOrder($type, $refund = null)
     {
 
         $userTemp = $this->checkUser();
