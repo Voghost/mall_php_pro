@@ -3,8 +3,8 @@
 namespace app\common\service;
 
 use app\common\model\Goods;
-use think\Db;
 use app\common\model\Goods as GoodsModel;
+use think\Db;
 use app\common\model\Comment as CommentModel;
 use app\common\model\OrdersGoods as OrdersGoodsModel;
 use app\common\model\ImageUrl as ImageUrlModel;
@@ -67,6 +67,8 @@ class CommentService
         return $commentlist;
     }
 
+
+
     public function getGoodsWithComment($goods_id)
     {
         $where = $goods_id;
@@ -103,4 +105,45 @@ class CommentService
 
         return ["content" => $commentList, "total" => count($collection), "page" => (int)$page, "rate" => ($total / (5 * count($collection)))];
     }
+
+    public function pageSearchAdmin($page = null, $limit = null, $query)
+    {
+        $where = array();
+        $index = array();
+        $where[] = ["status", "<>", 2];
+        $whereOr = null;
+
+        if (array_key_exists("goodsName", $query)) {
+            $where[] = ["content", "like", "%" . $query["goodsName"] . "%"];
+            $index[] = ["goods_name", "like", "%" . $query["goodsName"] . "%"];
+            $temp = GoodsModel::where($index)->column('goods_id');
+            $whereOr[] = ["status", "<>", 2];
+            $whereOr[] = ["goods_id", "in", $temp];
+        }
+
+        if ($whereOr != null) {
+            $res = CommentModel::page($page, $limit)->where([$where])->whereOr([$whereOr])->select();
+            $count = CommentModel::where([$where])->whereOr([$whereOr])->count();
+        } else {
+            $res = CommentModel::page($page, $limit)->where($where)->select();
+            $count = CommentModel::where($where)->count();
+        }
+        for ($i = 0; $i < count($res); $i++) {
+            $temp = $res[$i];
+            $name = UserModel::where("user_id", $temp["user_id"])->column("user_name");
+            $res[$i]["user_name"] = $name[0];
+        }
+
+        foreach ($res as $comment) {
+            $imageUrlModel = new ImageUrlModel();
+            $imageUrls = $imageUrlModel->where(["from" => 2, "f_id" => $comment["id"]])->select();
+            $pics = [];
+            foreach ($imageUrls as $image) {
+                array_push($pics, ["url" => $image["url"], "id" => $image["id"], "name" => $image["name"]]);
+            }
+            $comment["pics"] = $pics;
+        }
+        return ["page" => $page, "total" => $count, "content" => $res];
+    }
+
 }

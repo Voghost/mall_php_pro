@@ -42,7 +42,9 @@ class Echart extends Controller
         $orderDay = array();
         $day = array();
 
-        $user = UserModel::whereBetweenTime("user_create_time",$temp)->count();
+        $timeTemp = new DateTime(1970-01-01);
+        $time4 = $timeTemp->format('Y-m-d');
+        $user = UserModel::whereBetweenTime("user_create_time",$time4, $temp)->count();
         $comment = CommentModel::whereBetweenTime("time",$temp)->count();
         $price = OrderModel::whereBetweenTime("order_create_time",$temp)->where("order_refund","<>",2)->sum("order_price");
         $order = OrderModel::whereBetweenTime("order_create_time",$temp)->where("order_refund","<>",2)->count();
@@ -56,7 +58,7 @@ class Echart extends Controller
             $time1 = $dt->format('Y-m-d');
             $yt = $dt->modify('-1 days');
             $time2 = $yt->format('Y-m-d');
-            $user = UserModel::whereBetweenTime("user_create_time",$time2,$time1)->count();
+            $user = UserModel::whereBetweenTime("user_create_time",$time4,$time1)->count();
             $comment = CommentModel::whereBetweenTime("time",$time2,$time1)->count();
             $price = OrderModel::whereBetweenTime("order_create_time",$time2,$time1)->where("order_refund","<>",2)->sum("order_price");
             $order = OrderModel::whereBetweenTime("order_create_time",$time2,$time1)->where("order_refund","<>",2)->count();
