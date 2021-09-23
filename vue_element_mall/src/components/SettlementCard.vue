@@ -87,7 +87,7 @@
        :before-close="handleClose">
       <span>确定支付</span>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button @click="handleClose">取 消</el-button>
     <el-button type="primary" @click="handleSave">免密支付</el-button>
   </span>
     </el-dialog>
@@ -119,6 +119,7 @@ export default {
       return realVal
     }
   },
+  inject:['reload'],
   methods:{
     getCartItem(data){
       this.$api.cart.showCartItem(data).then(res=>{
@@ -183,9 +184,9 @@ export default {
           this.orderNumber=this.orderInfo.order_number
           this.dialogVisible=true
         }
-        // for(let i=0;i<this.cart_id.length;i++){
-        //   this.$api.cart.deleteCartItem(this.cart_id[i])
-        // }
+        for(let i=0;i<this.cart_id.length;i++){
+          this.$api.cart.deleteCartItem(this.cart_id[i])
+        }
       }) .catch(err=>{
         console.log(err);
       })
@@ -194,6 +195,11 @@ export default {
     },
     handleClose() {
       this.dialogVisible=false
+      this.$message({
+        message: '放弃购买',
+        type: 'warning'
+      });
+      this.reload()
       this.$router.push({
         path:'/AboutMe?selectedTag=3'
       })
@@ -201,6 +207,11 @@ export default {
     handleSave(){
       this.$api.cart.pay(this.orderNumber)
       this.dialogVisible=false
+      this.$message({
+        message: '购买成功',
+        type: 'success'
+      });
+      this.reload()
       this.$router.push({
         path:'/AboutMe?selectedTag=3'
       })
