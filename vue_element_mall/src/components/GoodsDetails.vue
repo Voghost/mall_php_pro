@@ -320,6 +320,7 @@ export default {
     // },
     //购物车
     ShoppingCar() {
+
       if(Object.keys(this.goodsInfo).length>0){
         let item = {info_id : this.goodsInfo.info_id,number : this.num};
         this.$api.goods.shoppingCar(item).then(res=>{
@@ -338,7 +339,32 @@ export default {
     },
     //购买
     GoodsBuy() {
-      console.log('buy')
+      if(Object.keys(this.goodsInfo).length>0){
+        let item = {info_id : this.goodsInfo.info_id,number : this.num};
+        if(this.goodsInfo.goods_stock>=1){
+          this.$api.goods.shoppingCar(item).then(res=>{
+            console.log(2,res.data);
+            this.$message({
+              message: '恭喜你，加入购物车成功',
+              type: 'success'
+            });
+          })
+        }else {
+          this.$message({
+            message: '警告哦，不够库存哦，宝贝',
+            type: 'warning'
+          });
+        }
+      }else {
+        this.$message({
+          message: '警告哦，请选择完所有规格哦，宝贝',
+          type: 'warning'
+        });
+      }
+
+      this.goodsInfo.goods_stock
+      // console.log('buy')
+      // console.log(this.goodsInfo)
     },
     getInfo(info) {
       this.goodsInfo = info;
@@ -348,7 +374,7 @@ export default {
     'goods_id',
   ],
   mounted() {
-    console.log(this.goods_id);
+    // console.log(this.goods_id);
     this.getGoodsInfo(this.goods_id);
 
   },

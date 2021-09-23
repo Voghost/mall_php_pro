@@ -18,9 +18,10 @@ class CartService
 
         $number=$cart->where('goods_info_id',$goods['info_id'])->
         where('user_id',$user->user_id)->find();
+//        return json($goods);
          if($number!=null){
-             $number=$number+$goods['number'];
-             $cart->where('goods_info_id',$goods['info_id'])->update(['number'=>$number]);
+             $total=$number["number"]+$goods['number'];
+             $cart->where('goods_info_id',$goods['info_id'])->update(['number'=>$total]);
              return ResultUtil::OK("添加成功");
 
          }
