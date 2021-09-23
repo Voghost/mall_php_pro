@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            用户总数
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="searchObj.userCount" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,9 +20,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            评论总数
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="searchObj.commentCount" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -33,9 +33,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            交易总额
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="searchObj.priceTotal" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +46,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            订单总数
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="searchObj.orderTotal" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -57,15 +57,38 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import echartApi from '@/api/echart'
 
 export default {
+  data() {
+    return {
+      searchObj: {}
+    }
+  },
   components: {
     CountTo
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    initChart() {
+      setInterval(this.getSearch, 20000)
+      this.getSearch()
+    },
+    getSearch() {
+      echartApi.getSearch()
+        .then(response=>{
+          // console.log(response.data);
+          // var data = JSON.parse(response)
+          this.searchObj = response.data
+        })
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.initChart()
+    })
   }
 }
 </script>
