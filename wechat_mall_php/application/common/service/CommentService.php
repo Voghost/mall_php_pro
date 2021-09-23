@@ -6,6 +6,7 @@ use app\common\model\Goods;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\ImageUrl;
 use DateTime;
+use app\common\utils\CheckUser;
 use think\Db;
 use app\common\model\Comment as CommentModel;
 use app\common\model\OrdersGoods as OrdersGoodsModel;

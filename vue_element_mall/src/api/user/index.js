@@ -37,6 +37,11 @@ export default {
             {id: id}
         )
     },
+    getUserInfo() {
+        return axios.get(
+            `${BASE_URL}/user/getUserInfo`,
+        )
+    },
     updateUser(userInfo) {
         return axios.post(
             `${BASE_URL}/user/updateUser`,
