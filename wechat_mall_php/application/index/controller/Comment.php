@@ -33,4 +33,10 @@ class Comment extends Controller
         }
     }
 
+    public function addComment()
+    {
+        $query = $this->request->post();
+        $temp = $this->commentService->addComment($query);
+        return ResultUtil::OK($temp);
+    }
 }

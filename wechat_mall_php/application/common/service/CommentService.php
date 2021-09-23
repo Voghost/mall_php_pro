@@ -4,6 +4,8 @@ namespace app\common\service;
 
 use app\common\model\Goods;
 use app\common\model\Goods as GoodsModel;
+use app\common\model\ImageUrl;
+use DateTime;
 use think\Db;
 use app\common\model\Comment as CommentModel;
 use app\common\model\OrdersGoods as OrdersGoodsModel;
@@ -146,4 +148,31 @@ class CommentService
         return ["page" => $page, "total" => $count, "content" => $res];
     }
 
+    public function addComment($query)
+    {
+        $comment = new Comment();
+        $comment->content = $query["content"];
+        $comment->order_id = $query["order_id"];
+        $comment->star = $query["star"];
+        $comment->goods_id = $query["goods_id"];
+        $comment->user_id = $query["user_id"];
+        $comment->status = 0;
+        $dt = new DateTime();
+        $time = $dt->format('Y-m-d H:i:s');
+        $comment->time = $time;
+        $id = $comment->save();
+
+        $pic = $query["pics"];
+        for ($i = 0;$i < count($pic);$i++)
+        {
+            $pic = new ImageUrl();
+            $pic["from"] = 2;
+            $pic["url"] = $pic["url"];
+            $pic["name"] = $pic["name"];
+            $pic["f_id"] = $id;
+            $pic->save();
+        }
+
+        return ok;
+    }
 }
