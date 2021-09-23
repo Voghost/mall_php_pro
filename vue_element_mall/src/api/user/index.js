@@ -60,6 +60,17 @@ export default {
 
         )
     },
+    refund(id,content){
+        return axios.post(
+            `${BASE_URL}/order/refund?id=${id}`,
+            {content: content}
+        )
+    },
+    updateState(id,state){
+        return axios.post(
+            `${BASE_URL}/order/refund?id=${id}&state=${state}`,
+        )
+    },
     addComment(map){
         return axios.post(
             `${BASE_URL}/comment/addComment`,
