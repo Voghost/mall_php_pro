@@ -7,6 +7,7 @@
 import * as echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import echartApi from '@/api/echart'
 
 export default {
   mixins: [resize],
@@ -34,6 +35,7 @@ export default {
   },
   data() {
     return {
+      day: {},
       chart: null
     }
   },
@@ -58,25 +60,28 @@ export default {
     this.chart = null
   },
   methods: {
+    getChart(){
+      echartApi.getWeekData()
+        .then(response =>{
+          this.day = response.data[0].day
+        })
+    },
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
+      this.getChart()
       this.setOptions(this.chartData)
-
-      var ws = new WebSocket('ws://mall.php.test/admin/order/page')
-      ws.onopen = function() {
-        alert('连接成功')
-      }
-      ws.onerror = function() {
-        alert('连接失败')
-      }
     },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.day,
           boundaryGap: false,
           axisTick: {
             show: false
+          },
+          axisLabel: {
+            interval:0,
+            rotate:40
           }
         },
         grid: {
@@ -99,14 +104,14 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['totaldaily']
         },
         series: [{
-          name: 'expected', itemStyle: {
+          name: 'totaldaily', itemStyle: {
             normal: {
-              color: '#FF005A',
+              color: '#3888fa',
               lineStyle: {
-                color: '#FF005A',
+                color: '#3888fa',
                 width: 2
               }
             }
@@ -116,26 +121,6 @@ export default {
           data: expectedData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
-        },
-        {
-          name: 'actual',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
         }]
       })
     }
