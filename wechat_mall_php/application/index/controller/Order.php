@@ -6,6 +6,7 @@ namespace app\index\controller;
 use app\common\model\GoodsInfo;
 use app\common\model\Orders as OrdersModel;
 use app\common\model\Users as UsersModel;
+use app\common\utils\CheckUser;
 use app\common\utils\JwtUtil;
 use app\common\utils\ResultUtil;
 use think\App;
@@ -43,7 +44,6 @@ class Order extends Controller
             ]);
 
         }
-
         return $this->orderService->createOrder($map, $userList);
     }
 
@@ -131,6 +131,18 @@ class Order extends Controller
             ]
         ]));
     }
+
+    public function returnOrder()
+    {
+        $users = CheckUser::checkUser($this->request);
+        $orderNum = $this->request->post("orderNum");
+        $ordersModel = new OrdersModel();
+        $orders = $ordersModel->where(["order_number" => $orderNum])->find();
+        $orders->order_refund = 1;
+        return ResultUtil::OK();
+
+    }
+
 
     private function checkUser()
     {
