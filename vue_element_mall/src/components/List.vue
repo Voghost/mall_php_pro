@@ -152,8 +152,6 @@ export default {
         console.log(err)
       })
     },
-
-
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -165,6 +163,7 @@ export default {
     },
   },
 }
+
 
 
 </script>
