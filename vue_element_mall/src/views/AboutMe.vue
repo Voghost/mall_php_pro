@@ -46,7 +46,7 @@ import ItemOrder from "../components/ItemOrder";
 import CartCard from "../components/CartCard";
 import UserAddress from "@/components/UserAddress";
 import MallHeader from "@/components/MallHeader";
-import UserSetting from "../components/UserSetting";
+// import UserSetting from "../components/UserSetting";
 
 import PasswordSetting from "@/components/PasswordSetting";
 
@@ -66,7 +66,7 @@ export default {
     UserData,
     ThingTittle,
     MallFooter,
-    UserSetting,
+    // UserSetting,
     CartCard,
     PasswordSetting
   },

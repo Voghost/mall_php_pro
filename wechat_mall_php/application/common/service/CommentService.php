@@ -151,7 +151,7 @@ class CommentService
 
     public function addComment($query, $user)
     {
-        $order = OrderModel::where("order_id", $query["order_id"]);
+        $order = OrderModel::where("order_id", $query["order_id"])->find();
         $order->order_state = 4;
         $order->save();
         $comment = new CommentModel();
