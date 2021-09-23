@@ -6,10 +6,13 @@
              style="width: 500px;padding: 20px;float: left"
              :rules="rules"
              label-position="top">
+      <el-form-item label="用户名字" required>
+        <el-input v-model="form.user_name"></el-input>
+      </el-form-item>
       <el-form-item label="用户性别">
-        <el-radio v-model="form.user_sex" label="男">男</el-radio>
-        <el-radio v-model="form.user_sex" label="女">女</el-radio>
-        <el-radio v-model="form.user_sex" label="隐藏">隐藏</el-radio>
+        <el-radio v-model="form.user_sex" label="1">男</el-radio>
+        <el-radio v-model="form.user_sex" label="2">女</el-radio>
+        <el-radio v-model="form.user_sex" label="3">隐藏</el-radio>
       </el-form-item>
       <el-form-item label="用户年龄">
         <el-input-number v-model="form.user_age"></el-input-number>
@@ -21,8 +24,8 @@
         <el-input v-model="form.user_phone"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="open()">修改完成</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="Onsubmit('form')">修改完成</el-button>
+        <el-button @click="Resetform('form')">取消</el-button>
       </el-form-item>
     </el-form>
     <div style="float: right;margin: 100px"><!--头像上传-->
@@ -42,27 +45,31 @@ input[type="file"] {
 import ImageUpload from "@/components/ImageUpload";
 
 export default {
-  created() {
-    this.userdata = this.$store.state.userInfo
-    console.log(this.userdata)
-    this.form = this.userdata
-  },
-  name: "UserSetting",
+  name: "Usersetting",
   components: {ImageUpload},
   data() {
     const checkPhone = (rule, value, callback) => {
-      const phoneReg = /^1[0-9]{10}$/
+      const phoneReg = /^1[3-8][0-9]{9}$/
+      if (!value) {
+        return callback(new Error('电话号码不能为空'))
+      }
       setTimeout(() => {
-        if (phoneReg.test(value)) {
-          callback()
+        if (!Number.isInteger(+value)) {
+          callback(new Error('请输入数字值'))
         } else {
-          callback(new Error('电话号码不正确'))
-          console.log(value)
+          if (phoneReg.test(value)) {
+            callback()
+          } else {
+            callback(new Error('电话号码格式不正确'))
+          }
         }
       }, 100)
     }
     const checkEmail = (rule, value, callback) => {
-      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if (!value) {
+        return callback(new Error('邮箱不能为空'))
+      }
       setTimeout(() => {
         if (mailReg.test(value)) {
           callback()
@@ -74,7 +81,13 @@ export default {
     return {
       dialogTableVisible: false,
       baseUpdateUrl: 'http://mall.php.test/upload/file',
-      userdata: [],
+      form: {
+        // name: '',
+        // sex: '3',
+        // age: '18',
+        // userEmail: '请填写邮箱地址',
+        // userPhone: '请填写可使用的手机号码',
+      },
       rules: {
         userEmail: [
           {validator: checkEmail, trigger: 'blur'}
@@ -83,28 +96,25 @@ export default {
           {validator: checkPhone, trigger: 'blur'}
         ],
       },
-      form: [],
+      methods: {
+        Onsubmit(form) {
+          let vm = this;
+          this.$refs[form].validate((valid) => {
+            if (valid) {
+              vm.$refs.upload.submit();
+            } else return false;
+          });
+        },
+        Resetform(form) {
+          this.$refs[form].resetFields();
+          this.form.imageUrl = '';
+        },
+      },
     }
   },
-  methods: {
-    open() {
-      this.$confirm('是否确认修改?', '', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
-    }
+  created() {
+    this.form = this.$store.state.userInfo;
+    console.log("form", this.form)
   }
-
 }
 </script>
