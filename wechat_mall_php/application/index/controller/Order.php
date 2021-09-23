@@ -4,6 +4,8 @@
 namespace app\index\controller;
 
 use app\common\model\GoodsInfo;
+use app\common\model\Logistics;
+use app\common\model\Orders as OrderModel;
 use app\common\model\Orders as OrdersModel;
 use app\common\model\Users as UsersModel;
 use app\common\utils\CheckUser;
@@ -178,5 +180,25 @@ class Order extends Controller
 //        } else {
 //            return $userTemp;
 //        }
+    }
+
+    public function refund($id)
+    {
+        $users = CheckUser::checkUser($this->request);
+        $query = $this->request->port();
+        $order = OrderModel::where("order_id", $id)->find();
+        $order->order_refund = 1;
+        $order->order_refund_content = $query["content"];
+        $order->save();
+        return json(["message"=>"正在申请退款","code"=>200]);
+    }
+
+    public function finish($id)
+    {
+        $users = CheckUser::checkUser($this->request);
+        $order = OrderModel::where("order_id",$id)->find();
+        $order->order_state = 3;
+        $order->save();
+        return json(["message"=>"已完成订单","code"=>200]);
     }
 }

@@ -22,11 +22,11 @@ export default {
         return axios.post(`${BASE_URL}/order/create`,{ids:id,address:address})
     },
     getKVByInfoId(id){
+        //return axios.post(`${BASE_URL}/spec/getKVByInfoId=${id}`)
         return axios.post(`${BASE_URL}/spec/getKVByInfoId?id=${id}`)
     },
     pay(map){
         return axios.post(`${BASE_URL}/order/pay`,
             {order_number:map})
     }
-
 }

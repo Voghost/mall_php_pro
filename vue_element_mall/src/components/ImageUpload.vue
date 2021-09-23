@@ -7,7 +7,7 @@
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
   >
-    <img v-if="baseUpdateUrl" :src="imageUrl" class="avatar"/>
+    <img v-if="baseUpdateUrl" :src="imageUrl" class="avatar" />
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
@@ -36,12 +36,6 @@ export default {
       }
       return isJPG && isLt2M;
     }
-  },
-  props: ["imgSrc"],
-  created() {
-    if (this.imgSrc != null && this.imgSrc !== '') {
-      this.imageUrl = this.imgSrc;
-    }
   }
 }
 </script>
@@ -58,7 +52,6 @@ export default {
   border: 1px dashed #fff;
   margin-top: -20px;
 }
-
 .avatar {
   width: 250px;
   height: 250px;
