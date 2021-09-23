@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use app\common\utils\CheckUser;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;

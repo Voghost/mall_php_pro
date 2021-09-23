@@ -23,6 +23,7 @@ class OrderService
         $totalPrice = 0;
 
         $orders = new OrdersModel;
+        $orders->startTrans();
         if (array_key_exists("consignee_addr", $postMap) && $postMap["consignee_addr"] != null) {
             $temp = $postMap["consignee_addr"];
             $userName = $temp["userName"];
@@ -53,6 +54,7 @@ class OrderService
             $tempGoods = GoodsModel::where("goods_id", $temp["goods_id"])->find();
             $leftNumber = $tempGoods["goods_number"] - $temp["goods_number"];
             if ($leftNumber < 0) {
+                $orders->rollback();
                 return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
             } else if ($leftNumber == 0) {
                 $tempGoods->goods_state = 1;
@@ -65,6 +67,7 @@ class OrderService
                 $goodsInfo = $goodsInfoModel->where(["info_id" => $temp["info_id"]])->find();
                 $leftGoodsInfoNum = $goodsInfo["goods_stock"] - $temp["goods_number"];
                 if ($leftGoodsInfoNum < 0) {
+                    $orders->rollback();
                     return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
                 }
                 $goodsInfo->goods_stock = $leftGoodsInfoNum;
@@ -103,6 +106,7 @@ class OrderService
         $orders->order_user_id = $user->user_id;
         $orders->order_price = $totalPrice;
         $orders->save();
+        $orders->commit();
 
 
         return json(["message" => [
@@ -131,6 +135,7 @@ class OrderService
         if ($refund != null && $refund != '') {
             $where["order_refund"] = $refund;
         }
+        return json($where);
         $ordersList = \app\common\model\Orders::where($where)->select();
         if ($ordersList == null) {
             return json([

@@ -60,7 +60,7 @@ class Order extends Controller
         return $this->orderService->allOrder($type, $userTemp);
     }
 
-    public function allOrder($type, $refund)
+    public function allOrder($type, $refund = null)
     {
 
         $userTemp = $this->checkUser();

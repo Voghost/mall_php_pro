@@ -30,7 +30,7 @@
     </el-form>
     <div style="float: right;margin: 100px"><!--头像上传-->
       <el-tag>头像上传：</el-tag>
-      <ImageUpload></ImageUpload>
+      <ImageUpload :img-src="form.user_avatar"></ImageUpload>
     </div>
   </div>
 </template>

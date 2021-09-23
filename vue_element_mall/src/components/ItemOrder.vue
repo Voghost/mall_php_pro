@@ -14,13 +14,10 @@
       <List :status='3'></List>
     </el-tab-pane>
     <el-tab-pane label="退款中">
-      <RequestRefund></RequestRefund>
+      <List :refund='1'></List>
     </el-tab-pane>
     <el-tab-pane label="退款成功">
-      <RequestSuccess></RequestSuccess>
-    </el-tab-pane>
-    <el-tab-pane label="退款失败">
-      <RequestFailed></RequestFailed>
+      <List :refund='2'></List>
     </el-tab-pane>
   </el-tabs>
 
@@ -28,9 +25,7 @@
 
 <script>
 import List from "@/components/List";
-import RequestRefund from "@/components/RequestRefund";
-import RequestFailed from "@/components/RequestFailed";
-import RequestSuccess from "@/components/RequestSuccess";
+
 export default {
   name: "ItemOrder",
   data() {
@@ -39,9 +34,6 @@ export default {
     };
   },
   components:{
-    RequestRefund,
-    RequestFailed,
-    RequestSuccess,
     List
   },
 }
