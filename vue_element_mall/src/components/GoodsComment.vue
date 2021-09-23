@@ -77,12 +77,18 @@ export default {
         type: 'warning'
       }).then(() => {
         console.log(this.gid)
+
+        let temp = [];
+        for(let index in this.fileList){
+          temp.push({name: this.fileList[index].name, url: this.fileList[index].url})
+        }
         this.commentOnsubmit.star = this.form.star
-        this.commentOnsubmit.pics = this.fileList;
+        this.commentOnsubmit.pics = temp;
         this.commentOnsubmit.goods_id = this.gid;
         this.commentOnsubmit.content = this.form.desc;
         this.commentOnsubmit.order_id = this.orderid;
         console.log(this.commentOnsubmit)
+        this.$api.user.addComment(this.commentOnsubmit)
         // console.log(this.commentOnsubmit.goods_id)
       }).catch(() => {
         this.$message({

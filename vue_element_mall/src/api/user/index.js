@@ -37,11 +37,6 @@ export default {
             {id: id}
         )
     },
-    getUserInfo() {
-        return axios.get(
-            `${BASE_URL}/user/getUserInfo`,
-        )
-    },
     updateUser(userInfo) {
         return axios.post(
             `${BASE_URL}/user/updateUser`,
@@ -62,6 +57,13 @@ export default {
     getAllOrder(type,refund){
         return axios.get(
             `${BASE_URL}/order/allOrder?type=${type}&refund=${refund}`,
+
+        )
+    },
+    addComment(map){
+        return axios.post(
+            `${BASE_URL}/comment/addComment`,
+            map
 
         )
     }

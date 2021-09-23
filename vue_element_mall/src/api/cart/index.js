@@ -18,15 +18,8 @@ export default {
     showCartItem($cart_id){
         return axios.post(`${BASE_URL}/cart/showCartItem?cart_id=${$cart_id}`)
     },
-    createOrder(id,address){
-        return axios.post(`${BASE_URL}/order/create`,{ids:id,address:address})
-    },
-    getKVByInfoId(id){
-        return axios.post(`${BASE_URL}/spec/getKVByInfoId?id=${id}`)
-    },
-    pay(map){
-        return axios.post(`${BASE_URL}/order/pay`,
-            {order_number:map})
+    createOrder(){
+        return axios.post(`${BASE_URL}/order/create`)
     }
 
 }

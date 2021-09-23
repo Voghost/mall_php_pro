@@ -6,10 +6,10 @@ use app\common\model\Goods;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\ImageUrl;
 use DateTime;
-use app\common\utils\CheckUser;
 use think\Db;
 use app\common\model\Comment as CommentModel;
 use app\common\model\OrdersGoods as OrdersGoodsModel;
+use app\common\model\Orders as OrderModel;
 use app\common\model\ImageUrl as ImageUrlModel;
 use app\common\model\Users as UserModel;
 
@@ -151,6 +151,9 @@ class CommentService
 
     public function addComment($query, $user)
     {
+        $order = OrderModel::where("order_id", $query["order_id"]);
+        $order->order_state = 4;
+        $order->save();
         $comment = new CommentModel();
         $comment->content = $query["content"];
         $comment->order_id = $query["order_id"];
@@ -161,17 +164,21 @@ class CommentService
         $dt = new DateTime();
         $time = $dt->format('Y-m-d H:i:s');
         $comment->time = $time;
-        $id = $comment->save();
+        $comment->save();
 
         $picTemp = $query["pics"];
+//        json($picTemp)->send();
+//        exit();
+
         for ($i = 0;$i < count($picTemp);$i++)
         {
+
             $temp = $picTemp[$i];
             $pic = new ImageUrlModel();
             $pic["from"] = 2;
             $pic["url"] = $temp["url"];
             $pic["name"] = $temp["name"];
-            $pic["f_id"] = $id;
+            $pic["f_id"] = $comment["id"];
             $pic->save();
         }
 
