@@ -64,6 +64,13 @@ export default {
             `${BASE_URL}/order/allOrder?type=${type}&refund=${refund}`,
 
         )
+    },
+    addComment(map){
+        return axios.post(
+            `${BASE_URL}/comment/addComment`,
+            map
+
+        )
     }
 
 
