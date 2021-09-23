@@ -28,7 +28,7 @@ class Comment extends Controller
     public function page($page = null, $limit = null)
     {
         $query = $this->request->post();
-        $pageSearch = $this->commentService->pageSearch($page, $limit, $query);
+        $pageSearch = $this->commentService->pageSearchAdmin($page, $limit, $query);
         return json(
             ["message" => "ok",
                 "code" => 200,
