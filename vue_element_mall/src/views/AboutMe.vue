@@ -25,7 +25,7 @@
                   <UserAddress></UserAddress>
                 </el-tab-pane>
                 <el-tab-pane label="登录密码修改">
-                                  <PasswordSetting></PasswordSetting>
+                  <PasswordSetting></PasswordSetting>
                 </el-tab-pane>
               </el-tabs>
             </el-tab-pane>

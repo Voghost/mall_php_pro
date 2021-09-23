@@ -173,5 +173,21 @@ class User extends Controller
         echo $content;
     }
 
+    public function changePassword($username)
+    {
+        $tempUser=CheckUser::checkUser($this->request);
+        $userId=$tempUser->user_id;
+        $query = $this->request->post();
+        $password = md5($query["password"]);
+        $user = UsersModel::where("user_id", $userId)->find();
+        if($user->user_password == $password){
+            $user["user_password"] = md5($query["newPassword"]);
+            $user->save();
+            ResultUtil::OK();
+        }else {
+            ResultUtil::FAIL();
+        }
+
+    }
 
 }

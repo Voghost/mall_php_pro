@@ -40,12 +40,12 @@
                 label="商品总价"
                 width="110">
             </el-table-column>
-            <el-table-column v-if="status!=0" align="center" label="操作" width="200" style="padding:20px">
+            <el-table-column v-if="status" align="center" label="操作" width="200" style="padding:20px">
               <template slot-scope="scope">
                 <el-button v-if="status===1" size="small" type="success">催发货</el-button>
-                <el-button v-if="status===2" size="small" type="success" @click="Payment(scope.row)">物流消息</el-button>
+                <el-button v-if="status===2" size="small" type="success" @click="tracement(scope.row)">物流消息</el-button>
                 <el-button v-if="status===3" size="small" type="success" @click="handle=true">评价</el-button>
-                <el-button size="small" type="danger" @click="Payment(scope.row)">申请退款</el-button>
+                <el-button v-if="status" size="small" type="danger" @click="request_refund(scope.row)">申请退款</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -102,10 +102,10 @@
 <script>
 
 export default {
-  props: ["status"],
+  props: ["status", "refund"],
   created() {
 
-    this.getOrderList(this.status)
+    this.getOrderList(this.status, this.refund)
 
   },
   data() {
@@ -132,9 +132,9 @@ export default {
     handlePicSuccess(file) {
       console.log(file)
     },
-    getOrderList(status) {
+    getOrderList(status = '', refund = '') {
       // 待支付
-      this.$api.user.getAllOrder(status).then(res => {
+      this.$api.user.getAllOrder(status, refund).then(res => {
         this.tabledata = res.data.message.orders;
         console.log(this.tabledata)
       }).catch(err => {

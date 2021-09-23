@@ -43,17 +43,23 @@ export default {
             {userInfo}
         )
     },
-    getAllOrder(type) {
-        return axios.get(
-            `${BASE_URL}/order/allOrder?type=${type}`,
-        )
-    },
+    // getAllOrder(type) {
+    //     return axios.get(
+    //         `${BASE_URL}/order/allOrder?type=${type}`,
+    //     )
+    // },
     returnOrder(orderNum) {
         return axios.post(
             `${BASE_URL}/order/returnOrder`,
             {"orderNum": orderNum}
         )
     },
+    getAllOrder(type,refund){
+        return axios.get(
+            `${BASE_URL}/order/allOrder?type=${type}&refund=${refund}`,
+
+        )
+    }
 
 
 }
