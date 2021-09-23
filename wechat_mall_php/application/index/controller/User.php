@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\model\Users;
 use app\common\model\Users as UsersModel;
+use app\common\utils\CheckUser;
 use app\common\utils\JwtUtil;
 use app\common\utils\ResultUtil;
 use think\App;
@@ -98,6 +99,21 @@ class User extends Controller
         return json(["ok" => $user]);
     }
 
+    public function getUserInfo()
+    {
+        $users = CheckUser::checkUser($this->request);
+
+        $userInfo = [
+            "user_id" => $users["user_id"],
+            "user_name" => $users["user_name"],
+            "user_avatar" => $users["user_avatar"],
+            "user_phone" => $users["user_phone"],
+            "user_sex" => $users["user_sex"],
+            "user_age" => $users["user_age"],
+            "user_email" => $users["user_email"],
+        ];
+        return ResultUtil::OK($users);
+    }
 
     private function checkUser()
     {
