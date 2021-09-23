@@ -44,7 +44,8 @@
               <template slot-scope="scope">
                 <el-button v-if="status===1" size="small" type="success">催发货</el-button>
                 <el-button v-if="status===2" size="small" type="success" @click="tracement(scope.row)">物流消息</el-button>
-                <el-button v-if="status===3" size="small" type="success" @click="handle=true">评价</el-button>
+<!--                <el-button v-if="status===3" size="small" type="success" @click="handle=true">评价</el-button>-->
+                <el-button v-if="status===3" size="small" type="success" @click="handlecomment(scope.row)">评价</el-button>
                 <el-button v-if="status" size="small" type="danger" @click="request_refund(scope.row)">申请退款</el-button>
               </template>
             </el-table-column>
@@ -71,36 +72,39 @@
       </el-table-column>
     </el-table>
     <el-dialog title="评论" :visible.sync="handle" width="500px" center>
-      <el-form label-width="100px" :model="form" ref="loginFormRef">
-        <el-form-item label="产品评分:">
-          <el-rate v-model="form.star" show-text></el-rate>
-        </el-form-item>
-        <el-form-item label="评价内容:">
-          <el-input type="textarea" :rows="3" v-model="form.desc" :maxlength="150" placeholder="请输入内容"
-                    show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="上传照片:">
-          <el-upload :action="baseUpdateUrl"
-                     list-type="picture-card"
-                     :file-list="fileList"
-                     :on-success="handlePicSuccess"
-                     :on-remove="handleRemove"
-                     :on-preview="handlePictureCardPreview">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传3个jpg/png文件，且不超过10MB</div>
-          </el-upload>
-        </el-form-item>
-        <span slot="footer">
-      <el-button @click="handle = false">取 消</el-button>
-      <el-button type="primary" @click="handle = false">确 定</el-button>
-      </span>
-      </el-form>
+      <GoodsComment :gid="this.comment.goods_id" :orderid="this.comment.order_id"></GoodsComment>
+<!--<GoodsComment :gid="this.tabledata[0].goods[0].goods_id" :orderid="this.tabledata.order_id"></GoodsComment>-->
+<!--      <el-form label-width="100px" :model="form" ref="loginFormRef">-->
+<!--        <el-form-item label="产品评分:">-->
+<!--          <el-rate v-model="form.star" show-text></el-rate>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="评价内容:">-->
+<!--          <el-input type="textarea" :rows="3" v-model="form.desc" :maxlength="150" placeholder="请输入内容"-->
+<!--                    show-word-limit></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="上传照片:">-->
+<!--          <el-upload :action="baseUpdateUrl"-->
+<!--                     list-type="picture-card"-->
+<!--                     :file-list="fileList"-->
+<!--                     :on-success="handlePicSuccess"-->
+<!--                     :on-remove="handleRemove"-->
+<!--                     :on-preview="handlePictureCardPreview">-->
+<!--            <el-button size="small" type="primary">点击上传</el-button>-->
+<!--            <div slot="tip" class="el-upload__tip">只能上传3个jpg/png文件，且不超过10MB</div>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
+<!--        <span slot="footer">-->
+<!--      <el-button @click="handle = false">取 消</el-button>-->
+<!--      <el-button type="primary" @click="handle = false">确 定</el-button>-->
+<!--      </span>-->
+<!--      </el-form>-->
     </el-dialog>
   </div>
 </template>
 
 <script>
 
+import GoodsComment from "@/components/GoodsComment";
 export default {
   props: ["status", "refund"],
   created() {
@@ -110,33 +114,40 @@ export default {
   },
   data() {
     return {
-      form: {
-        desc: "",
-        star: null,
-      },
-      fileList: [],
-      baseUpdateUrl: 'https://jsonplaceholder.typicode.com/posts/',
+      // form: {
+      //   desc: "",
+      //   star: null,
+      // },
+      // fileList: [],
+      // baseUpdateUrl: 'https://jsonplaceholder.typicode.com/posts/',
       tabledata: [],
       handle: false,
+      comment : {},
     }
   },
-  components: {},
+  components: {GoodsComment},
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    handlecomment(data){
+      this.comment = data;
+      console.log(this.comment)
+      this.handle = true
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handlePicSuccess(file) {
-      console.log(file)
-    },
+    // handleRemove(file, fileList) {
+    //   console.log(file, fileList);
+    // },
+    // handlePictureCardPreview(file) {
+    //   this.dialogImageUrl = file.url;
+    //   this.dialogVisible = true;
+    // },
+    // handlePicSuccess(file) {
+    //   console.log(file)
+    // },
     getOrderList(status = '', refund = '') {
       // 待支付
       this.$api.user.getAllOrder(status, refund).then(res => {
         this.tabledata = res.data.message.orders;
         console.log(this.tabledata)
+        // console.log(this.tabledata[0].goods[0].goods_id)
       }).catch(err => {
         console.log(err)
       })
