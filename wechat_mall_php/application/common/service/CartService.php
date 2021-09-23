@@ -15,12 +15,16 @@ class CartService
 
     public function addCartItem($goods,$user){
         $cart=new CartModel;
-        if($number=$cart->where('goods_info_id',$goods['info_id'])->column('number'))
-        {
-            $number=$number+$goods['number'];
-            $cart->where('goods_info_id',$goods['info_id'])->update(['number'=>$number]);
-            return ResultUtil::OK("添加成功");
-        }
+
+        $number=$cart->where('goods_info_id',$goods['info_id'])->
+        where('user_id',$user->user_id)->find();
+//        return json($goods);
+         if($number!=null){
+             $total=$number["number"]+$goods['number'];
+             $cart->where('goods_info_id',$goods['info_id'])->update(['number'=>$total]);
+             return ResultUtil::OK("添加成功");
+
+         }
         $cart->goods_info_id=$goods['info_id'];
         $dateFormat=date('Y-m-d H:i:s');
         $cart->add_time=$dateFormat;

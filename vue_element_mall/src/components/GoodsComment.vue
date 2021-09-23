@@ -1,7 +1,7 @@
 <template>
 <div>
-  <el-tabs v-model="tabsName" style="margin-left: 35px;margin-top: 20px;font-size: 20px">
-    <el-tab-pane label="产品评论" name="first">
+<!--  <el-tabs v-model="tabsName" style="margin-left: 35px;margin-top: 20px;font-size: 20px">-->
+<!--    <el-tab-pane label="产品评论" name="first">-->
       <el-form label-width="100px" :model="form" ref="loginFormRef">
         <el-form-item label="产品评分:">
           <el-rate v-model="form.star" show-text></el-rate>
@@ -30,9 +30,9 @@
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
-    </el-tab-pane>
+<!--    </el-tab-pane>-->
 
-  </el-tabs>
+<!--  </el-tabs>-->
 </div>
 </template>
 
@@ -51,6 +51,7 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       order_id : 99,
+      goods_id : 0,
       commentOnsubmit : {},
     }
   },
@@ -75,11 +76,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        console.log(this.gid)
         this.commentOnsubmit.star = this.form.star
         this.commentOnsubmit.pics = this.fileList;
+        this.commentOnsubmit.goods_id = this.gid;
         this.commentOnsubmit.content = this.form.desc;
-        this.commentOnsubmit.order_id = this.order_id;
+        this.commentOnsubmit.order_id = this.orderid;
         console.log(this.commentOnsubmit)
+        // console.log(this.commentOnsubmit.goods_id)
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -90,7 +94,12 @@ export default {
         })
       })
     },
-  }
+  },
+  props :[
+      'gid' ,
+      'orderid'
+  ]
+
 }
 </script>
 
