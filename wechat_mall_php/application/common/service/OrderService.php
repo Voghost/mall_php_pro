@@ -5,6 +5,7 @@ namespace app\common\service;
 use app\common\model\Goods as GoodsModel;
 use app\common\model\GoodsInfo;
 use app\common\model\Orders as OrdersModel;
+use app\common\utils\ResultUtil;
 use think\Db;
 use think\Model;
 
@@ -55,7 +56,9 @@ class OrderService
             $leftNumber = $tempGoods["goods_number"] - $temp["goods_number"];
             if ($leftNumber < 0) {
                 $orders->rollback();
-                return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
+                // return ResultUtil::FAIL("商品库存不够, 名字". $tempGoods["goods_name"] ."");
+                return json(["message" => null, "meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "status" => 400]]);
+                //return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
             } else if ($leftNumber == 0) {
                 $tempGoods->goods_state = 1;
             }
@@ -68,7 +71,8 @@ class OrderService
                 $leftGoodsInfoNum = $goodsInfo["goods_stock"] - $temp["goods_number"];
                 if ($leftGoodsInfoNum < 0) {
                     $orders->rollback();
-                    return json(["message" => ["meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "code" => 400]]]);
+                    //return ResultUtil::FAIL("商品库存不够, 名字". $tempGoods["goods_name"] ."");
+                    return json(["message" => null, "meta" => ["msg" => "商品库存不够, 名字 " . $tempGoods["goods_name"] . "", "status" => 400]]);
                 }
                 $goodsInfo->goods_stock = $leftGoodsInfoNum;
                 $totalPrice = $totalPrice + ($temp["goods_number"] * $goodsInfo["goods_price"]);
@@ -115,11 +119,11 @@ class OrderService
             "order_number" => $orders->order_number,
             "order_price" => $orders->order_price,
             "create_time" => strtotime($orders->order_create_time),
-            "update_time" => strtotime($orders->order_update_time),
+            "update_time" => strtotime($orders->order_update_time),],
             "meta" => [
                 "msg" => "创建订单成功",
                 "status" => 200
-            ]]]);
+            ]]);
     }
 
 

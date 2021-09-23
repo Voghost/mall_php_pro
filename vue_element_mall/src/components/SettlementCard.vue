@@ -80,6 +80,17 @@
         </el-row>
       </div>
     </div>
+    <el-dialog
+        title="支付"
+        :visible.sync="dialogVisible"
+        width="30%"
+       :before-close="handleClose">
+      <span>确定支付</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="handleSave">免密支付</el-button>
+  </span>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -94,7 +105,11 @@ export default {
       username:'',
       totalPrice:0,
       finalAddress:'',
-      finalPhone:''
+      finalPhone:'',
+      orderInfo:[],
+      map:{},
+      orderNumber:'',
+      dialogVisible: false
     }
   },
   filters: {
@@ -108,7 +123,6 @@ export default {
     getCartItem(data){
       this.$api.cart.showCartItem(data).then(res=>{
             this.items=res.data.message;
-
         //获取商品规格
         for(let i=0;i<this.items.length;i++){
           this.$api.cart.getKVByInfoId(this.items[i]['goods_info_id']).then(res=>{
@@ -152,12 +166,44 @@ export default {
       let temp=0;
       for(let i=0;i<this.items.length;i++){
         temp+=this.items[i].total
-        console.log(temp)
       }
       this.totalPrice=temp
     },
     submit(){
       console.log(this.cart_id)
+      this.$api.cart.createOrder(this.cart_id,this.finalAddress).then(res=>{
+        this.orderInfo=res.data.message
+        console.log(res)
+        if(res.data.meta.status!==200){
+          this.$message({
+            message: '库存不够',
+            type: 'warning'
+          });
+        }else{
+          this.orderNumber=this.orderInfo.order_number
+          this.dialogVisible=true
+        }
+        // for(let i=0;i<this.cart_id.length;i++){
+        //   this.$api.cart.deleteCartItem(this.cart_id[i])
+        // }
+      }) .catch(err=>{
+        console.log(err);
+      })
+      //删除购物车
+
+    },
+    handleClose() {
+      this.dialogVisible=false
+      this.$router.push({
+        path:'/AboutMe?selectedTag=3'
+      })
+    },
+    handleSave(){
+      this.$api.cart.pay(this.orderNumber)
+      this.dialogVisible=false
+      this.$router.push({
+        path:'/AboutMe?selectedTag=3'
+      })
     }
 
   },
@@ -166,7 +212,6 @@ export default {
   ],
   created() {
     this.getCartItem(this.cart_id)
-
     this.getAddressInfo()
     this.getUsername()
   }
