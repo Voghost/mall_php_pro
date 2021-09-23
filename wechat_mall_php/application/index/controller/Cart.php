@@ -4,7 +4,6 @@
 namespace app\index\controller;
 
 
-use app\common\utils\CheckUser;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
@@ -31,6 +30,7 @@ class Cart extends Controller
         return $this->CartService->allCartItem($userTemp);
 
     }
+    //
     //结算页面展示购买的东西
     public function showCartItem($cart_id){
         $userTemp=CheckUser::checkUser($this->request);

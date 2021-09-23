@@ -23,8 +23,12 @@ export default {
             {specKv}
         )
     },
-    getKVByInfoId(info_id){
-        return axios.post(`${BASE_URL}/spec/getKVByInfoId?id=${info_id}`)
+    shoppingCar(goods) {
+        return axios.post(
+            `${BASE_URL}/cart/addItem`,
+            goods
+        )
+
     }
 
 

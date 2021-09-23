@@ -26,10 +26,10 @@ export default {
     registerAuth(param) {
         return axios.post(`${BASE_URL}/user/registerAuthen`,param);
     },
-    pageSearch($page, $limit, $query) {
-        return axios.post(
-            `${BASE_URL}/comment/pageSearch?page=${$page}&limit=${$limit}`,
-            {params: $query}
+    pageSearch($page, $limit, $goods_id) {
+        return axios.get(
+            `${BASE_URL}/comment/pageSearch?page=${$page}&limit=${$limit}&goods_id=${$goods_id}`,
+
         )
     },
     getUserName(id){
@@ -44,6 +44,7 @@ export default {
 
         )
     }
+
 
 }
 
