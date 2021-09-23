@@ -2,6 +2,7 @@
 
 namespace app\index\controller;
 
+use app\common\utils\CheckUser;
 use app\common\utils\ResultUtil;
 use think\App;
 use think\Controller;
@@ -35,8 +36,13 @@ class Comment extends Controller
 
     public function addComment()
     {
+        $users = CheckUser::checkUser($this->request);
         $query = $this->request->post();
-        $temp = $this->commentService->addComment($query);
-        return ResultUtil::OK($temp);
+        $code = $this->commentService->addComment($query, $users);
+        if($code == 1){
+            return ResultUtil::OK();
+        } else {
+            return ResultUtil::FAIL();
+        }
     }
 }
