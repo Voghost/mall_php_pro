@@ -108,9 +108,10 @@ export default {
     getCartItem(data){
       this.$api.cart.showCartItem(data).then(res=>{
             this.items=res.data.message;
+
         //获取商品规格
         for(let i=0;i<this.items.length;i++){
-          this.$api.goods.getKVByInfoId(this.items[i]['goods_info_id']).then(res=>{
+          this.$api.cart.getKVByInfoId(this.items[i]['goods_info_id']).then(res=>{
             this.goods_info=res.data.message
             let ItemSpec=''
             for(let i=0;i<this.goods_info.length;i++){
@@ -151,6 +152,7 @@ export default {
       let temp=0;
       for(let i=0;i<this.items.length;i++){
         temp+=this.items[i].total
+        console.log(temp)
       }
       this.totalPrice=temp
     },
@@ -164,6 +166,7 @@ export default {
   ],
   created() {
     this.getCartItem(this.cart_id)
+
     this.getAddressInfo()
     this.getUsername()
   }

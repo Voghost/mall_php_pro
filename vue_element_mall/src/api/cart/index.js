@@ -20,6 +20,9 @@ export default {
     },
     createOrder(){
         return axios.post(`${BASE_URL}/order/create`)
+    },
+    getKVByInfoId(id){
+        return axios.post(`${BASE_URL}/spec/getKVByInfoId=${id}`)
     }
 
 }
