@@ -148,31 +148,32 @@ class CommentService
         return ["page" => $page, "total" => $count, "content" => $res];
     }
 
-    public function addComment($query)
+    public function addComment($query, $user)
     {
-        $comment = new Comment();
+        $comment = new CommentModel();
         $comment->content = $query["content"];
         $comment->order_id = $query["order_id"];
         $comment->star = $query["star"];
         $comment->goods_id = $query["goods_id"];
-        $comment->user_id = $query["user_id"];
+        $comment->user_id = $user->user_id;
         $comment->status = 0;
         $dt = new DateTime();
         $time = $dt->format('Y-m-d H:i:s');
         $comment->time = $time;
         $id = $comment->save();
 
-        $pic = $query["pics"];
-        for ($i = 0;$i < count($pic);$i++)
+        $picTemp = $query["pics"];
+        for ($i = 0;$i < count($picTemp);$i++)
         {
-            $pic = new ImageUrl();
+            $temp = $picTemp[$i];
+            $pic = new ImageUrlModel();
             $pic["from"] = 2;
-            $pic["url"] = $pic["url"];
-            $pic["name"] = $pic["name"];
+            $pic["url"] = $temp["url"];
+            $pic["name"] = $temp["name"];
             $pic["f_id"] = $id;
             $pic->save();
         }
 
-        return ok;
+        return 1;
     }
 }
