@@ -96,6 +96,11 @@ class CommentService
 
         }
         $collection = $commentModel->where(["goods_id" => $goodsId])->select();
-        return ["content" => $commentList, "total" => count($collection), "page" => (int)$page];
+        $total = 0;
+        foreach ($collection as $item) {
+            $total += $item["star"];
+        }
+
+        return ["content" => $commentList, "total" => count($collection), "page" => (int)$page, "rate" => ($total / (5 * count($collection)))];
     }
 }
