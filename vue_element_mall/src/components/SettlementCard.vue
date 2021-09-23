@@ -183,9 +183,9 @@ export default {
           this.orderNumber=this.orderInfo.order_number
           this.dialogVisible=true
         }
-        // for(let i=0;i<this.cart_id.length;i++){
-        //   this.$api.cart.deleteCartItem(this.cart_id[i])
-        // }
+        for(let i=0;i<this.cart_id.length;i++){
+          this.$api.cart.deleteCartItem(this.cart_id[i])
+        }
       }) .catch(err=>{
         console.log(err);
       })
