@@ -323,13 +323,20 @@ export default {
 
       if(Object.keys(this.goodsInfo).length>0){
         let item = {info_id : this.goodsInfo.info_id,number : this.num};
-        this.$api.goods.shoppingCar(item).then(res=>{
-          console.log(2,res.data);
+        if(this.goodsInfo.goods_stock>=1 && this.num <= this.goodsInfo.goods_stock){
+          this.$api.goods.shoppingCar(item).then(res=>{
+            console.log(2,res.data);
+            this.$message({
+              message: '恭喜你，加入购物车成功',
+              type: 'success'
+            });
+          })
+        }else {
           this.$message({
-            message: '恭喜你，加入购物车成功',
-            type: 'success'
+            message: '警告哦，不够库存哦，宝贝',
+            type: 'warning'
           });
-        })
+        }
       }else {
         this.$message({
           message: '警告哦，请选择完所有规格哦，宝贝',
@@ -341,13 +348,17 @@ export default {
     GoodsBuy() {
       if(Object.keys(this.goodsInfo).length>0){
         let item = {info_id : this.goodsInfo.info_id,number : this.num};
-        if(this.goodsInfo.goods_stock>=1){
+        if(this.goodsInfo.goods_stock>=1 && this.num <= this.goodsInfo.goods_stock){
           this.$api.goods.shoppingCar(item).then(res=>{
             console.log(2,res.data);
             this.$message({
               message: '恭喜你，加入购物车成功',
               type: 'success'
             });
+            console.log(res)
+            this.$router.push({
+              path:"SettlementPage?cart_id="+res.data.message
+            })
           })
         }else {
           this.$message({

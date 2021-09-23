@@ -22,7 +22,9 @@ class CartService
          if($number!=null){
              $total=$number["number"]+$goods['number'];
              $cart->where('goods_info_id',$goods['info_id'])->update(['number'=>$total]);
-             return ResultUtil::OK("添加成功");
+             return ResultUtil::OK($number["id"]);
+//
+//             return ResultUtil::OK("添加成功");
 
          }
         $cart->goods_info_id=$goods['info_id'];
@@ -31,7 +33,7 @@ class CartService
         $cart->user_id=$user['user_id'];
         $cart->number=$goods['number'];
         $cart->save();
-        return ResultUtil::OK("添加成功");
+        return ResultUtil::OK($cart["id"]);
 
     }
     public function allCartItem($userTemp){

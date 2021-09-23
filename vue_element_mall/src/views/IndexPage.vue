@@ -1,14 +1,11 @@
 <template>
   <div>
     <el-backtop target=".app" :visibility-height="400"></el-backtop>
-    <el-container>
-
+    <el-container direction="vertical">
       <MallHeader/>
       <!--功能区-->
-      <el-header class="" style="height: 180px; width: 100%">
         <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
-      </el-header>
-
+      <NavColumns></NavColumns>
       <el-main class="">
         <!--   分类和主页大图   -->
         <el-container style="margin-top: 10px;" class="">
@@ -21,7 +18,6 @@
                   style="width: 250px; box-shadow: rgba(0,0,0,0.3) 0 0 5px; margin-right: 50px;"
                   background-color="#f0f0f0"
               >
-              <Category style="float: right; min-width: 200px;"></Category>
               </el-menu>
             </el-col>
             <el-col :span="12" class="" style="margin-left: 40px;">
@@ -55,10 +51,10 @@
 <script>
 import MallHeader from "@/components/MallHeader";
 import SearchHeader from "@/components/SearchHeader";
-import Category from "@/components/Category";
 // import FloorItem from "@/components/FloorItem";
 import MallFooter from "@/components/MallFooter";
 import FloorItem from "@/components/FloorItem";
+import NavColumns from "../components/NavColumns";
 
 export default {
   name: 'IndexPage',
@@ -74,7 +70,7 @@ export default {
     // FloorItem,
     MallHeader,
     SearchHeader,
-    Category,
+    NavColumns,
     FloorItem,
     MallFooter
   },
