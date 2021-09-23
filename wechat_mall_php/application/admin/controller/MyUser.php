@@ -87,7 +87,7 @@ class MyUser extends Controller
             array_push($rolesList, $rol["roles_name"]);
         }
 
-        $res = ["name" => $myUser->user_name, "userId" => $myUser->user_id, "roles" => $rolesList];
+        $res = ["name" => $myUser->user_name, "userId" => $myUser->user_id, "roles" => $rolesList, "avatar"=>$myUser->avatar];
 
 
         return json(["message" => "ok", "code" => 200, "data" => $res, "ok" => true]);

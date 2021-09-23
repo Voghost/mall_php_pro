@@ -62,36 +62,37 @@
     <!-- 下方功能页-->
     <el-tabs v-model="tabsName" style="margin-left: 35px;margin-top: 20px;font-size: 20px">
 
-      <el-tab-pane label="产品评论" name="first">
-        <el-form label-width="100px" :model="form" ref="loginFormRef">
-          <el-form-item label="产品评分:">
-            <el-rate v-model="form.star" show-text></el-rate>
-          </el-form-item>
-          <el-form-item label="评价内容:">
-            <el-input type="textarea" :rows="3" v-model="form.desc" :maxlength="150" placeholder="请输入内容"
-                      show-word-limit></el-input>
-          </el-form-item>
-          <el-form-item label="上传照片:">
-            <el-upload :action="baseUpdateUrl"
-                       list-type="picture-card"
-                       :file-list="fileList"
-                       :on-success="handlePicSuccess"
-                       :on-remove="handleRemove"
-                       :on-preview="handlePictureCardPreview">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传3个jpg/png文件，且不超过10MB</div>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
 
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
-            <el-button>取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-tab-pane>
+<!--      <el-tab-pane label="产品评论" name="first">-->
+<!--        <el-form label-width="100px" :model="form" ref="loginFormRef">-->
+<!--          <el-form-item label="产品评分:">-->
+<!--            <el-rate v-model="form.star" show-text ></el-rate>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="评价内容:">-->
+<!--            <el-input type="textarea" :rows="3" v-model="form.desc" :maxlength="150" placeholder="请输入内容"-->
+<!--                      show-word-limit></el-input>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="上传照片:">-->
+<!--            <el-upload :action="baseUpdateUrl"-->
+<!--                       list-type="picture-card"-->
+<!--                       :file-list="fileList"-->
+<!--                       :on-success="handlePicSuccess"-->
+<!--                       :on-remove="handleRemove"-->
+<!--                       :on-preview="handlePictureCardPreview">-->
+<!--              <el-button size="small" type="primary">点击上传</el-button>-->
+<!--              <div slot="tip" class="el-upload__tip">只能上传3个jpg/png文件，且不超过10MB</div>-->
+<!--            </el-upload>-->
+<!--            <el-dialog :visible.sync="dialogVisible">-->
+<!--              <img width="100%" :src="dialogImageUrl" alt="">-->
+<!--            </el-dialog>-->
+
+<!--          </el-form-item>-->
+<!--          <el-form-item>-->
+<!--            <el-button type="primary" @click="onSubmit">提交</el-button>-->
+<!--            <el-button>取消</el-button>-->
+<!--          </el-form-item>-->
+<!--        </el-form>-->
+<!--      </el-tab-pane>-->
 
       <el-tab-pane label="产品详情" name="second">
         <el-descriptions title="商品信息" :column="1" border>
@@ -105,15 +106,14 @@
 
       <el-tab-pane label="销售记录" name="third" style="font-size: 14px">
         <div style="height: 60px;line-height: 60px;font-size: 16px;">
-          好评度:<span style="font-size: 30px;color: red;margin-left: 10px">94%</span>
+          好评度:<span style="font-size: 30px;color: red;margin-left: 10px">{{this.Praise}}%</span>
         </div>
         <el-tabs v-model="evaluationName" type="card" style="margin-top: 20px">
           <el-tab-pane label="全部评价" name="first">
             <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
-                 v-for="item in comment" :key="item.user_id">
-              <el-row>
-                <!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
-                <el-col :span="5">{{ item.user_name }}</el-col>
+                 v-for="(item,index) in comment" :key="index">
+              <el-row style="margin-top: 10px">
+                <el-col :span="5">{{ item.username }}</el-col>
                 <el-col :span="7">
                   <el-rate v-model="item.star"
                            disabled
@@ -129,7 +129,7 @@
                   <div style="width: 100%;">{{ item.content }}</div>
                   <el-row>
                     <el-col :span="3" v-for="(pic,index) in item.pics" :key="index">
-                      <el-image :src="pic.url" style="width: 50px;height: 50px;" :title="ClickTips" :fit="'contain'">
+                      <el-image :src="pic" style="width: 50px;height: 50px;" :title="ClickTips" :preview-src-list="item.pics" :fit="'contain'">
                       </el-image>
                     </el-col>
                   </el-row>
@@ -146,8 +146,64 @@
             >
             </el-pagination>
           </el-tab-pane>
-          <el-tab-pane label="好评" name="second">好评</el-tab-pane>
-          <el-tab-pane label="差评" name="third">差评</el-tab-pane>
+          <el-tab-pane label="好评" name="second">
+            <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+                 v-for="(item,index) in comment" :key="index">
+              <el-row style="margin-top: 10px">
+                <!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
+                <el-col :span="5" v-if="item.star>3">{{ item.username }}</el-col>
+                <el-col :span="7" v-if="item.star>3">
+                  <el-rate v-model="item.star"
+                           disabled
+                           show-score
+                           :value="-1"
+                           text-color="#ff9900"
+                           score-template="{value}">
+                  </el-rate>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="10" :offset="5">
+                  <div style="width: 100%;" v-if="item.star>3">{{ item.content }}</div>
+                  <el-row>
+                    <el-col :span="3" v-for="(pic,index) in item.pics" :key="index">
+                      <el-image :src="pic" style="width: 50px;height: 50px;" :title="ClickTips" :fit="'contain'" v-if="item.star>3">
+                      </el-image>
+                    </el-col>
+                  </el-row>
+                </el-col>
+              </el-row>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="差评" name="third">
+            <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+                 v-for="(item,index) in comment" :key="index">
+              <el-row style="margin-top: 10px">
+                <!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
+                <el-col :span="5" v-if="item.star<3">{{ item.username }}</el-col>
+                <el-col :span="7" v-if="item.star<3">
+                  <el-rate v-model="item.star"
+                           disabled
+                           show-score
+                           :value="-1"
+                           text-color="#ff9900"
+                           score-template="{value}">
+                  </el-rate>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="10" :offset="5">
+                  <div style="width: 100%;" v-if="item.star<3">{{ item.content }}</div>
+                  <el-row>
+                    <el-col :span="3" v-for="(pic,index) in item.pics" :key="index">
+                      <el-image :src="pic" style="width: 50px;height: 50px;" :title="ClickTips" :fit="'contain'" v-if="item.star<3">
+                      </el-image>
+                    </el-col>
+                  </el-row>
+                </el-col>
+              </el-row>
+            </div>
+          </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
     </el-tabs>
@@ -160,19 +216,21 @@ import GoodsAttribute from "@/components/GoodsAttribute";
 
 export default {
   name: "GoodsDetails",
-  components: {GoodsAttribute},
+  components: { GoodsAttribute},
   data() {
     return {
       goods: {},
       goodsInfo: {},
       comment: {},
+      commentOnsubmit : {},
       num: 1,
+      Praise : 0,
       style: 1,
       fileList: [],
-      tabsName: 'first',//标签页默认显示
+      tabsName: 'second',//标签页默认显示
       evaluationName: 'first',  //评论页默认显示
-      // baseUpdateUrl: 'http://mall.php.test/upload/file',
-      baseUpdateUrl: 'https://jsonplaceholder.typicode.com/posts/',
+      baseUpdateUrl: 'http://mall.php.test/upload/file',
+      // baseUpdateUrl: 'https://jsonplaceholder.typicode.com/posts/',
 
       form: {
         desc: "",
@@ -193,13 +251,13 @@ export default {
 
   methods: {
     //照片上传
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
+    // handleRemove(file, fileList) {
+    //   console.log(file, fileList);
+    // },
+    // handlePictureCardPreview(file) {
+    //   this.dialogImageUrl = file.url;
+    //   this.dialogVisible = true;
+    // },
     handleChange(value) {
       console.log(value);
     },
@@ -207,47 +265,76 @@ export default {
       this.$api.goods.detail(id).then(res => {
         this.goods = res.data.message;
         console.log(this.goods);
+        this.pageSearch();
       }).catch(err => {
         console.log(err);
       })
     },
-    getUserName(id) {
-      this.$api.user.getUserName(id).then(res => {
-        this.username = res.data.message;
-      }).catch(err => {
-        console.log(err);
-      })
-    },
-    getComment(page = 1) {
+    pageSearch(page = 1) {
       this.currentPage = page
-      this.$api.user.pageSearch(this.currentPage, this.size)
+      console.log("1",this.goods)
+      this.$api.user.pageSearch(this.currentPage, this.size,this.goods.goods_id)
           .then(res => {
             this.comment = res.data.message.content;
             this.totalNum = res.data.message.total;
-            this.row_index = this.comment.length;
-            if (this.comment.length % this.row_index) {
+            this.Praise = (res.data.message.rate*100).toFixed(2);
+            this.row_index = res.data.message.content.length;
+            if(this.comment.length%this.row_index){
               this.row_index++;
             }
-            console.log(this.comment)
+            console.log(res.data)
           })
           .catch(err => {
             console.log(err)
           })
     },
     changePage(page) {
-      this.getComment(page)
+      this.pageSearch(page)
       document.documentElement.scrollTop = 680;
     },
-    handlePicSuccess(file) {
-      console.log(file)
-    },
+    // handlePicSuccess(file) {
+    //   this.fileList.push({'name': file.data.name , 'url': file.data.url , id: -1})
+    //   console.log(this.fileList)
+    // },
     //评论提交
-    onSubmit() {
-      console.log('submit')
-    },
+    // onSubmit() {
+    //   // console.log('submit')
+    //   return this.$confirm('设置好的属性提交后将不能修改?', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   }).then(() => {
+    //     this.commentOnsubmit.star = this.form.star
+    //     this.commentOnsubmit.pics = this.fileList;
+    //     this.commentOnsubmit.content = this.form.desc;
+    //     console.log(this.commentOnsubmit)
+    //   }).catch(() => {
+    //     this.$message({
+    //       type: 'info',
+    //       message: '已取消删除'
+    //     })
+    //     this.reject(new Error('取消')).catch(err => {
+    //       console.log(err)
+    //     })
+    //   })
+    // },
     //购物车
     ShoppingCar() {
-      console.log('shopping')
+      if(Object.keys(this.goodsInfo).length>0){
+        let item = {info_id : this.goodsInfo.info_id,number : this.num};
+        this.$api.goods.shoppingCar(item).then(res=>{
+          console.log(2,res.data);
+          this.$message({
+            message: '恭喜你，加入购物车成功',
+            type: 'success'
+          });
+        })
+      }else {
+        this.$message({
+          message: '警告哦，请选择完所有规格哦，宝贝',
+          type: 'warning'
+        });
+      }
     },
     //购买
     GoodsBuy() {
@@ -263,7 +350,7 @@ export default {
   mounted() {
     console.log(this.goods_id);
     this.getGoodsInfo(this.goods_id);
-    this.getComment();
+
   },
   watch: {
     goodsInfo: {
