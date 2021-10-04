@@ -4,6 +4,7 @@ namespace app\common\service;
 
 use app\common\model\Users as UsersModel;
 use app\common\utils\JwtUtil;
+use DateTime;
 
 class UserService
 {
@@ -30,7 +31,9 @@ class UserService
             json(["message" => "用户名已存在", "meta" => ["code" => 201]])->send();
             exit();
         }
-        $usersModel->save(["user_name" => $username, "user_password" => md5($password)]);
+        $dt = new DateTime();
+        $time = $dt->format('Y-m-d H:i:s');
+        $usersModel->save(["user_name" => $username, "user_password" => md5($password), "user_create_time" => $time]);
     }
 
 
@@ -133,6 +136,9 @@ class UserService
         if (array_key_exists("user_sex", $map)) {
             $user->user_sex = $map["user_sex"];
         }
+        $dt = new DateTime();
+        $time = $dt->format('Y-m-d H:i:s');
+        $user->user_update_time = $time;
         $user->save();
     }
 
