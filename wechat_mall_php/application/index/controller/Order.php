@@ -30,8 +30,8 @@ class Order extends Controller
         $userList = $this->checkUser();
 
         $cartIdList = $this->request->post("ids");
-        if(!is_array($cartIdList)){
-            $cartIdList=[$cartIdList];
+        if (!is_array($cartIdList)) {
+            $cartIdList = [$cartIdList];
         }
         $address = $this->request->post("address");
         $cartModel = new \app\common\model\Cart();
@@ -185,20 +185,38 @@ class Order extends Controller
     public function refund($id)
     {
         $users = CheckUser::checkUser($this->request);
-        $query = $this->request->port();
+        $query = $this->request->post();
         $order = OrderModel::where("order_id", $id)->find();
         $order->order_refund = 1;
         $order->order_refund_content = $query["content"];
         $order->save();
-        return json(["message"=>"正在申请退款","code"=>200]);
+        return ResultUtil::OK($order);
+//        return json(["message" => "正在申请退款", "code" => 200]);
     }
 
     public function finish($id)
     {
         $users = CheckUser::checkUser($this->request);
-        $order = OrderModel::where("order_id",$id)->find();
+        $order = OrderModel::where("order_id", $id)->find();
         $order->order_state = 3;
         $order->save();
-        return json(["message"=>"已完成订单","code"=>200]);
+        return json(["message" => "已完成订单", "code" => 200]);
+    }
+
+    public function getLog($id)
+    {
+        $users = CheckUser::checkUser();
+        $logisticsModel = new Logistics();
+        $logistics = $logisticsModel->where(["order_id" => $id])->select();
+        $arr = [];
+        foreach ($logistics as $log) {
+            array_push($arr, [
+                "content" => $log["content"],
+                "timestamp" => $log["time"]
+            ]);
+
+        }
+        return ResultUtil::OK($logistics);
+
     }
 }

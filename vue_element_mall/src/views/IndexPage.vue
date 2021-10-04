@@ -56,6 +56,7 @@ export default {
       floorNum: 1,
     }
   },
+  inject: ['reload'],
   components: {
     // FloorItem,
     MallHeader,

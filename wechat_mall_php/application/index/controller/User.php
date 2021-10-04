@@ -174,7 +174,6 @@ class User extends Controller
         } else {
             ResultUtil::FAIL();
         }
-
     }
 
 }

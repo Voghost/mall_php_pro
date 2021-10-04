@@ -13,8 +13,8 @@ return [
     // 数据库类型
     'type' => 'mysql',
     // 服务器地址
-//    'hostname' => 'localhost',
-    'hostname' => 'ghovos.com',
+    'hostname' => 'localhost',
+//    'hostname' => 'ghovos.com',
 //    'hostname'        => '10.62.160.58',
     // 数据库名
 //    'database'        => 'api_wechat_mall',
@@ -26,8 +26,8 @@ return [
     'username' => 'phpTest',
     // 密码
 //    'password' => 'eBewrirRHkrBcZzB',
-    'password' => 'J91TDLPfXOy6hDTG',
-//    'password' => 'phptest',
+//    'password' => 'J91TDLPfXOy6hDTG',
+    'password' => 'phptest',
     // 端口
     'hostport' => '',
     // 连接dsn
