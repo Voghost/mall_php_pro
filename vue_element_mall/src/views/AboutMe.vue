@@ -19,7 +19,7 @@
             <el-tab-pane label="账户信息修改" name="fourth">
               <el-tabs :tab-position="tabPosition2">
                 <el-tab-pane label="基本信息修改">
-                  <UserSetting></UserSetting>
+<!--                  <UserSetting></UserSetting>-->
                 </el-tab-pane>
                 <el-tab-pane label="快递地址修改">
                   <UserAddress></UserAddress>

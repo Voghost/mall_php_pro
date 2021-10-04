@@ -60,15 +60,14 @@ export default {
 
         )
     },
-    refund(id,content){
+    refund(id){
         return axios.post(
             `${BASE_URL}/order/refund?id=${id}`,
-            {content: content}
         )
     },
-    updateState(id,state){
+    finish(id){
         return axios.post(
-            `${BASE_URL}/order/refund?id=${id}&state=${state}`,
+            `${BASE_URL}/order/finish?id=${id}`,
         )
     },
     addComment(map){
@@ -76,6 +75,11 @@ export default {
             `${BASE_URL}/comment/addComment`,
             map
 
+        )
+    },
+    getLog(id){
+        return axios.post(
+            `${BASE_URL}/order/getLog?id=${id}`
         )
     }
 

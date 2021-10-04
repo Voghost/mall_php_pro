@@ -13,6 +13,9 @@
     <el-tab-pane label="待评价">
       <List :status='3'></List>
     </el-tab-pane>
+    <el-tab-pane label="已完成">
+      <List :status='4'></List>
+    </el-tab-pane>
     <el-tab-pane label="退款中">
       <List :refund='1'></List>
     </el-tab-pane>
