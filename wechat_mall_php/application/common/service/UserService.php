@@ -22,6 +22,17 @@ class UserService
         }
     }
 
+    public function register($username, $password)
+    {
+        $usersModel = new UsersModel();
+        $users = $usersModel->where("user_name", $username)->find();
+        if ($users != null) {
+            json(["message" => "用户名已存在", "meta" => ["code" => 201]])->send();
+            exit();
+        }
+        $usersModel->save(["user_name" => $username, "user_password" => md5($password)]);
+    }
+
 
     /**
      * @param $code

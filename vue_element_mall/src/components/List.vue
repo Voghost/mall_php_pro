@@ -126,7 +126,7 @@ import GoodsComment from "@/components/GoodsComment";
 
 
 export default {
-  props: ["status", "refund"],
+  props: ["status", "refund", "refresh"],
   created() {
 
     this.getOrderList(this.status, this.refund)

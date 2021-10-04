@@ -72,4 +72,22 @@ class Test
 //        echo count($collection);
 //        echo "  finish ";
 
+    public function setGoodsNumber()
+    {
+        $goodsModel = new GoodsModel();
+        $goodsInfoModel = new GoodsInfo();
+        $goodsList = $goodsModel->select();
+        foreach ($goodsList as $goods) {
+            $goodsInfoList = $goodsInfoModel->where(["goods_id" => $goods["goods_id"]])->select();
+//            return json($goodsInfoList);
+            $numbs = 0;
+            foreach ($goodsInfoList as $goodsInfo) {
+                $numbs += $goodsInfo["goods_stock"];
+            }
+            $goods->goods_number = $numbs;
+            $goods->save();
+        }
+        echo "finish";
+    }
+
 }

@@ -86,12 +86,12 @@ export default {
     }
   },
   created() {
-    // let info = this.$store.state.userInfo;
-    // if (Object.keys(info).length < 1) {
-    //   this.$router.push({
-    //     path: '/Login_Register'
-    //   })
-    // }
+    let info = this.$store.state.userInfo;
+    if (Object.keys(info).length < 1) {
+      this.$router.push({
+        path: '/Login_Register'
+      })
+    }
   }
 
 

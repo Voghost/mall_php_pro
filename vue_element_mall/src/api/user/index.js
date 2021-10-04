@@ -81,7 +81,8 @@ export default {
         return axios.post(
             `${BASE_URL}/order/getLog?id=${id}`
         )
-    }
+    },
+
 
 
 }

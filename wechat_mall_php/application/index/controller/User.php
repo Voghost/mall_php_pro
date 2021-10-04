@@ -69,24 +69,10 @@ class User extends Controller
 
 
         if ($this->check($ticket, $randStr, $appId) == 1) {
-            $user = new Users();
-            $user["user_name"] = $username;
-            $user["user_password"] = md5($password);
-            $user->save();
-//            if ($result != null) {
-//                $jwtUtil = new JwtUtil();
-//                $jwtEncode = $jwtUtil->jwtEncode($result["user_name"]);
-//                $result["user_token"] = $jwtEncode;
-//                $result->save();
-//
-//                $data = ["token" => $result["user_token"]];
-//                return \json(["message" => "ok", "code" => 200, "data" => $data, "ok" => true]);
-//            } else {
-//                return \json(["message" => "验证失败", "code" => 201, "data" => null]);
-//            }
-            return 1;
+            $this->userService->register($username, $password);
+            return ResultUtil::OK();
         } else {
-            return 0;
+            return ResultUtil::FAIL();
         }
     }
 
@@ -175,16 +161,16 @@ class User extends Controller
 
     public function changePassword($username)
     {
-        $tempUser=CheckUser::checkUser($this->request);
-        $userId=$tempUser->user_id;
+        $tempUser = CheckUser::checkUser($this->request);
+        $userId = $tempUser->user_id;
         $query = $this->request->post();
         $password = md5($query["password"]);
         $user = UsersModel::where("user_id", $userId)->find();
-        if($user->user_password == $password){
+        if ($user->user_password == $password) {
             $user["user_password"] = md5($query["newPassword"]);
             $user->save();
             ResultUtil::OK();
-        }else {
+        } else {
             ResultUtil::FAIL();
         }
 

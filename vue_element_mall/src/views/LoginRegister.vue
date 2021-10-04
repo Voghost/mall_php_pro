@@ -155,13 +155,17 @@ export default {
             userApi.registerAuth(temp)
                 .then(response => {
                   console.log('response', response)
-                  if (response.data != null) {
-                    self.$axios({
-                      method: 'post',
-                      url: 'http://localhost:8080/',
-                    })
+                  if (response.data.meta.code === 200) {
+                    this.$message({
+                      message: "注册成功",
+                      type: 'success'
+                    });
+                    this.isLogin = true;
                   } else {
-                    alert("登陆失败")
+                    this.$message({
+                      message: response.data.message,
+                      type: 'warning'
+                    });
                   }
                 })
             try {
