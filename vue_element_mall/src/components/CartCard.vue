@@ -167,6 +167,10 @@ export default {
       if(this.items.length===this.arr.length)
       {
         this.allCheck=true
+        if(this.arr.length>0) {
+          this.button = false
+          this.url="/SettlementPage"
+        }
       }
       this.TotalMoney()
     },
