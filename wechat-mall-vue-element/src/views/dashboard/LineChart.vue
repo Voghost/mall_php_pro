@@ -60,9 +60,9 @@ export default {
     this.chart = null
   },
   methods: {
-    getChart(){
+    getChart() {
       echartApi.getWeekData()
-        .then(response =>{
+        .then(response => {
           this.day = response.data[0].day
         })
     },
@@ -80,8 +80,8 @@ export default {
             show: false
           },
           axisLabel: {
-            interval:0,
-            rotate:40
+            interval: 0,
+            rotate: 40
           }
         },
         grid: {

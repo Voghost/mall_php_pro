@@ -4,7 +4,7 @@
         v-for="(activity, index) in logistics_info"
         :key="index"
         :timestamp="activity.timestamp"
-        color="rgb(124,124,124)">
+        color="blue">
       {{ activity.content }}
     </el-timeline-item>
   </el-timeline>
@@ -16,6 +16,8 @@ export default {
   data() {
     return {
       reverse: true,
+      order_id:123,
+      order_number:1223,
       logistics_info: [{
         content: '已送达',
         timestamp: '2018-04-15'

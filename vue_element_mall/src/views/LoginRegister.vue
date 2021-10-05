@@ -1,5 +1,6 @@
 <template>
   <div class="login-register">
+    <MallHeader/>
     <!--   腾讯防水墙 -->
     <div class="contain">
       <div class="big-box" :class="{active:isLogin}">
@@ -52,9 +53,11 @@
 
 <script>
 import userApi from '@/api/user'
+import MallHeader from "@/components/MallHeader";
 
 export default {
   name: 'login_register',
+  components: {MallHeader},
   data() {
     return {
       isLogin: true,
@@ -75,6 +78,9 @@ export default {
     }
   },
   created() {
+    if (this.$route.query.isRegister) {
+      this.isLogin = false;
+    }
     if (window.TencentCaptcha === undefined) {
       let script = document.createElement('script')
       let head = document.getElementsByTagName('head')[0]
@@ -155,13 +161,17 @@ export default {
             userApi.registerAuth(temp)
                 .then(response => {
                   console.log('response', response)
-                  if (response.data != null) {
-                    self.$axios({
-                      method: 'post',
-                      url: 'http://localhost:8080/',
-                    })
+                  if (response.data.meta.code === 200) {
+                    this.$message({
+                      message: "注册成功",
+                      type: 'success'
+                    });
+                    this.isLogin = true;
                   } else {
-                    alert("登陆失败")
+                    this.$message({
+                      message: response.data.message,
+                      type: 'warning'
+                    });
                   }
                 })
             try {

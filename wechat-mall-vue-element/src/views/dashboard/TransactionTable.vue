@@ -22,6 +22,9 @@
           待收货
         </el-tag>
         <el-tag type="success" v-if="row.order_state === 3 && row.order_refund === 0">
+          待评价
+        </el-tag>
+        <el-tag type="success" v-if="row.order_state === 4 && row.order_refund === 0">
           已完成
         </el-tag>
         <el-tag type="warning" v-if="row.order_refund === 1">
@@ -66,7 +69,7 @@ export default {
         .then(response => {
           console.log(response)
           this.list = response.data
-      })
+        })
     }
   }
 }

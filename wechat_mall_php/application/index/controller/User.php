@@ -7,6 +7,7 @@ use app\common\model\Users as UsersModel;
 use app\common\utils\CheckUser;
 use app\common\utils\JwtUtil;
 use app\common\utils\ResultUtil;
+use DateTime;
 use think\App;
 use think\Controller;
 use think\Exception;
@@ -69,24 +70,10 @@ class User extends Controller
 
 
         if ($this->check($ticket, $randStr, $appId) == 1) {
-            $user = new Users();
-            $user["user_name"] = $username;
-            $user["user_password"] = md5($password);
-            $user->save();
-//            if ($result != null) {
-//                $jwtUtil = new JwtUtil();
-//                $jwtEncode = $jwtUtil->jwtEncode($result["user_name"]);
-//                $result["user_token"] = $jwtEncode;
-//                $result->save();
-//
-//                $data = ["token" => $result["user_token"]];
-//                return \json(["message" => "ok", "code" => 200, "data" => $data, "ok" => true]);
-//            } else {
-//                return \json(["message" => "验证失败", "code" => 201, "data" => null]);
-//            }
-            return 1;
+            $this->userService->register($username, $password);
+            return ResultUtil::OK();
         } else {
-            return 0;
+            return ResultUtil::FAIL();
         }
     }
 
@@ -94,9 +81,11 @@ class User extends Controller
     public function updateUser()
     {
         $user = $this->checkUser();
-        $map = $this->request->post();
+        $map = $this->request->post("userInfo");
+//        return json($map);
         $this->userService->updateUser($user, $map);
-        return json(["ok" => $user]);
+        return ResultUtil::OK($user);
+//        return json(["ok" => $user]);
     }
 
     public function getUserInfo()
@@ -175,19 +164,18 @@ class User extends Controller
 
     public function changePassword($username)
     {
-        $tempUser=CheckUser::checkUser($this->request);
-        $userId=$tempUser->user_id;
+        $tempUser = CheckUser::checkUser($this->request);
+        $userId = $tempUser->user_id;
         $query = $this->request->post();
         $password = md5($query["password"]);
         $user = UsersModel::where("user_id", $userId)->find();
-        if($user->user_password == $password){
+        if ($user->user_password == $password) {
             $user["user_password"] = md5($query["newPassword"]);
             $user->save();
             ResultUtil::OK();
-        }else {
+        } else {
             ResultUtil::FAIL();
         }
-
     }
 
 }

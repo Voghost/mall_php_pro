@@ -14,7 +14,7 @@
         placeholder="请输入内容"
         @select="handleSelect"
     ></el-autocomplete>
-    <el-button type="primary" icon="el-icon-search">搜索</el-button>
+    <el-button type="primary" icon="el-icon-search" @click="searchSubmit">搜索</el-button>
     <el-col :span="6">
     </el-col>
   </el-row>
@@ -38,7 +38,7 @@ export default {
         // 调用 callback 返回建议列表的数据
         cb(results);
       }).then(err => {
-       console.log(err)
+        console.log(err)
       })
     },
     search(name) {
@@ -100,6 +100,11 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
+    },
+    searchSubmit() {
+      this.$router.push({
+        path: `/AllGoods?name=${this.state1}`,
+      })
     }
   },
   mounted() {

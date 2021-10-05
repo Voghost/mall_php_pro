@@ -54,30 +54,33 @@ export default {
             {"orderNum": orderNum}
         )
     },
-    getAllOrder(type,refund){
+    getAllOrder(type, refund) {
         return axios.get(
             `${BASE_URL}/order/allOrder?type=${type}&refund=${refund}`,
-
         )
     },
-    refund(id,content){
+    refund(id, content) {
         return axios.post(
             `${BASE_URL}/order/refund?id=${id}`,
-            {content: content}
+            {"content": content}
         )
     },
-    updateState(id,state){
+    finish(id) {
         return axios.post(
-            `${BASE_URL}/order/refund?id=${id}&state=${state}`,
+            `${BASE_URL}/order/finish?id=${id}`,
         )
     },
-    addComment(map){
+    addComment(map) {
         return axios.post(
             `${BASE_URL}/comment/addComment`,
             map
-
         )
-    }
+    },
+    getLog(id) {
+        return axios.post(
+            `${BASE_URL}/order/getLog?id=${id}`
+        )
+    },
 
 
 }

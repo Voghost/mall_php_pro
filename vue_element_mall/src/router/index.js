@@ -12,6 +12,12 @@ import SettlementPage from "../views/SettlementPage";
 
 Vue.use(VueRouter)
 
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+
 const routes = [
     {
         path: '*',
@@ -31,8 +37,8 @@ const routes = [
         component: GoodsDetail
     },
     {
-      path:'/settlementPage',
-      component:SettlementPage
+        path: '/settlementPage',
+        component: SettlementPage
     },
     {
         path: '/aboutMe',

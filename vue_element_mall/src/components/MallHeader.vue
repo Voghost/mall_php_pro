@@ -5,7 +5,9 @@
     <div class="left" v-if="Object.keys(userInfo).length === 0">
       <el-link href="/Login_Register" class="link"><i class="el-icon-user">登录</i></el-link>
       <el-divider direction="vertical"></el-divider>
-      <el-link href="/Login_Register"><i class="el-icon-top-right"></i>注册</el-link>
+      <el-link href="/Login_Register?isRegister=true"><i class="el-icon-top-right"></i>注册</el-link>
+      <el-divider direction="vertical"></el-divider>
+      <el-link href="/"><i class="el-icon-top-right"></i>首页</el-link>
     </div>
     <div class="left" v-if="Object.keys(userInfo).length > 0">
       <el-link href="/AboutMe"> 欢迎您 {{ userInfo.user_name }}</el-link>
@@ -20,7 +22,8 @@
       <el-divider direction="vertical"></el-divider>
       <el-link href="/AboutMe?selectedTag=2"><i class="el-icon-shopping-cart-1"></i>购物车</el-link>
       <el-divider direction="vertical"></el-divider>
-      <el-link @click="logout"><i class="el-icon-shopping-cart-1">注销</i></el-link>
+      <el-link v-if="Object.keys(userInfo).length > 0" @click="logout"><i class="el-icon-shopping-cart-1">注销</i>
+      </el-link>
     </div>
 
   </el-header>
@@ -42,7 +45,7 @@ export default {
     logout() {
       this.$store.dispatch("logout");
       this.$router.push({
-        path: '/'
+        path: '/Login_Register'
       })
     }
   }
