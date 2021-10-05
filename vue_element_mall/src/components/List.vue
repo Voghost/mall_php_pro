@@ -57,7 +57,8 @@
       </el-table-column>
       <el-table-column align="center"
                        label="下单时间"
-                       prop="create_time">
+                       :formatter="dateFormat"
+      >
       </el-table-column>
       <el-table-column align="center"
                        label="订单总价"
@@ -128,9 +129,7 @@ import GoodsComment from "@/components/GoodsComment";
 export default {
   props: ["status", "refund", "refresh"],
   created() {
-
     this.getOrderList(this.status, this.refund)
-
   },
   data() {
     return {
@@ -142,7 +141,7 @@ export default {
       visiblehandle: false,
       refundhandle: false,
       logistics_card: [],
-      order_id: '109',
+      order_id: -1,
       refund_request: ''
     }
   },
@@ -151,7 +150,7 @@ export default {
   methods: {
     getorderlogistic() {
       this.$api.user.getLog(this.order_id).then(res => {
-        this.logistics_card = res.data.data;
+        this.logistics_card = res.data.message;
         this.visiblehandle = true
         console.log(this.logistics_card)
         console.log(this.order_id)
@@ -159,19 +158,40 @@ export default {
         console.log(err)
       })
     },
-    request_refund() {
-
+    request_refund(orderId) {
+      this.order_id = orderId;
       this.refundhandle = true
       console.log(this.order_id)
     },
     set_request() {
-      this.$api.user.refund(this.order_id)
+
+      this.$api.user.refund(this.order_id, this.refund_request)
+          .then(res => {
+            if (res.data.meta.code === 200) {
+              this.refundhandle = false;
+              this.$router.push({
+                path: 'AboutMe?selectedTag=3'
+              })
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
     },
     confirm(id) {
       this.$api.user.finish(id)
       this.reload()
     },
-
+    dateFormat(row) {
+      let date = new Date(parseInt(row.create_time) * 1000);
+      let Y = date.getFullYear() + '-';
+      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
+    },
     handlecomment(data) {
       this.comment = data;
       console.log(this.comment)
