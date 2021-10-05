@@ -20,6 +20,7 @@
               <el-tabs :tab-position="tabPosition2">
                 <el-tab-pane label="基本信息修改">
 <!--                  <UserSetting></UserSetting>-->
+                  <UserData></UserData>
                 </el-tab-pane>
                 <el-tab-pane label="快递地址修改">
                   <UserAddress></UserAddress>
