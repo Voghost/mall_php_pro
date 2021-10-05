@@ -18,23 +18,30 @@
 
       <el-descriptions :column="1" border class="right_box">
         <el-descriptions-item label="用户性别">
-          <el-tag class="text">{{ this.userdata.user_sex }}</el-tag>
+<!--          <el-tag class="text">{{ this.userdata.user_sex }}</el-tag>-->
+          <template>
+            <el-radio v-model="userdata.user_sex" label="男">男</el-radio>
+            <el-radio v-model="userdata.user_sex" label="女">女</el-radio>
+          </template>
         </el-descriptions-item>
         <el-descriptions-item label="用户年龄">
-          <el-tag class="text">{{ this.userdata.user_age }}</el-tag>
+<!--          <el-tag class="text">{{ this.userdata.user_age }}</el-tag>-->
+          <el-input v-model="userdata.user_age" placeholder="请输入年龄"></el-input>
         </el-descriptions-item>
         <el-descriptions-item label="用户邮箱">
-          <el-tag class="text">{{ this.userdata.user_email }}</el-tag>
+<!--          <el-tag class="text">{{ this.userdata.user_email }}</el-tag>-->
+          <el-input v-model="userdata.user_email" placeholder="请输入邮箱"></el-input>
         </el-descriptions-item>
         <el-descriptions-item label="用户电话">
-          <el-tag class="text">{{ this.userdata.user_phone }}</el-tag>
+<!--          <el-tag class="text">{{ this.userdata.user_phone }}</el-tag>-->
+          <el-input v-model="userdata.user_phone" placeholder="请输入电话"></el-input>
         </el-descriptions-item>
         <!--        <el-descriptions-item label="快递地址">-->
         <!--          <el-tag class="text">{{ this.userdata.user_address_default }}</el-tag>-->
         <!--        </el-descriptions-item>-->
       </el-descriptions>
     </div>
-    <el-link href="/AboutMe?selectedTag=4" class="el-button"
+    <el-link class="el-button" @click="AlertUser"
              style="font-size: 14px ;line-height: 30px;position:absolute;right: 30px;bottom:30px">修改信息
     </el-link>
     <div>
@@ -43,6 +50,8 @@
 </template>
 
 <script>
+import userApi from '@/api/user'
+
 export default {
   name: "UserData",
   data() {
@@ -60,6 +69,18 @@ export default {
   created() {
     this.userdata = this.$store.state.userInfo
     console.log(this.userdata)
+  },
+  methods: {
+    AlertUser(){
+      console.log(this.userdata)
+      userApi.updateUser(this.userdata)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    }
   }
 }
 </script>
