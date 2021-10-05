@@ -119,10 +119,10 @@ class UserService
         return $response;
     }
 
-    public function updateUser($user, $map)
+    public function updateUser($u, $map)
     {
         $usersModel = new UsersModel();
-        $user = $usersModel->where(["user_id" => $user["user_id"]])->find();
+        $user = $usersModel->where(["user_id" => $u["user_id"]])->find();
         if (array_key_exists("user_avatar", $map)) {
             $user->user_avatar = $map["user_avatar"];
         }
@@ -140,6 +140,7 @@ class UserService
         $time = $dt->format('Y-m-d H:i:s');
         $user->user_update_time = $time;
         $user->save();
+        return $user;
     }
 
     public function show()
