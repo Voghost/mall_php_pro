@@ -4,24 +4,14 @@
     <el-container direction="vertical">
       <MallHeader/>
       <!--功能区-->
-        <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
+      <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
       <NavColumns></NavColumns>
       <el-main class="">
         <!--   分类和主页大图   -->
         <el-container style="margin-top: 10px;" class="">
           <el-row type="flex" justify="center" style="width: 100%">
-            <el-col :span="4" :offset="-2">
-              <el-menu
-                  default-active="1-4-1"
-                  class="el-menu-vertical-demo"
-                  :collapse="true"
-                  style="width: 250px; box-shadow: rgba(0,0,0,0.3) 0 0 5px; margin-right: 50px;"
-                  background-color="#f0f0f0"
-              >
-              </el-menu>
-            </el-col>
-            <el-col :span="12" class="" style="margin-left: 40px;">
-              <el-carousel height="500px" style="min-width: 600px; width: 800px" indicator-position="outside">
+            <el-col :span="24" class="" style="margin-left: 40px;">
+              <el-carousel height="500px" indicator-position="outside">
                 <el-carousel-item v-for="item in pics" :key="item.goods_id">
                   <a href="#">
                     <el-image :src="item.image_src" style="width: 100%; height: 100%" :fit="'cover'">
@@ -66,6 +56,7 @@ export default {
       floorNum: 1,
     }
   },
+  inject: ['reload'],
   components: {
     // FloorItem,
     MallHeader,

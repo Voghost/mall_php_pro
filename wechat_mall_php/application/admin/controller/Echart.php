@@ -44,7 +44,7 @@ class Echart extends Controller
 
         $timeTemp = new DateTime(1970-01-01);
         $time4 = $timeTemp->format('Y-m-d');
-        $user = UserModel::whereBetweenTime("user_create_time",$time4, $temp)->count();
+        $user = UserModel::count();
         $comment = CommentModel::whereBetweenTime("time",$temp)->count();
         $price = OrderModel::whereBetweenTime("order_create_time",$temp)->where("order_refund","<>",2)->sum("order_price");
         $order = OrderModel::whereBetweenTime("order_create_time",$temp)->where("order_refund","<>",2)->count();

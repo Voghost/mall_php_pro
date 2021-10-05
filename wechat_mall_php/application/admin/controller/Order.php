@@ -23,20 +23,20 @@ class Order extends Controller
 //        }
 
         if (array_key_exists("order_state", $query) && $query["order_state"] != 0) {
-            if($query["order_state"] == 1) {
+            if ($query["order_state"] == 1) {
                 $where[] = ["order_state", "=", 0];
                 $where[] = ["order_refund", "=", 0];
-            } else if($query["order_state"] == 2) {
+            } else if ($query["order_state"] == 2) {
                 $where[] = ["order_state", "=", 1];
                 $where[] = ["order_refund", "=", 0];
-            } else if($query["order_state"] == 3) {
+            } else if ($query["order_state"] == 3) {
                 $where[] = ["order_state", "=", 2];
                 $where[] = ["order_refund", "=", 0];
-            } else if($query["order_state"] == 4) {
+            } else if ($query["order_state"] == 4) {
                 $where[] = ["order_refund", "=", 1];
-            } else if($query["order_state"] == 5) {
+            } else if ($query["order_state"] == 5) {
                 $where[] = ["order_refund", "=", 2];
-            } else if($query["order_state"] == 6) {
+            } else if ($query["order_state"] == 6) {
                 $where[] = ["order_state", "=", 3];
                 $where[] = ["order_refund", "=", 0];
             }
@@ -57,22 +57,22 @@ class Order extends Controller
             }
         }
 
-        if($temp != null){
-            $count = $res->whereBetweenTime("order_create_time",$temp[0],$temp[1])->count();
-            $res = $res->page($page, $limit)->whereBetweenTime("order_create_time",$temp[0],$temp[1])->select();
+        if ($temp != null) {
+            $count = $res->whereBetweenTime("order_create_time", $temp[0], $temp[1])->count();
+            $res = $res->page($page, $limit)->whereBetweenTime("order_create_time", $temp[0], $temp[1])->select();
         } else {
             $res = $res->page($page, $limit)->select();
             $count = OrderModel::where($where)->count();
         }
 
-        for($i = 0;$i < count($res);$i++) {
+        for ($i = 0; $i < count($res); $i++) {
             $temp = $res[$i];
             $loglist = LogisticsModel::where("order_id", $temp["order_id"])->column("content");
             $logtime = LogisticsModel::where("order_id", $temp["order_id"])->column("time");
 //            $count = count($loglist) - 1;
             $logList = array();
-            for($j = 0;$j < count($logtime);$j++) {
-                array_push($logList,["time"=>$logtime[$j],"content"=>$loglist[$j]]);
+            for ($j = 0; $j < count($logtime); $j++) {
+                array_push($logList, ["time" => $logtime[$j], "content" => $loglist[$j]]);
             }
             $latest = end($loglist);
             $res[$i]["loglist"] = $logList;
@@ -104,7 +104,7 @@ class Order extends Controller
         $dt = new DateTime();
         $log["time"] = $dt->format('Y-m-d H:i:s');
         $log->save();
-        return json(["message"=>"正在申请退款","code"=>200]);
+        return json(["message" => "正在申请退款", "code" => 200]);
     }
 
     public function finishOrder($id)
@@ -112,8 +112,9 @@ class Order extends Controller
         $order = OrderModel::where("order_id", $id)->find();
         $order->order_state = 3;
         $order->save();
-        return json(["message"=>"订单完成","code"=>200]);
+        return json(["message" => "订单完成", "code" => 200]);
     }
+
 
     public function updateState($id, $state)
     {
@@ -124,13 +125,13 @@ class Order extends Controller
                 return \json(['message' => '修改失败', "code" => 201, 'data' => $id]);
             }
             $query = $this->request->post();
-            if($query != null){
+            if ($query != null) {
                 $order->order_state = $state;
             }
-            if($state == 2 && $query != null) {
+            if ($state == 2 && $query != null) {
                 $log = new Logistics();
                 $log["order_id"] = $order->order_id;
-                $count = LogisticsModel::where("order_id",$order->order_id)->count();
+                $count = LogisticsModel::where("order_id", $order->order_id)->count();
                 $log["status"] = $count + 1;
                 $log["content"] = $query["logis"];
                 $dt = new DateTime();
@@ -144,7 +145,6 @@ class Order extends Controller
         } else {
             return \json(['message' => '参数错误', "code" => 201, 'data' => null]);
         }
-
     }
 
 }

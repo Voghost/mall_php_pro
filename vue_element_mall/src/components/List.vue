@@ -40,13 +40,12 @@
                 label="商品总价"
                 width="110">
             </el-table-column>
-            <el-table-column v-if="status" align="center" label="操作" width="200" style="padding:20px">
+            <el-table-column v-if="status" align="center" label="操作" width="150" style="padding:20px">
               <template slot-scope="scope">
                 <el-button v-if="status===1" size="small" type="success">催发货</el-button>
-                <el-button v-if="status===2" size="small" type="success" @click="tracement(scope.row)">物流消息</el-button>
-<!--                <el-button v-if="status===3" size="small" type="success" @click="handle=true">评价</el-button>-->
-                <el-button v-if="status===3" size="small" type="success" @click="handlecomment(scope.row)">评价</el-button>
-                <el-button v-if="status" size="small" type="danger" @click="request_refund(scope.row)">申请退款</el-button>
+                <el-button v-if="status===2" size="small" type="success" @click="getorderlogistic()">物流消息</el-button>
+                <el-button v-if="status===3" size="small" type="success" @click="handlecomment(scope.row)">评价
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -58,16 +57,20 @@
       </el-table-column>
       <el-table-column align="center"
                        label="下单时间"
-                       prop="create_time">
+                       :formatter="dateFormat"
+      >
       </el-table-column>
       <el-table-column align="center"
-                       label="下单时间"
+                       label="订单总价"
                        prop="total_price">
       </el-table-column>
-      <el-table-column align="center" label="操作" width="120">
+      <el-table-column align="center" label="操作" width="220">
         <template slot-scope="scope">
           <el-button v-if="status===0" size="small" type="success" @click="Payment(scope.row.order_number)">支付
           </el-button>
+          <el-button v-if="status" size="small" type="danger" @click="request_refund(scope.row.order_id)">申请退款/货
+          </el-button>
+          <el-button v-if="status===2" size="small" type="success" @click="confirm(scope.row.order_id)">确认收货</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,6 +88,36 @@
     <el-button type="primary" @click="handleSave">免密支付</el-button>
   </span>
     </el-dialog>
+    <el-dialog
+        title="物流消息"
+        :visible.sync="visiblehandle"
+        width="30%">
+      <el-timeline>
+        <el-timeline>
+          <el-timeline-item
+              v-for="(content,index) in logistics_card"
+              :key="index"
+              :timestamp="content.content"
+              color='#0bbd87'
+              size="large ">
+
+          </el-timeline-item>
+        </el-timeline>
+      </el-timeline>
+    </el-dialog>
+    <el-dialog
+        title="退款申请"
+        :visible.sync="refundhandle"
+        width="40%">
+      <el-form :inline="true" :label-position="'top'">
+        <el-form-item label="退款理由:">
+          <el-input v-model="refund_request" type="el-textarea"></el-input>
+        </el-form-item>
+        <br>
+        <el-button @click="refundhandle=false">取 消</el-button>
+        <el-button type="primary" @click="set_request()">确 认</el-button>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -92,42 +125,72 @@
 
 import GoodsComment from "@/components/GoodsComment";
 export default {
-  props: ["status", "refund"],
+  props: ["status", "refund", "refresh"],
   created() {
-
     this.getOrderList(this.status, this.refund)
-
   },
   data() {
     return {
       tabledata: [],
       handle: false,
-      comment : {},
-      dialogVisible:false,
-      orderNumber:'',
-
-      tabsName: 'first', //标签页默认显示
-      form: {
-        desc: "",
-        star: null,
-      },
-      baseUpdateUrl: 'http://mall.php.test/upload/file',
-      fileList: [],
-      dialogImageUrl: '',
-      dialogPicVisible: false,
-      order_id : 99,
-      goods_id : 0,
-      commentOnsubmit : {},
-
-
+      comment: {},
+      dialogVisible: false,
+      orderNumber: '',
+      visiblehandle: false,
+      refundhandle: false,
+      logistics_card: [],
+      order_id: -1,
+      refund_request: ''
     }
   },
-  inject:['reload'],
+  inject: ['reload'],
   components: {GoodsComment},
   methods: {
+    getorderlogistic() {
+      this.$api.user.getLog(this.order_id).then(res => {
+        this.logistics_card = res.data.message;
+        this.visiblehandle = true
+        console.log(this.logistics_card)
+        console.log(this.order_id)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    request_refund(orderId) {
+      this.order_id = orderId;
+      this.refundhandle = true
+      console.log(this.order_id)
+    },
+    set_request() {
 
-
-    handlecomment(data){
+      this.$api.user.refund(this.order_id, this.refund_request)
+          .then(res => {
+            if (res.data.meta.code === 200) {
+              this.refundhandle = false;
+              this.$router.push({
+                path: 'AboutMe?selectedTag=3'
+              })
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    confirm(id) {
+      this.$api.user.finish(id)
+      this.reload()
+    },
+    dateFormat(row) {
+      let date = new Date(parseInt(row.create_time) * 1000);
+      let Y = date.getFullYear() + '-';
+      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
+    },
+    handlecomment(data) {
       this.comment = data;
       console.log(this.comment)
       this.handle = true
@@ -149,51 +212,41 @@ export default {
       // 待支付
       this.$api.user.getAllOrder(status, refund).then(res => {
         this.tabledata = res.data.message.orders;
-        console.log(3,this.tabledata)
+        console.log(this.tabledata)
         // console.log(this.tabledata[0].goods[0].goods_id)
       }).catch(err => {
         console.log(err)
       })
     },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    Payment(orderNumber){
-      this.orderNumber=orderNumber
-      this.dialogVisible=true
+    Payment(orderNumber) {
+      this.orderNumber = orderNumber
+      this.dialogVisible = true
     },
     handleClose() {
-      this.dialogVisible=false
+      this.dialogVisible = false
       this.$message({
         message: '放弃购买',
         type: 'warning'
       });
       this.reload()
       this.$router.push({
-        path:'/AboutMe?selectedTag=3'
+        path: '/AboutMe?selectedTag=3'
       })
     },
-    handleSave(){
+    handleSave() {
       this.$api.cart.pay(this.orderNumber)
-      this.dialogVisible=false
+      this.dialogVisible = false
       this.$message({
         message: '购买成功',
         type: 'success'
       });
       this.reload()
       this.$router.push({
-        path:'/AboutMe?selectedTag=3'
+        path: '/AboutMe?selectedTag=3'
       })
     }
   },
 }
-
 
 
 </script>

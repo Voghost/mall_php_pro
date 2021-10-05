@@ -183,9 +183,16 @@ export default {
         }else{
           this.orderNumber=this.orderInfo.order_number
           this.dialogVisible=true
-        }
-        for(let i=0;i<this.cart_id.length;i++){
-          this.$api.cart.deleteCartItem(this.cart_id[i])
+          if(typeof(this.cart_id)==='string')
+          {
+            console.log(1234)
+            this.$api.cart.deleteCartItem(parseInt(this.cart_id))
+          }
+          else{
+            for(let i=0;i<this.cart_id.length;i++){
+              this.$api.cart.deleteCartItem(this.cart_id[i])
+            }
+          }
         }
       }) .catch(err=>{
         console.log(err);
@@ -225,6 +232,7 @@ export default {
     this.getCartItem(this.cart_id)
     this.getAddressInfo()
     this.getUsername()
+    console.log()
   }
 }
 </script>

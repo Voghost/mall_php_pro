@@ -4,6 +4,7 @@ namespace app\common\service;
 
 use app\common\model\Users as UsersModel;
 use app\common\utils\JwtUtil;
+use DateTime;
 
 class UserService
 {
@@ -20,6 +21,19 @@ class UserService
         } else {
             return $collection[0];
         }
+    }
+
+    public function register($username, $password)
+    {
+        $usersModel = new UsersModel();
+        $users = $usersModel->where("user_name", $username)->find();
+        if ($users != null) {
+            json(["message" => "用户名已存在", "meta" => ["code" => 201]])->send();
+            exit();
+        }
+        $dt = new DateTime();
+        $time = $dt->format('Y-m-d H:i:s');
+        $usersModel->save(["user_name" => $username, "user_password" => md5($password), "user_create_time" => $time]);
     }
 
 
@@ -105,10 +119,10 @@ class UserService
         return $response;
     }
 
-    public function updateUser($user, $map)
+    public function updateUser($u, $map)
     {
         $usersModel = new UsersModel();
-        $user = $usersModel->where(["user_id" => $user["user_id"]])->find();
+        $user = $usersModel->where(["user_id" => $u["user_id"]])->find();
         if (array_key_exists("user_avatar", $map)) {
             $user->user_avatar = $map["user_avatar"];
         }
@@ -122,7 +136,11 @@ class UserService
         if (array_key_exists("user_sex", $map)) {
             $user->user_sex = $map["user_sex"];
         }
+        $dt = new DateTime();
+        $time = $dt->format('Y-m-d H:i:s');
+        $user->user_update_time = $time;
         $user->save();
+        return $user;
     }
 
     public function show()

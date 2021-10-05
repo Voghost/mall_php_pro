@@ -99,7 +99,7 @@ class GoodsService
         $where[] = ["goods_state", "<>", 0];
 
         if (array_key_exists("goodsName", $query)) {
-            $where[] = ["goods_name", "like", "%" . $query["goodsName"] . "%"];
+            $where[] = ["goods_name | goods_introduce", "like", "%" . $query["goodsName"] . "%"];
         }
         if (array_key_exists("goodsIntroduce", $query)) {
             $where[] = ["goods_introduce", "like", "%" . $query["goodsName"] . "%"];

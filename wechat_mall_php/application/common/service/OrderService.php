@@ -140,7 +140,7 @@ class OrderService
             $where["order_refund"] = $refund;
         }
 
-        $ordersList = \app\common\model\Orders::where($where)->select();
+        $ordersList = \app\common\model\Orders::where($where )->order("order_id","desc")->select();
         if ($ordersList == null) {
             return json([
                 "message" => [

@@ -6,12 +6,17 @@ import AboutMe from "@/views/AboutMe";
 import GoodsDetail from "@/views/GoodsDetail";
 import AllGoods from "@/views/AllGoods";
 import LoginRegister from "@/views/LoginRegister";
-import UserData from "@/components/UserData";
+
 import SettlementPage from "../views/SettlementPage";
-import NopayList from "@/components/NopayList";
-import PaidList from "@/components/PaidList";
+
 
 Vue.use(VueRouter)
+
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
     {
@@ -32,28 +37,13 @@ const routes = [
         component: GoodsDetail
     },
     {
-      path:'/settlementPage',
-      component:SettlementPage
+        path: '/settlementPage',
+        component: SettlementPage
     },
     {
         path: '/aboutMe',
         component: AboutMe,
-        children:[
-            {
-                path:"NopayList/:list_state",
-                name:"Nopay",
-                component:NopayList
-            },
-            {
-                path:"PaidList/:list_state",
-                name:'Paid',
-                component:PaidList,
-            },
-            {
-                path:"UserData",
-                component:UserData,
-            },
-        ]
+
     },
     {
         path: '/login_register',

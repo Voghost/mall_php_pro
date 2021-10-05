@@ -21,6 +21,9 @@ class MyUser extends Controller
         $password = $this->request->param("password");
 
         $myUser = MyUserModel::where("user_name", $username)->find();
+        if ($myUser == null) {
+            return \json(["message" => "验证失败", "code" => 201, "data" => null]);
+        }
         $passwordHash = new PasswordHash(8, true);
         if ($passwordHash->CheckPassword($password, $myUser->user_password)) {
             $jwtUtil = new JwtUtil();
@@ -87,7 +90,7 @@ class MyUser extends Controller
             array_push($rolesList, $rol["roles_name"]);
         }
 
-        $res = ["name" => $myUser->user_name, "userId" => $myUser->user_id, "roles" => $rolesList, "avatar"=>$myUser->avatar];
+        $res = ["name" => $myUser->user_name, "userId" => $myUser->user_id, "roles" => $rolesList, "avatar" => $myUser->avatar];
 
 
         return json(["message" => "ok", "code" => 200, "data" => $res, "ok" => true]);
