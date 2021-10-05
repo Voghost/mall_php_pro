@@ -76,6 +76,7 @@ export default {
       userApi.updateUser(this.userdata)
           .then(res => {
             console.log(res)
+            this.$store.commit("SET_USER_INFO", res.data.message)
           })
           .catch(error => {
             console.log(error)
