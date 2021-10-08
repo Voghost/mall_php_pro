@@ -20,7 +20,8 @@ class HomeService
                 "name" => $index["floor_name"],
                 "image_src" => $index["floor_image"],
                 "open_type" => "navigate",
-                "navigator_url" => "/pages/goods_list?query=" . $index["floor_keyword"]
+                "navigator_url" => "/pages/goods_list?query=" . $index["floor_keyword"],
+                "keyword" => $index["floor_keyword"]
             );
             $floor_title = array("floor_title" => $temp);
             array_push($message, $floor_title);

@@ -88,8 +88,9 @@ export default {
 
 <style scoped>
 .right_box {
-  width: 700px;
+  width: 60%;
   float: right;
+  margin-right: 150px;
   height: 300px;
   margin-top: 70px;
 }
