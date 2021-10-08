@@ -14,8 +14,8 @@
           <el-row v-for="i of row_index"
                   :key="i" style="min-width: 1000px">
             <el-col v-for="j of col_index"
-                    :key="j" :span="6" style="min-width: 240px">
-              <GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
+                    :key="j" :span="6" style="min-width: 240px" class="goodsLoading">
+              <GoodsCard class="goodsLoading" :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
             </el-col>
           </el-row>
         </div>
@@ -68,6 +68,7 @@ export default {
       imgUrl: "https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0"
     }
   },
+  inject:['reload'],
   props: [
     'cat_id',
     'cat_icon'
@@ -75,6 +76,8 @@ export default {
   methods: {
     getGoodsInfo(page = 1, query = null) {
       console.log("search1111222", query)
+      query.sortColumn = 'goods_id'; // 逆序
+      query.sortType = 'desc'; // 逆序
       this.current = page
       this.$api.goods.pageSearch(this.current, this.size, query)
           .then(res => {
@@ -91,7 +94,7 @@ export default {
           })
     },
     changePage(page) {
-      this.getGoodsInfo(page)
+      this.getGoodsInfo(page, this.searchObj)
       document.documentElement.scrollTop = 680;
     }
   },
@@ -108,6 +111,7 @@ export default {
     }
     this.getGoodsInfo(1, this.searchObj)
     console.log("obj: ", this.searchObj)
+
   },
   watch: {
     $route() {
@@ -124,9 +128,12 @@ export default {
         this.imgUrl = "https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0"
       }
       this.getGoodsInfo(1, this.searchObj)
+      this.reload()
       document.documentElement.scrollTop = 680;
-    }
+    },
+
   }
+
 }
 </script>
 
