@@ -456,7 +456,6 @@ export default {
             console.log(err)
           })
         })
-        // TODO 从服务器删除list
       }
       this.removeByValue(this.fileList, 'url', file.url)
     },

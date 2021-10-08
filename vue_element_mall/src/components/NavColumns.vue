@@ -9,10 +9,10 @@
       <template slot="title">商品分类</template>
       <Category/>
     </el-submenu>
-    <el-menu-item index="2" id="1">
+    <el-menu-item index="2" id="1" @click="toUrl('/')">
       <router-link to="/" active-class="active">商城首页</router-link>
     </el-menu-item>
-    <el-menu-item index="3" id="1">
+    <el-menu-item index="3" id="1" @click="toUrl('/allgoods')">
       <router-link to="/allgoods" active-class="active"> 全部商品</router-link>
     </el-menu-item>
   </el-menu>
@@ -36,6 +36,13 @@ export default {
         .catch(err => {
           console.log(err)
         })
+  },
+  methods: {
+    toUrl(url) {
+      this.$router.push({
+        path: url
+      })
+    }
   }
 }
 </script>
