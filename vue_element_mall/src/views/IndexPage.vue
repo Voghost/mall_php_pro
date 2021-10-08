@@ -6,22 +6,15 @@
       <!--功能区-->
       <SearchHeader style="box-shadow: rgba(0,0,0,0.3) 0 0 7px"/>
       <NavColumns></NavColumns>
-      <el-main class="">
-        <!--   分类和主页大图   -->
-        <el-container style="margin-top: 10px;" class="">
-          <el-row type="flex" justify="center" style="width: 100%">
-            <el-col :span="24" class="" style="margin-left: 40px;">
-              <el-carousel height="500px" indicator-position="outside">
-                <el-carousel-item v-for="item in pics" :key="item.goods_id">
-                  <a href="#">
-                    <el-image :src="item.image_src" style="width: 100%; height: 100%" :fit="'cover'">
-                    </el-image>
-                  </a>
-                </el-carousel-item>
-              </el-carousel>
-            </el-col>
-          </el-row>
-        </el-container>
+      <el-main class="" style="width: 100%; height: 600px; margin-top: 0; padding: 0">
+        <el-carousel height="500px" indicator-position="outside" style="width: 100%">
+          <el-carousel-item v-for="item in pics" :key="item.goods_id">
+            <a :href="'/goodsDetail?goods_id='+item.goods_id">
+              <el-image :src="item.image_src" style="width: 100%; height: 100%" :fit="'cover'">
+              </el-image>
+            </a>
+          </el-carousel-item>
+        </el-carousel>
       </el-main>
 
       <el-main class="">
@@ -29,6 +22,7 @@
                    :key="item.floor_title.name"
                    :src="item.floor_title.image_src"
                    :num="index+1"
+                   :floor-keyword="item.floor_title.keyword"
                    :title="item.floor_title.name"
         />
       </el-main>
@@ -81,7 +75,8 @@ export default {
           .catch(err => {
             console.log(err)
           })
-    }
+    },
+
   },
   mounted() {
     this.getAllFloor();

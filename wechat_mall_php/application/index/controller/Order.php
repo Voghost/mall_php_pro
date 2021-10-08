@@ -205,7 +205,7 @@ class Order extends Controller
 
     public function getLog($id)
     {
-        $users = CheckUser::checkUser();
+        $users = CheckUser::checkUser($this->request);
         $logisticsModel = new Logistics();
         $logistics = $logisticsModel->where(["order_id" => $id])->select();
         $arr = [];
@@ -216,7 +216,7 @@ class Order extends Controller
             ]);
 
         }
-        return ResultUtil::OK($logistics);
+        return ResultUtil::OK($arr);
 
     }
 }

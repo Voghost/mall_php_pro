@@ -20,7 +20,7 @@ class GoodsService
     public function getAllCategories()
     {
         $where1['cat_level'] = [1];
-        $ctg1 = DB::name("category")->where($where1)->select();
+        $ctg1 = DB::name("category")->where($where1)->where(['cat_deleted' => 0])->select();
         $mapList1 = array();
         for ($i = 0; $i < count($ctg1); $i++) {
             $index = $ctg1[$i];
@@ -35,7 +35,7 @@ class GoodsService
             $mapList2 = array();
             $where2['cat_level'] = [2];
             $where2['cat_pid'] = [$index["cat_id"]];
-            $ctg2 = DB::name("category")->where($where2)->select();
+            $ctg2 = DB::name("category")->where($where2)->where(['cat_deleted' => 0])->select();
             for ($j = 0; $j < count($ctg2); $j++) {
                 $temp1 = $ctg2[$j];
                 $map2 = array(
@@ -49,7 +49,7 @@ class GoodsService
                 $mapList3 = array();
                 $where3['cat_level'] = [3];
                 $where3['cat_pid'] = [$temp1["cat_id"]];
-                $ctg3 = DB::name("category")->where($where3)->select();
+                $ctg3 = DB::name("category")->where($where3)->where(['cat_deleted' => 0])->select();
                 for ($k = 0; $k < count($ctg3); $k++) {
                     $temp2 = $ctg3[$k];
                     $map3 = array(
