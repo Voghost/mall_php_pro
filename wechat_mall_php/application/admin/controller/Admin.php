@@ -58,4 +58,33 @@ class Admin extends Controller
             );
         }
     }
+
+    public function getRole()
+    {
+        $result = $this->adminService->getRole();
+        return json(
+            ["message" => "ok",
+                "code" => 200,
+                "data" => $result
+            ]
+        );
+    }
+
+    public function addRole($id, $item)
+    {
+        $this->adminService->addRole($id, $item);
+        return json(
+            ["message" => "ok",
+                "code" => 200]
+        );
+    }
+
+    public function deleteRole($id, $item)
+    {
+        $this->adminService->deleteRole($id, $item);
+        return json(
+            ["message" => "ok",
+                "code" => 200]
+        );
+    }
 }

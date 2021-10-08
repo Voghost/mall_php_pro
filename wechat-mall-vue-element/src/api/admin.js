@@ -15,5 +15,23 @@ export default {
       method: 'post',
       data: data
     })
+  },
+  getRole() {
+    return request({
+      url: `/admin/admin/getRole`,
+      method: 'post'
+    })
+  },
+  addRole(id, item) {
+    return request({
+      url: `/admin/admin/addRole?id=${id}&item=${item}`,
+      method: 'get'
+    })
+  },
+  deleteRole(id, item) {
+    return request({
+      url: `/admin/admin/deleteRole?id=${id}&item=${item}`,
+      method: 'get'
+    })
   }
 }
