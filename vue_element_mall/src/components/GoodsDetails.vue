@@ -117,66 +117,6 @@
             >
             </el-pagination>
           </el-tab-pane>
-          <el-tab-pane label="好评" name="second">
-            <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
-                 v-for="(item,index) in comment" :key="index">
-              <el-row style="margin-top: 10px">
-                <!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
-                <el-col :span="5" v-if="item.star>3">{{ item.username }}</el-col>
-                <el-col :span="7" v-if="item.star>3">
-                  <el-rate v-model="item.star"
-                           disabled
-                           show-score
-                           :value="-1"
-                           text-color="#ff9900"
-                           score-template="{value}">
-                  </el-rate>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="10" :offset="5">
-                  <div style="width: 100%;" v-if="item.star>3">{{ item.content }}</div>
-                  <el-row>
-                    <el-col :span="3" v-for="(pic,index) in item.pics" :key="index">
-                      <el-image :src="pic" style="width: 50px;height: 50px;" :title="ClickTips" :fit="'contain'"
-                                v-if="item.star>3">
-                      </el-image>
-                    </el-col>
-                  </el-row>
-                </el-col>
-              </el-row>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="差评" name="third">
-            <div style="margin-left: 20px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
-                 v-for="(item,index) in comment" :key="index">
-              <el-row style="margin-top: 10px">
-                <!--                  <el-col :span="5" >{{item.user_id}}</el-col>-->
-                <el-col :span="5" v-if="item.star<3">{{ item.username }}</el-col>
-                <el-col :span="7" v-if="item.star<3">
-                  <el-rate v-model="item.star"
-                           disabled
-                           show-score
-                           :value="-1"
-                           text-color="#ff9900"
-                           score-template="{value}">
-                  </el-rate>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="10" :offset="5">
-                  <div style="width: 100%;" v-if="item.star<3">{{ item.content }}</div>
-                  <el-row>
-                    <el-col :span="3" v-for="(pic,index) in item.pics" :key="index">
-                      <el-image :src="pic" style="width: 50px;height: 50px;" :title="ClickTips" :fit="'contain'"
-                                v-if="item.star<3">
-                      </el-image>
-                    </el-col>
-                  </el-row>
-                </el-col>
-              </el-row>
-            </div>
-          </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
     </el-tabs>
