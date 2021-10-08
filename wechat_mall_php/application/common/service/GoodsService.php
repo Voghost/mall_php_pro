@@ -92,11 +92,15 @@ class GoodsService
         return $goods = GoodsModel::where($where)->select();
     }
 
-    public function pageSearch($page = null, $limit = null, $query)
+    public function pageSearch($page = null, $limit = null, $query, $isFront = false)
     {
         $where = array();
 
         $where[] = ["goods_state", "<>", 0];
+
+        if ($isFront) {
+            $where[] = ["goods_state", "<>", 1];
+        }
 
         if (array_key_exists("goodsName", $query)) {
             $where[] = ["goods_name | goods_introduce", "like", "%" . $query["goodsName"] . "%"];

@@ -34,7 +34,12 @@ class Auth
                 $temp = $temp + 1;
             }
         }
-        if ($temp < count($rolesList)) {
+        // 方式1:   全部权限都有
+        /*if ($temp < count($rolesList)) {
+            return json(["message" => "无权限", "code" => 201, "data" => null]);
+        }*/
+        // 方式2:   只要有其中一个权限
+        if ($temp < 1) {
             return json(["message" => "无权限", "code" => 201, "data" => null]);
         }
         return $next($request);

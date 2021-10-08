@@ -62,12 +62,12 @@ export const asyncRoutes = [
   {
     path: '/goodsManager',
     component: Layout,
-    meta: { 'title': '商品管理', icon: 'el-icon-goods', roles: ['ADMIN'] },
+    meta: { 'title': '商品管理', icon: 'el-icon-goods', roles: ['ADMIN', 'USER'] },
     children: [
       {
         path: 'goodsList',
         component: () => import('@/views/goods/goodsList'),
-        meta: { 'title': '商品列表', icon: 'el-icon-tickets', roles: ['ADMIN', 'ADMIN'] }
+        meta: { 'title': '商品列表', icon: 'el-icon-tickets' }
       },
       {
         path: 'goodsEditor',
@@ -84,12 +84,12 @@ export const asyncRoutes = [
   {
     path: '/homeManager',
     component: Layout,
-    meta: { 'title': '主页管理', icon: 'el-icon-s-home', roles: ['ADMIN'] },
+    meta: { 'title': '主页管理', icon: 'el-icon-s-home', roles: ['ADMIN', 'USER'] },
     children: [
       {
         path: 'swapList',
         component: () => import('@/views/home/swiperList'),
-        meta: { 'title': '轮播图', icon: 'el-icon-menu', roles: ['ADMIN', 'ADMIN'] }
+        meta: { 'title': '轮播图', icon: 'el-icon-menu' }
       },
       {
         path: 'floorList',
@@ -101,12 +101,12 @@ export const asyncRoutes = [
   {
     path: '/categoryManager',
     component: Layout,
-    meta: { 'title': '分类管理', icon: 'el-icon-c-scale-to-original', roles: ['ADMIN'] },
+    meta: { 'title': '分类管理', icon: 'el-icon-c-scale-to-original', roles: ['ADMIN', 'USER'] },
     children: [
       {
         path: 'goodsList',
         component: () => import('@/views/category/categoryList'),
-        meta: { 'title': '分类管理', icon: 'el-icon-c-scale-to-original', roles: ['ADMIN', 'ADMIN'] }
+        meta: { 'title': '分类管理', icon: 'el-icon-c-scale-to-original' }
       }
     ]
   },
@@ -118,19 +118,19 @@ export const asyncRoutes = [
       {
         path: 'userList',
         component: () => import('@/views/user/index'),
-        meta: { 'title': '用户管理', icon: 'el-icon-user', roles: ['ADMIN', 'ADMIN'] }
+        meta: { 'title': '用户管理', icon: 'el-icon-user' }
       }
     ]
   },
   {
     path: '/orderManager',
     component: Layout,
-    meta: { 'title': '订单管理', icon: 'el-icon-s-order', roles: ['ADMIN'] },
+    meta: { 'title': '订单管理', icon: 'el-icon-s-order', roles: ['ADMIN', 'USER'] },
     children: [
       {
         path: 'userList',
         component: () => import('@/views/order/index'),
-        meta: { 'title': '订单管理', icon: 'el-icon-s-order', roles: ['ADMIN', 'ADMIN'] }
+        meta: { 'title': '订单管理', icon: 'el-icon-s-order' }
       }
     ]
   },
@@ -142,7 +142,7 @@ export const asyncRoutes = [
       {
         path: 'adminList',
         component: () => import('@/views/admin/adminList'),
-        meta: { 'title': '管理员列表', icon: 'el-icon-s-grid', roles: ['ADMIN', 'ADMIN'] }
+        meta: { 'title': '管理员列表', icon: 'el-icon-s-grid' }
       }
     ]
   },

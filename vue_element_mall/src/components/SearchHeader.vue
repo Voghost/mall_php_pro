@@ -2,7 +2,7 @@
     <el-row justify="center" type="flex" style="width: 100%">
       <el-col :span="6">
         <div class="box">
-          DGUT 小卖部
+          理工小卖部
         </div>
       </el-col>
       <el-col :span="12">

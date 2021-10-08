@@ -20,6 +20,7 @@ Route::get('hello/:name', 'index/hello');
 \think\facade\Route::post('upload/file', "index/upload/file")
     ->allowCrossDomain();
 
+
 // admin 路由 且拥有 admin 和 user 权限
 \think\facade\Route::group("admin", [
     'goods/all' => 'admin/goods/all',
@@ -45,8 +46,6 @@ Route::get('hello/:name', 'index/hello');
     'category/saveOrUpdate' => 'admin/category/saveOrUpdate',
     'order/page' => 'admin/order/page',
     'order/updateState' => 'admin/order/updateState',
-    'users/page' => 'admin/user/page',
-    'users/updateState' => 'admin/user/updateState',
     'user/all' => 'admin/my_user/all',
     'user/logout' => 'admin/my_user/logout',
     'comment/page' => 'admin/comment/page',
@@ -60,6 +59,16 @@ Route::get('hello/:name', 'index/hello');
     'spec/deleteSpecKey' => 'admin/spec/deleteSpecKey',
     'spec/deleteSpecValue' => 'admin/spec/deleteSpecValue',
     'spec/getSpecTableAndKV' => 'admin/spec/getSpecTableAndKv',
+])
+    ->allowCrossDomain()
+    ->middleware('VerifyMyUser')
+    ->middleware(Auth::class, ["ADMIN", "USER"]);
+
+
+// admin 路由 且拥有 admin 和 user 权限
+\think\facade\Route::group("admin", [
+    'users/page' => 'admin/user/page',
+    'users/updateState' => 'admin/user/updateState',
     'admin/page' => 'admin/admin/page',
     'admin/saveAdmin' => 'admin/admin/saveAdmin',
     'admin/getRole' => 'admin/admin/getRole',
@@ -68,7 +77,7 @@ Route::get('hello/:name', 'index/hello');
 ])
     ->allowCrossDomain()
     ->middleware('VerifyMyUser')
-    ->middleware(Auth::class, ["ADMIN", "USER"]);
+    ->middleware(Auth::class, ["ADMIN"]);
 
 
 // admin 要路由 无权限
