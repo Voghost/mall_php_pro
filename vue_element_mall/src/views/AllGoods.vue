@@ -14,8 +14,8 @@
           <el-row v-for="i of row_index"
                   :key="i" style="min-width: 1000px">
             <el-col v-for="j of col_index"
-                    :key="j" :span="6" style="min-width: 240px">
-              <GoodsCard :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
+                    :key="j" :span="6" style="min-width: 240px" class="goodsLoading">
+              <GoodsCard class="goodsLoading" :goods="goods[((i-1)*4)+(j-1)]"></GoodsCard>
             </el-col>
           </el-row>
         </div>
@@ -76,6 +76,8 @@ export default {
   methods: {
     getGoodsInfo(page = 1, query = null) {
       console.log("search1111222", query)
+      query.sortColumn = 'goods_id'; // 逆序
+      query.sortType = 'desc'; // 逆序
       this.current = page
       this.$api.goods.pageSearch(this.current, this.size, query)
           .then(res => {
@@ -92,7 +94,7 @@ export default {
           })
     },
     changePage(page) {
-      this.getGoodsInfo(page)
+      this.getGoodsInfo(page, this.searchObj)
       document.documentElement.scrollTop = 680;
     }
   },
@@ -109,6 +111,7 @@ export default {
     }
     this.getGoodsInfo(1, this.searchObj)
     console.log("obj: ", this.searchObj)
+
   },
   watch: {
     $route() {
