@@ -68,6 +68,7 @@ export default {
       imgUrl: "https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0"
     }
   },
+  inject:['reload'],
   props: [
     'cat_id',
     'cat_icon'
@@ -127,9 +128,12 @@ export default {
         this.imgUrl = "https://tse1-mm.cn.bing.net/th/id/R-C.45018e3466aa07dbecabc2c67f777b1a?rik=oTUSfBN5adTUVg&riu=http%3a%2f%2fnewssrc.onlinedown.net%2fd%2ffile%2f20160814%2f04c43ee83f0fb75c03a0be183d3358e6.jpg&ehk=nie1KWg9fnDUHtey92J2ewLkEv%2bqGQVt2eDB1QO83e0%3d&risl=&pid=ImgRaw&r=0"
       }
       this.getGoodsInfo(1, this.searchObj)
+      this.reload()
       document.documentElement.scrollTop = 680;
-    }
+    },
+
   }
+
 }
 </script>
 

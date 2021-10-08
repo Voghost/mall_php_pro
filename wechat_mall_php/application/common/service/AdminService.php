@@ -30,6 +30,7 @@ class AdminService
         $myUser = new MyUser();
         $myUser->user_name = $admin["username"];
         $myUser->user_password = md5($admin["password"]);
+        $myUser->avatar = md5($admin["avatar"]);
         $myUser->save();
 
         return 1;
