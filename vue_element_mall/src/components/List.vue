@@ -74,9 +74,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="评论" :visible.sync="handle" width="500px" center>
-      <GoodsComment :gid="this.comment.goods_id" :orderid="this.comment.order_id"></GoodsComment>
-    </el-dialog>
+      <GoodsComment :gid="this.comment.goods_id" :orderid="this.comment.order_id" :hand="this.handle" @on-result-change = "changeIsShowDialog" @child-operation="operation"></GoodsComment>
+
+
     <el-dialog
         title="支付"
         :visible.sync="dialogVisible"
@@ -124,8 +124,6 @@
 <script>
 
 import GoodsComment from "@/components/GoodsComment";
-
-
 export default {
   props: ["status", "refund", "refresh"],
   created() {
@@ -197,16 +195,19 @@ export default {
       console.log(this.comment)
       this.handle = true
     },
-    // handleRemove(file, fileList) {
-    //   console.log(file, fileList);
-    // },
-    // handlePictureCardPreview(file) {
-    //   this.dialogImageUrl = file.url;
-    //   this.dialogVisible = true;
-    // },
-    // handlePicSuccess(file) {
-    //   console.log(file)
-    // },
+    operation(type){
+      if(type=="confirm"){
+        //点击确认要执行的代码
+        this.handle=false;
+      }else if (type=='cancel'){
+        //点击取消要执行的代码
+        this.handle=false;
+      }
+    },
+    changeIsShowDialog(val){
+      this.handle = val;
+    },
+
     getOrderList(status = '', refund = '') {
       // 待支付
       this.$api.user.getAllOrder(status, refund).then(res => {

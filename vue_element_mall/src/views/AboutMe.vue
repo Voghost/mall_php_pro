@@ -20,7 +20,7 @@
               <el-tabs :tab-position="tabPosition2">
                 <el-tab-pane label="基本信息修改">
 <!--                  <UserSetting></UserSetting>-->
-                  <UserData></UserData>
+                  <UserAlert></UserAlert>
                 </el-tab-pane>
                 <el-tab-pane label="快递地址修改">
                   <UserAddress></UserAddress>
@@ -50,6 +50,7 @@ import MallHeader from "@/components/MallHeader";
 // import UserSetting from "../components/UserSetting";
 
 import PasswordSetting from "@/components/PasswordSetting";
+import UserAlert from "@/components/UserAlert";
 
 export default {
   name: "AboutMe",
@@ -69,7 +70,8 @@ export default {
     MallFooter,
     // UserSetting,
     CartCard,
-    PasswordSetting
+    PasswordSetting,
+    UserAlert
   },
   mounted() {
     let sk = this.$route.query.selectedTag;

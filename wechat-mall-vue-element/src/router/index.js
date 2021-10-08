@@ -134,6 +134,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/adminManager',
+    component: Layout,
+    meta: { 'title': '管理员管理', icon: 'el-icon-s-check', roles: ['ADMIN'] },
+    children: [
+      {
+        path: 'adminList',
+        component: () => import('@/views/admin/adminList'),
+        meta: { 'title': '管理员列表', icon: 'el-icon-s-grid', roles: ['ADMIN', 'ADMIN'] }
+      }
+    ]
+  },
   // 404 页面必须放置在最后一个页面
   { path: '*', redirect: '/404', hidden: true }
 ]

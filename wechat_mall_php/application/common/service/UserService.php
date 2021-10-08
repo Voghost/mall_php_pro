@@ -136,6 +136,9 @@ class UserService
         if (array_key_exists("user_sex", $map)) {
             $user->user_sex = $map["user_sex"];
         }
+        if (array_key_exists("user_phone", $map)) {
+            $user->user_phone = $map["user_phone"];
+        }
         $dt = new DateTime();
         $time = $dt->format('Y-m-d H:i:s');
         $user->user_update_time = $time;
