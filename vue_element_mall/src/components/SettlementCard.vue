@@ -145,8 +145,21 @@ export default {
     getAddressInfo(){
       this.$api.address.getAddress().then(res=>{
         this.addresses=res.data.data;
-        this.finalAddress=this.addresses[0].address
-        this.finalPhone=this.addresses[0].phone
+        if(this.addresses.length===0)
+        {
+          this.$message({
+            message: '您还没添加地址信息，请添加',
+            type: 'warning'
+          });
+          this.$router.push({
+            path:'/AboutMe?selectedTag=4'
+          })
+        }
+        else
+        {
+          this.finalAddress=this.addresses[0].address
+          this.finalPhone=this.addresses[0].phone
+        }
           })
       .catch(err=>{
         console.log(err);

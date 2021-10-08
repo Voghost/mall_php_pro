@@ -16,6 +16,13 @@
            </span>
          </template>
       </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="alertRoles(scope.row)">
+            权限管理
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-dialog title="添加管理员" :visible.sync="addAdmin">
       <el-form :inline="true" :label-position="'top'" class="demo-form-inline">
@@ -49,6 +56,11 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog title="权限管理" :visible.sync="changeRoles">
+      <el-checkbox-group v-model="admin.role">
+        <el-checkbox-button v-for="item in rolelist" :label="item" :key="item" @change="checked=>checkRow(item,checked,admin.user_id)">{{item}}</el-checkbox-button>
+      </el-checkbox-group>
+    </el-dialog>
     <!--目录-->
     <div class="block">
       <!--      <span class="demonstration">直接前往</span>-->
@@ -73,22 +85,27 @@ export default {
     return {
       searchObj: {},
       tableData: [],
+      rolelist: [],
       current: 1,
       total: 0,
       limit: 10,
       baseUpdateUrl: 'https://api-wechat-mall.ghovos.com/upload/file',
       addAdmin: false,
+      changeRoles: false,
       admin: {
+        user_id: null,
         username: null,
         password: null,
         repassword: null,
-        avatar: null
+        avatar: null,
+        roles: null
       }
     }
   },
   // 在渲染前运行
   created() {
     this.getList()
+    this.getRole()
   },
 
   // 各种函数
@@ -101,6 +118,16 @@ export default {
           console.log(response)
           this.tableData = response.data.content
           this.total = response.data.total
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getRole() {
+      adminApi.getRole()
+        .then(response => {
+          console.log(response)
+          this.rolelist = response.data
         })
         .catch(error => {
           console.log(error)
@@ -127,6 +154,20 @@ export default {
         this.addAdmin = false
       } else {
         alert('两次密码输入不同')
+      }
+    },
+    alertRoles(data) {
+      this.changeRoles = true
+      this.admin = data
+    },
+    checkRow(item, value, id) {
+      // console.log(item)
+      // console.log(value)
+      // console.log(id)
+      if (value === true) {
+        adminApi.addRole(id, item)
+      } else if (value === false) {
+        adminApi.deleteRole(id, item)
       }
     },
     handleMainSuccess(res) {
