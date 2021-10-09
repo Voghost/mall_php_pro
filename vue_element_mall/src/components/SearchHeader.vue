@@ -2,7 +2,7 @@
     <el-row justify="center" type="flex" style="width: 100%">
       <el-col :span="6">
         <div class="box">
-          未命名购物网站
+          理工小卖部
         </div>
       </el-col>
       <el-col :span="12">

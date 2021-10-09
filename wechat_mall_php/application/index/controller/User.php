@@ -83,8 +83,12 @@ class User extends Controller
         $user = $this->checkUser();
         $map = $this->request->post("userInfo");
 //        return json($map);
-        $this->userService->updateUser($user, $map);
-        return ResultUtil::OK($user);
+        $updateUser = $this->userService->updateUser($user, $map);
+        $updateUser->user_password = null;
+        $updateUser->user_openid = null;
+        $updateUser->user_token = null;
+
+        return ResultUtil::OK($updateUser);
 //        return json(["ok" => $user]);
     }
 

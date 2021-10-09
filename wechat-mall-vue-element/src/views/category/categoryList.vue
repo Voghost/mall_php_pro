@@ -68,7 +68,7 @@
           <el-upload
             style="display: inline-block; margin-left: 20px"
             class="avatar-uploader"
-            action="http://wechat_mall.php.test/upload/file"
+            action="https://api-wechat-mall.ghovos.com/upload/file"
             :show-file-list="false"
             :on-success="handleSuccess"
             :before-upload="beforeMainUpload"

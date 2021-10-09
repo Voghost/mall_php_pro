@@ -40,7 +40,7 @@
             :on-success="handleSuccess"
             :before-upload="beforeMainUpload"
           >
-            <img v-if="swiper.image_src" :src="swiper.image_src" class="avatar">
+            <img v-if="swiper.image_src" :src="swiper.image_src" class="avatar" width="90%">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>

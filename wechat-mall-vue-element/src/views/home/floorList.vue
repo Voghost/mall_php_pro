@@ -31,7 +31,7 @@
             :on-success="handleSuccess"
             :before-upload="beforeMainUpload"
           >
-            <img v-if="floor.floor_image" :src="floor.floor_image" class="avatar">
+            <img v-if="floor.floor_image" :src="floor.floor_image" width="90%" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>

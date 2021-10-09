@@ -1,9 +1,19 @@
 <template>
   <div style="width: auto;height: 500px;position:relative">
-    <el-form ref="form" :model="this.userdata" label-width="80px">
+    <el-form ref="form" :inline="true" :model="this.userdata" label-width="80px">
       <el-form-item label="名称">
         {{ this.userdata.user_name }}
       </el-form-item>
+      <el-form-item label="性别">
+        <template>
+          <el-radio v-model="userdata.user_sex" label="男">男</el-radio>
+          <el-radio v-model="userdata.user_sex" label="女">女</el-radio>
+        </template>
+      </el-form-item>
+      <el-form-item label="年龄">
+        <el-input v-model="userdata.user_age" style="width: 50px"></el-input>
+      </el-form-item>
+      <br/>
       <el-form-item label="头像">
         <el-upload
             class="avatar-uploader"
@@ -17,21 +27,15 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item label="性别">
-        <template>
-          <el-radio v-model="userdata.user_sex" label="男">男</el-radio>
-          <el-radio v-model="userdata.user_sex" label="女">女</el-radio>
-        </template>
-      </el-form-item>
-      <el-form-item label="年龄">
-        <el-input v-model="userdata.user_age" style="width: 50px"></el-input>
-      </el-form-item>
+      <br/>
       <el-form-item label="邮箱">
         <el-input v-model="userdata.user_email" style="width: 350px"></el-input>
       </el-form-item>
+      <br/>
       <el-form-item label="电话">
         <el-input v-model="userdata.user_phone" style="width: 350px"></el-input>
       </el-form-item>
+      <br/>
       <el-form-item>
         <el-button type="primary" @click="AlertUser">修改</el-button>
       </el-form-item>
@@ -62,12 +66,13 @@ export default {
     console.log(this.userdata)
   },
   methods: {
-    AlertUser(){
+    AlertUser() {
       console.log(this.userdata)
       userApi.updateUser(this.userdata)
           .then(res => {
             console.log(res)
             this.$store.commit("SET_USER_INFO", res.data.message)
+            this.$message.info("修改成功")
           })
           .catch(error => {
             console.log(error)

@@ -22,7 +22,7 @@
       <el-divider direction="vertical"></el-divider>
       <el-link href="/AboutMe?selectedTag=2"><i class="el-icon-shopping-cart-1"></i>购物车</el-link>
       <el-divider direction="vertical"></el-divider>
-      <el-link v-if="Object.keys(userInfo).length > 0" @click="logout"><i class="el-icon-shopping-cart-1">注销</i>
+      <el-link v-if="Object.keys(userInfo).length > 0" @click="logout"><i class="el-icon-warning">注销</i>
       </el-link>
     </div>
 

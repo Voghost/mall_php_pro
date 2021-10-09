@@ -28,7 +28,7 @@ const routes = [
     {
         path: '/',
         component: IndexPage,
-        meta: {title: '首页'}
+        meta: {title: 'DGUT 小卖部 | 首页'}
 
     },
     {
@@ -38,20 +38,23 @@ const routes = [
     },
     {
         path: '/goodsDetail',
-        component: GoodsDetail
+        component: GoodsDetail,
+        meta: {title: '商品详情'}
     },
     {
         path: '/settlementPage',
-        component: SettlementPage
+        component: SettlementPage,
+        meta: {title: '结算'}
     },
     {
         path: '/aboutMe',
         component: AboutMe,
-
+        meta: {title: '我'}
     },
     {
         path: '/login_register',
-        component: LoginRegister
+        component: LoginRegister,
+        meta: {title: '登录 | 注册'}
     },
 ]
 

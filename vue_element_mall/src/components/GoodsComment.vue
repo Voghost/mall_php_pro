@@ -58,6 +58,7 @@ export default {
 
     }
   },
+  inject:['reload'],
   methods : {
     childOperation(value) {
       this.$emit('child-operation',value);
@@ -77,7 +78,6 @@ export default {
     //评论提交
     onSubmit() {
       console.log(this.gid)
-
       let temp = [];
       for(let index in this.fileList){
         temp.push({name: this.fileList[index].name, url: this.fileList[index].url})
@@ -90,6 +90,10 @@ export default {
       console.log(this.commentOnsubmit)
       this.$api.user.addComment(this.commentOnsubmit)
       this.childOperation('confirm')
+      this.reload()
+      this.$router.push({
+        path:'/AboutMe?selectedTag=3'
+      })
       // console.log(this.commentOnsubmit.goods_id)
 
 

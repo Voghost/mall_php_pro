@@ -43,7 +43,8 @@
             <el-table-column v-if="status" align="center" label="操作" width="150" style="padding:20px">
               <template slot-scope="scope">
                 <el-button v-if="status===1" size="small" type="success">催发货</el-button>
-                <el-button v-if="status===2" size="small" type="success" @click="getorderlogistic()">物流消息</el-button>
+                <el-button v-if="status===2" size="small" type="success" @click="getorderlogistic(scope.row.order_id)">物流消息
+                </el-button>
                 <el-button v-if="status===3" size="small" type="success" @click="handlecomment(scope.row)">评价
                 </el-button>
               </template>
@@ -74,7 +75,8 @@
         </template>
       </el-table-column>
     </el-table>
-      <GoodsComment :gid="this.comment.goods_id" :orderid="this.comment.order_id" :hand="this.handle" @on-result-change = "changeIsShowDialog" @child-operation="operation"></GoodsComment>
+    <GoodsComment :gid="this.comment.goods_id" :orderid="this.comment.order_id" :hand="this.handle"
+                  @on-result-change="changeIsShowDialog" @child-operation="operation"></GoodsComment>
 
 
     <el-dialog
@@ -97,10 +99,10 @@
           <el-timeline-item
               v-for="(content,index) in logistics_card"
               :key="index"
-              :timestamp="content.content"
+              :timestamp="content.timestamp"
               color='#0bbd87'
               size="large ">
-
+            {{content.content}}
           </el-timeline-item>
         </el-timeline>
       </el-timeline>
@@ -124,6 +126,7 @@
 <script>
 
 import GoodsComment from "@/components/GoodsComment";
+
 export default {
   props: ["status", "refund", "refresh"],
   created() {
@@ -146,8 +149,8 @@ export default {
   inject: ['reload'],
   components: {GoodsComment},
   methods: {
-    getorderlogistic() {
-      this.$api.user.getLog(this.order_id).then(res => {
+    getorderlogistic(order_id) {
+      this.$api.user.getLog(order_id).then(res => {
         this.logistics_card = res.data.message;
         this.visiblehandle = true
         console.log(this.logistics_card)
@@ -195,16 +198,16 @@ export default {
       console.log(this.comment)
       this.handle = true
     },
-    operation(type){
-      if(type=="confirm"){
+    operation(type) {
+      if (type == "confirm") {
         //点击确认要执行的代码
-        this.handle=false;
-      }else if (type=='cancel'){
+        this.handle = false;
+      } else if (type == 'cancel') {
         //点击取消要执行的代码
-        this.handle=false;
+        this.handle = false;
       }
     },
-    changeIsShowDialog(val){
+    changeIsShowDialog(val) {
       this.handle = val;
     },
 

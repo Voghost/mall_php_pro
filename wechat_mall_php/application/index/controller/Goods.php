@@ -43,7 +43,7 @@ class Goods extends Controller
     public function pageSearch($page = null, $limit = null)
     {
         $query = $this->request->post();
-        $pageSearch = $this->goodsService->pageSearch($page, $limit, $query);
+        $pageSearch = $this->goodsService->pageSearch($page, $limit, $query, true);
         return ResultUtil::OK($pageSearch);
     }
 
