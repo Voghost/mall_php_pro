@@ -57,6 +57,9 @@
             {{ scope.row.latest }}
           </div>
           <div v-if="scope.row.order_state===3 && scope.row.order_refund === 0" @click="showLogVisible = true, currentLog=scope.row.loglist">
+            <i class="el-icon-s-flag"/>待评价
+          </div>
+          <div v-if="scope.row.order_state===4 && scope.row.order_refund === 0" @click="showLogVisible = true, currentLog=scope.row.loglist">
             <i class="el-icon-s-flag"/>已完成
           </div>
           <div v-if="scope.row.order_refund===1">
@@ -96,10 +99,18 @@
             修改物流信息
           </el-button>
           <el-button
-            type="danger"
+            type="success"
             size="mini"
             icon="el-icon-s-flag"
             v-if="scope.row.order_state === 3 && scope.row.order_refund === 0"
+          >
+            等待用户评价
+          </el-button>
+          <el-button
+            type="success"
+            size="mini"
+            icon="el-icon-s-flag"
+            v-if="scope.row.order_state === 4 && scope.row.order_refund === 0"
           >
             已完成订单
           </el-button>
